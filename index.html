@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#241f18">
+  <title>死信室 · The Dead Letter Room</title>
+  <link rel="stylesheet" href="assets/game.css">
+</head>
+<body>
+  <div id="app">
+    <section id="title-screen" class="title-screen" aria-labelledby="game-title">
+      <div class="title-paper">
+        <p class="eyebrow">A PAPER TRACE MYSTERY · CASE 01</p>
+        <h1 id="game-title">死信室</h1>
+        <p class="latin">THE DEAD LETTER ROOM</p>
+        <div class="title-rule"><i></i><span>✦</span><i></i></div>
+        <p class="premise">1927年，奥地利边境。<br>一名邮政局长死在从内部锁住的地下室里。<br>三封寄不出去的信，都在替尸体说谎。</p>
+        <div class="title-actions">
+          <button id="new-game" class="ink-button primary">拆开第一封信</button>
+          <button id="continue-game" class="ink-button">继续调查</button>
+        </div>
+        <button id="title-sound" class="sound-consent">开启声音 · 推荐佩戴耳机</button>
+      </div>
+      <p class="edition">完整篇 · 预计 55—65 分钟 · 自动存档</p>
+    </section>
+
+    <main id="game-screen" class="game-screen hidden">
+      <header class="casebar">
+        <div class="case-id">
+          <span id="chapter-kicker">第一章</span>
+          <strong id="chapter-title">滞留</strong>
+        </div>
+        <div class="case-tools">
+          <button id="notebook-btn" class="tool-button" aria-label="调查笔记">▤ <span>笔记</span></button>
+          <button id="hint-btn" class="tool-button" aria-label="提示">? <span>提示</span></button>
+          <button id="support-btn" class="tool-button support-button" aria-label="支持创作">♡ <span>1元支持</span></button>
+          <button id="sound-btn" class="tool-button" aria-label="声音">◖ <span>声音</span></button>
+          <button id="menu-btn" class="tool-button" aria-label="菜单">☰ <span>菜单</span></button>
+        </div>
+      </header>
+
+      <section class="game-layout">
+        <aside class="location-rail" aria-label="地点">
+          <p class="rail-label">地点</p>
+          <nav id="location-nav"></nav>
+          <div class="clock-card"><span>调查时间</span><strong id="game-clock">07:40</strong><small>1927 · 11 · 18</small></div>
+        </aside>
+
+        <section class="stage-wrap">
+          <div id="stage" class="stage" aria-live="polite">
+            <img id="scene-image" class="scene-image" alt="">
+            <div class="paper-grain"></div>
+            <div id="hotspots" class="hotspots"></div>
+            <div id="scene-caption" class="scene-caption">
+              <span id="scene-number">01</span>
+              <div><strong id="scene-name">魏瑟堡邮局</strong><small id="scene-subtitle">地下死信室</small></div>
+            </div>
+            <div id="dialogue" class="dialogue hidden">
+              <span id="dialogue-speaker">艾达</span>
+              <p id="dialogue-text"></p>
+              <button id="dialogue-next" aria-label="继续">›</button>
+            </div>
+          </div>
+          <div class="objective-strip">
+            <span>当前问题</span>
+            <p id="objective-text">邮政局长究竟死于何时？</p>
+            <b id="objective-progress">0 / 6</b>
+          </div>
+        </section>
+
+        <aside class="evidence-panel">
+          <div class="panel-heading"><span>证物匣</span><small id="evidence-count">0 / 24</small></div>
+          <div id="evidence-list" class="evidence-list"></div>
+          <div class="knowledge-heading">已验证知识</div>
+          <div id="knowledge-list" class="knowledge-list"><p>尚无记录</p></div>
+        </aside>
+      </section>
+
+      <footer class="inventory-drawer">
+        <button id="inventory-prev" class="drawer-arrow">‹</button>
+        <div id="inventory-list" class="inventory-list"><p class="empty-inventory">道具会收进这只旧木匣。</p></div>
+        <button id="inventory-next" class="drawer-arrow">›</button>
+      </footer>
+    </main>
+
+    <div id="modal-backdrop" class="modal-backdrop hidden"></div>
+
+    <section id="detail-modal" class="paper-modal hidden" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+      <button class="modal-close" data-close="detail-modal">×</button>
+      <p class="modal-kicker" id="detail-kicker">现场观察</p>
+      <h2 id="detail-title">物证</h2>
+      <div id="detail-visual" class="detail-visual"></div>
+      <p id="detail-copy" class="detail-copy"></p>
+      <div id="detail-actions" class="modal-actions"></div>
+    </section>
+
+    <section id="notebook-modal" class="notebook-modal hidden" role="dialog" aria-modal="true" aria-label="调查笔记">
+      <button class="modal-close" data-close="notebook-modal">×</button>
+      <div class="notebook-spread">
+        <article>
+          <p class="modal-kicker">ADA KLEIN · 私人记录</p>
+          <h2>调查问题</h2>
+          <div id="notebook-objectives"></div>
+        </article>
+        <article>
+          <p class="modal-kicker">人物与口供</p>
+          <h2>三名在场者</h2>
+          <div id="suspect-notes"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="hint-modal" class="paper-modal hint-modal hidden" role="dialog" aria-modal="true" aria-labelledby="hint-title">
+      <button class="modal-close" data-close="hint-modal">×</button>
+      <p class="modal-kicker">铅笔边注</p>
+      <h2 id="hint-title">艾达的提示</h2>
+      <p id="hint-text" class="hint-text"></p>
+      <button id="next-hint" class="ink-button">再具体一点</button>
+    </section>
+
+    <section id="support-modal" class="support-modal hidden" role="dialog" aria-modal="true" aria-labelledby="support-title">
+      <button class="modal-close" data-close="support-modal">×</button>
+      <div class="support-stamp">1元</div>
+      <p class="modal-kicker">不影响完整游玩</p>
+      <h2 id="support-title">请我们喝一杯邮局咖啡</h2>
+      <p>如果你喜欢这间死信室，可以自愿支持 1 元。游戏不会因此解锁或锁住任何内容。</p>
+      <img src="assets/images/support-qr.png" alt="支付宝一元支持二维码">
+      <small>支付宝扫码 · abc studio</small>
+      <div class="support-actions">
+        <button id="support-done" class="ink-button primary">已完成支持 ♡</button>
+        <button id="support-later" class="ink-button">下次一定</button>
+      </div>
+    </section>
+
+    <section id="menu-modal" class="paper-modal hidden" role="dialog" aria-modal="true" aria-labelledby="menu-title">
+      <button class="modal-close" data-close="menu-modal">×</button>
+      <p class="modal-kicker">档案管理</p>
+      <h2 id="menu-title">暂停调查</h2>
+      <div class="menu-stack">
+        <button id="resume-game" class="ink-button primary">继续</button>
+        <button id="reset-game" class="ink-button">重新调查</button>
+        <button id="back-title" class="ink-button">返回封面</button>
+      </div>
+      <p class="autosave-note">每次获得证物、完成实验和进入新章节都会自动保存。</p>
+    </section>
+
+    <section id="ending-modal" class="ending-modal hidden" role="dialog" aria-modal="true" aria-labelledby="ending-title">
+      <p class="eyebrow">CASE CLOSED · 18 NOV 1927</p>
+      <h2 id="ending-title">无人谋杀赫尔曼·福格尔</h2>
+      <p id="ending-copy"></p>
+      <div id="ending-stats" class="ending-stats"></div>
+      <button id="ending-restart" class="ink-button primary">重新阅读死信</button>
+    </section>
+
+    <div id="toast" class="toast hidden" role="status"></div>
+  </div>
+  <script src="assets/game.js"></script>
+</body>
+</html>
