@@ -3,46 +3,47 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#241f18">
+  <meta name="theme-color" content="#171815">
+  <meta name="color-scheme" content="dark light">
   <title>死信室 · The Dead Letter Room</title>
   <link rel="stylesheet" href="assets/game.css">
 </head>
 <body>
   <div id="app">
     <section id="title-screen" class="title-screen" aria-labelledby="game-title">
-      <div class="title-paper">
+      <div class="cover-file">
+        <div class="cover-index"><span>魏瑟堡邮政区</span><b>档案 17—B</b></div>
         <p class="eyebrow">A PAPER TRACE MYSTERY · CASE 01</p>
         <h1 id="game-title">死信室</h1>
         <p class="latin">THE DEAD LETTER ROOM</p>
-        <div class="title-rule"><i></i><span>✦</span><i></i></div>
-        <p class="premise">1927年，奥地利边境。<br>一名邮政局长死在从内部锁住的地下室里。<br>三封寄不出去的信，都在替尸体说谎。</p>
+        <p class="premise">1927年11月。<br>局长死在从内部锁住的地下室。<br>所有物证都能解释——除了一封没能送达的信。</p>
         <div class="title-actions">
-          <button id="new-game" class="ink-button primary">拆开第一封信</button>
+          <button id="new-game" class="ink-button primary">登记此案</button>
           <button id="continue-game" class="ink-button">继续调查</button>
         </div>
-        <button id="title-sound" class="sound-consent">开启声音 · 推荐佩戴耳机</button>
+        <button id="title-sound" class="text-button">开启声音 · 推荐佩戴耳机</button>
+        <p class="cover-note">完整篇 · 约 55—65 分钟 · 自动存档<br>请允许文字慢一点抵达。</p>
       </div>
-      <p class="edition">完整篇 · 预计 55—65 分钟 · 自动存档</p>
+      <div class="cover-stamp" aria-hidden="true">UNDELIVERED<br><b>1927</b></div>
     </section>
 
     <main id="game-screen" class="game-screen hidden">
       <header class="casebar">
-        <div class="case-id">
-          <span id="chapter-kicker">第一章</span>
-          <strong id="chapter-title">滞留</strong>
-        </div>
+        <button id="mobile-locations" class="mobile-sheet-button" aria-label="打开地点目录">地点</button>
+        <div class="case-id"><span id="chapter-kicker">第一章</span><strong id="chapter-title">滞留</strong></div>
         <div class="case-tools">
-          <button id="notebook-btn" class="tool-button" aria-label="调查笔记">▤ <span>笔记</span></button>
-          <button id="hint-btn" class="tool-button" aria-label="提示">? <span>提示</span></button>
-          <button id="support-btn" class="tool-button support-button" aria-label="支持创作">♡ <span>1元支持</span></button>
-          <button id="sound-btn" class="tool-button" aria-label="声音">◖ <span>声音</span></button>
-          <button id="menu-btn" class="tool-button" aria-label="菜单">☰ <span>菜单</span></button>
+          <button id="archive-btn" class="tool-button" aria-label="阅读连载小说"><i>文</i><span>连载</span><b id="archive-badge">1</b></button>
+          <button id="notebook-btn" class="tool-button" aria-label="调查笔记"><i>录</i><span>笔记</span></button>
+          <button id="hint-btn" class="tool-button" aria-label="提示"><i>?</i><span>提示</span></button>
+          <button id="support-btn" class="tool-button support-button" aria-label="支持创作"><i>♡</i><span>1元支持</span></button>
+          <button id="sound-btn" class="tool-button" aria-label="声音"><i>声</i><span>声音</span></button>
+          <button id="menu-btn" class="tool-button" aria-label="菜单"><i>≡</i><span>菜单</span></button>
         </div>
       </header>
 
       <section class="game-layout">
-        <aside class="location-rail" aria-label="地点">
-          <p class="rail-label">地点</p>
+        <aside id="location-rail" class="location-rail" aria-label="地点">
+          <div class="rail-head"><span>调查地点</span><button id="close-locations" aria-label="关闭地点目录">×</button></div>
           <nav id="location-nav"></nav>
           <div class="clock-card"><span>调查时间</span><strong id="game-clock">07:40</strong><small>1927 · 11 · 18</small></div>
         </aside>
@@ -50,107 +51,63 @@
         <section class="stage-wrap">
           <div id="stage" class="stage" aria-live="polite">
             <img id="scene-image" class="scene-image" alt="">
-            <div class="paper-grain"></div>
+            <div class="press-dots" aria-hidden="true"></div>
             <div id="hotspots" class="hotspots"></div>
-            <div id="scene-caption" class="scene-caption">
-              <span id="scene-number">01</span>
-              <div><strong id="scene-name">魏瑟堡邮局</strong><small id="scene-subtitle">地下死信室</small></div>
-            </div>
-            <div id="dialogue" class="dialogue hidden">
-              <span id="dialogue-speaker">艾达</span>
-              <p id="dialogue-text"></p>
-              <button id="dialogue-next" aria-label="继续">›</button>
-            </div>
+            <div id="scene-caption" class="scene-caption"><span id="scene-number">01</span><div><strong id="scene-name">魏瑟堡邮局</strong><small id="scene-subtitle">地下死信室</small></div></div>
+            <div id="dialogue" class="dialogue hidden"><span id="dialogue-speaker">艾达</span><p id="dialogue-text"></p><button id="dialogue-next" aria-label="继续">继续 ›</button></div>
           </div>
-          <div class="objective-strip">
-            <span>当前问题</span>
-            <p id="objective-text">邮政局长究竟死于何时？</p>
-            <b id="objective-progress">0 / 6</b>
-          </div>
+          <div class="objective-strip"><span>当前问题</span><p id="objective-text">邮政局长究竟死于何时？</p><b id="objective-progress">0 / 6</b></div>
         </section>
 
-        <aside class="evidence-panel">
-          <div class="panel-heading"><span>证物匣</span><small id="evidence-count">0 / 24</small></div>
+        <aside id="evidence-panel" class="evidence-panel">
+          <div class="panel-heading"><span>证物登记</span><small id="evidence-count">0 / 16</small></div>
           <div id="evidence-list" class="evidence-list"></div>
-          <div class="knowledge-heading">已验证知识</div>
+          <div class="knowledge-heading">已经确定的事实</div>
           <div id="knowledge-list" class="knowledge-list"><p>尚无记录</p></div>
         </aside>
       </section>
 
       <footer class="inventory-drawer">
-        <button id="inventory-prev" class="drawer-arrow">‹</button>
-        <div id="inventory-list" class="inventory-list"><p class="empty-inventory">道具会收进这只旧木匣。</p></div>
-        <button id="inventory-next" class="drawer-arrow">›</button>
+        <span class="drawer-label">物品匣</span><button id="inventory-prev" class="drawer-arrow" aria-label="向前翻物品">‹</button>
+        <div id="inventory-list" class="inventory-list"><p class="empty-inventory">道具会收进这里。</p></div>
+        <button id="inventory-next" class="drawer-arrow" aria-label="向后翻物品">›</button><button id="mobile-evidence" class="mobile-sheet-button" aria-label="打开证物登记">证物</button>
       </footer>
     </main>
 
     <div id="modal-backdrop" class="modal-backdrop hidden"></div>
 
     <section id="detail-modal" class="paper-modal hidden" role="dialog" aria-modal="true" aria-labelledby="detail-title">
-      <button class="modal-close" data-close="detail-modal">×</button>
-      <p class="modal-kicker" id="detail-kicker">现场观察</p>
-      <h2 id="detail-title">物证</h2>
-      <div id="detail-visual" class="detail-visual"></div>
-      <p id="detail-copy" class="detail-copy"></p>
-      <div id="detail-actions" class="modal-actions"></div>
+      <button class="modal-close" data-close="detail-modal" aria-label="关闭">×</button><p class="modal-kicker" id="detail-kicker">现场观察</p><h2 id="detail-title">物证</h2>
+      <div id="detail-visual" class="detail-visual"></div><p id="detail-copy" class="detail-copy"></p><div id="detail-actions" class="modal-actions"></div>
+    </section>
+
+    <section id="archive-modal" class="archive-modal hidden" role="dialog" aria-modal="true" aria-labelledby="archive-title">
+      <button class="modal-close" data-close="archive-modal" aria-label="关闭">×</button>
+      <aside class="archive-index"><p class="modal-kicker">死信室私印本 · 无出版记录</p><h2 id="archive-title">《雪落以前》</h2><p class="archive-author">署名：A. W.　／　共六页</p><div id="archive-tabs" class="archive-tabs"></div>
+        <form id="archive-search" class="archive-search"><label for="archive-query">旧目录检索</label><div><input id="archive-query" autocomplete="off" placeholder="输入姓名或词语"><button>查找</button></div><p id="archive-result">目录仍有几枚钉孔。</p></form>
+      </aside>
+      <article class="archive-page"><p id="archive-page-no" class="archive-page-no">第一叶</p><h3 id="archive-page-title"></h3><div id="archive-page-copy"></div><p class="archive-running">—— 有些故事没有结尾，只剩下收件人。</p></article>
     </section>
 
     <section id="notebook-modal" class="notebook-modal hidden" role="dialog" aria-modal="true" aria-label="调查笔记">
-      <button class="modal-close" data-close="notebook-modal">×</button>
-      <div class="notebook-spread">
-        <article>
-          <p class="modal-kicker">ADA KLEIN · 私人记录</p>
-          <h2>调查问题</h2>
-          <div id="notebook-objectives"></div>
-        </article>
-        <article>
-          <p class="modal-kicker">人物与口供</p>
-          <h2>三名在场者</h2>
-          <div id="suspect-notes"></div>
-        </article>
-      </div>
+      <button class="modal-close" data-close="notebook-modal" aria-label="关闭">×</button><div class="notebook-spread"><article><p class="modal-kicker">ADA KLEIN · 私人记录</p><h2>调查问题</h2><div id="notebook-objectives"></div></article><article><p class="modal-kicker">口供边注</p><h2>三个没有说完的人</h2><div id="suspect-notes"></div></article></div>
     </section>
 
     <section id="hint-modal" class="paper-modal hint-modal hidden" role="dialog" aria-modal="true" aria-labelledby="hint-title">
-      <button class="modal-close" data-close="hint-modal">×</button>
-      <p class="modal-kicker">铅笔边注</p>
-      <h2 id="hint-title">艾达的提示</h2>
-      <p id="hint-text" class="hint-text"></p>
-      <button id="next-hint" class="ink-button">再具体一点</button>
+      <button class="modal-close" data-close="hint-modal" aria-label="关闭">×</button><p class="modal-kicker">铅笔边注</p><h2 id="hint-title">艾达的提示</h2><p id="hint-text" class="hint-text"></p><button id="next-hint" class="ink-button">再具体一点</button>
     </section>
 
     <section id="support-modal" class="support-modal hidden" role="dialog" aria-modal="true" aria-labelledby="support-title">
-      <button class="modal-close" data-close="support-modal">×</button>
-      <div class="support-stamp">1元</div>
-      <p class="modal-kicker">不影响完整游玩</p>
-      <h2 id="support-title">请我们喝一杯邮局咖啡</h2>
-      <p>如果你喜欢这间死信室，可以自愿支持 1 元。游戏不会因此解锁或锁住任何内容。</p>
-      <img src="assets/images/support-qr.png" alt="支付宝一元支持二维码">
-      <small>支付宝扫码 · abc studio</small>
-      <div class="support-actions">
-        <button id="support-done" class="ink-button primary">已完成支持 ♡</button>
-        <button id="support-later" class="ink-button">下次一定</button>
-      </div>
+      <button class="modal-close" data-close="support-modal" aria-label="关闭">×</button><div class="support-stamp">1元</div><p class="modal-kicker">完整内容始终免费</p><h2 id="support-title">给夜班留一盏灯</h2><p>如果这封信曾让你停一下，可以自愿支持 1 元。无论是否支持，案件、小说和结局都完整开放。</p><img src="assets/images/support-qr.png" alt="支付宝一元支持二维码"><small>支付宝扫码 · abc studio</small><div class="support-actions"><button id="support-done" class="ink-button primary">已经支持 ♡</button><button id="support-later" class="ink-button">先继续查案</button></div>
     </section>
 
     <section id="menu-modal" class="paper-modal hidden" role="dialog" aria-modal="true" aria-labelledby="menu-title">
-      <button class="modal-close" data-close="menu-modal">×</button>
-      <p class="modal-kicker">档案管理</p>
-      <h2 id="menu-title">暂停调查</h2>
-      <div class="menu-stack">
-        <button id="resume-game" class="ink-button primary">继续</button>
-        <button id="reset-game" class="ink-button">重新调查</button>
-        <button id="back-title" class="ink-button">返回封面</button>
-      </div>
-      <p class="autosave-note">每次获得证物、完成实验和进入新章节都会自动保存。</p>
+      <button class="modal-close" data-close="menu-modal" aria-label="关闭">×</button><p class="modal-kicker">档案管理</p><h2 id="menu-title">暂停调查</h2><div class="menu-stack"><button id="resume-game" class="ink-button primary">继续</button><button id="reset-game" class="ink-button">重新调查</button><button id="back-title" class="ink-button">返回封面</button></div><p class="autosave-note">证物、阅读进度、实验和章节都会自动保存。</p>
     </section>
 
     <section id="ending-modal" class="ending-modal hidden" role="dialog" aria-modal="true" aria-labelledby="ending-title">
-      <p class="eyebrow">CASE CLOSED · 18 NOV 1927</p>
-      <h2 id="ending-title">无人谋杀赫尔曼·福格尔</h2>
-      <p id="ending-copy"></p>
-      <div id="ending-stats" class="ending-stats"></div>
-      <button id="ending-restart" class="ink-button primary">重新阅读死信</button>
+      <p class="eyebrow">CASE CLOSED · 18 NOV 1927</p><h2 id="ending-title">没有凶手的密室</h2><div id="ending-copy"></div><button id="ending-letter" class="ink-button primary">拆开第六封信</button>
+      <div id="final-letter" class="final-letter hidden"></div><div id="ending-stats" class="ending-stats"></div><button id="ending-restart" class="ink-button">重新登记此案</button>
     </section>
 
     <div id="toast" class="toast hidden" role="status"></div>
