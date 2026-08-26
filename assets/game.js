@@ -43,13 +43,13 @@
   };
 
   const caseFragments = {
-    exterior:{title:"门房老奥托记得的，是一盏总比别人晚熄的灯",source:"2007 年口述档案补录",copy:"老奥托在邮局做了三十一年门房。只有局长办公室常常比别处晚熄半个钟头。最后那一夜为什么一直亮到清晨，他没有机会再问。"},
-    deadroom:{title:"裁缝铺十月账页：左胸内衬只补了一半",source:"施耐德裁缝铺 · 1927.10",copy:"赫尔曼坚持保留制服左胸那块旧内衬，只补裂口。账页边上写着：‘旧布保留，结藏夹层。’"},
-    office:{title:"艾尔莎记得，玛戈小时候总在高柜旁写作业",source:"艾尔莎·克劳斯退休访谈 · 1958",copy:"玛戈放学后常在高柜旁写作业，写累了就枕着退信袋睡。赫尔曼经过时会把盖邮戳的木槌换到另一张桌子。"},
-    lab:{title:"哈斯写小数点时总会停一下",source:"镇医务所清点册",copy:"哈斯写数字很快，只有小数点会停一下，再描得很重。抽屉里有一页练字纸，整页都是‘0.2、0.4、0.6’。"},
-    tube:{title:"维克托能凭声音听出哪一段管线在漏气",source:"艾达私人边注",copy:"维克托只做了最低限度的气密恢复，让旧管线能够低压复现。他没有替调查员选择延时档。"},
-    cold:{title:"十一月十七日傍晚，玛戈买了两人份早餐",source:"福格尔宅邸杂项袋 · 附件 3",copy:"收据开在18:12：黑麦面包两份、腌李子、咖啡豆。背面写着‘鲜奶一瓶，明早来取’。第二天中午，奶仍在店里。"},
-    finale:{title:"艾达调查簿的最后一页，只记了几件很小的事",source:"艾达私人调查簿",copy:"正式结论写完后，她记下玛戈叠好的围巾、哈斯掐灭的半支烟，以及制服破口还能不能补。最下面一句被划掉，只剩‘明早……早餐……’。"}
+    exterior:{title:"门房老奥托记得的，是一盏总比别人晚熄的灯",source:"2007 年口述档案补录",copy:`<p>老奥托在邮局做了三十一年门房。冬天六点以后，大厅的人声会先散掉，随后是分拣室、登记台和柜台一盏一盏熄灯。局长办公室通常最晚，他常说那扇磨砂玻璃后面的灯像一只慢半拍的钟。</p><p>赫尔曼下班很少走正门。他会先绕到锅炉间看一眼火，再把门房桌上的水壶添满。老奥托年轻时总觉得这是局长在检查工作，后来才明白，赫尔曼只是知道他夜里腿疼，不愿让他再去地下室提水。</p><p>口述录到这里时，老奥托已经九十岁。他仍记得邮局门轴在冬天会发涩，记得赫尔曼习惯戴右手手套、左手夹文件，也记得第一场雪后门厅里总有湿羊毛和煤烟混在一起的味道。至于那些年究竟有多少个夜晚灯亮得很迟，他说自己早已数不清了。</p>`},
+    deadroom:{title:"裁缝铺十月账页：一件穿了很多年的制服",source:"施耐德裁缝铺 · 1927.10",copy:`<p>施耐德裁缝铺留下的十月账页上，赫尔曼的名字旁边记着袖口加固、领口换线和左胸旧布修补。这样的项目并不昂贵，却每隔一两年就会重复出现。</p><p>老裁缝的儿子回忆，赫尔曼很少愿意整件换新。他说旧布已经顺着肩膀和手臂的动作磨出了形状，新的反而别扭。制服送去修时，他通常站在柜台边等，不坐椅子，也不催，只会在裁缝剪下旧线头时伸手把它们拢到纸片上，免得掉进地板缝。</p><p>账页还夹着一张褪色布样：深灰羊毛，织纹很密，边缘因为多年摩擦变得发亮。裁缝铺把这种料子称作“邮政灰”。在魏瑟堡街上，它曾经和邮筒的红、冬季煤烟的黑一样普通。</p>`},
+    office:{title:"艾尔莎记得，玛戈小时候总在高柜旁写作业",source:"艾尔莎·克劳斯退休访谈 · 1958",copy:`<p>玛戈放学后常在高柜旁写作业。那张小桌原本用来捆扎退信，桌面比普通书桌高，她坐上去时脚尖够不到地，只能一下一下碰柜门。</p><p>她写字很慢，尤其不喜欢把姓名写歪。艾尔莎记得她曾在一张废邮资单背面连续写了七遍自己的名字，最后一遍才满意。赫尔曼经过时没有夸她，只把墨水瓶往远处挪了半掌，怕她袖口碰倒。</p><p>下午最忙的时候，邮戳木槌敲在桌面上很响。玛戈若睡着，赫尔曼便把盖戳的工作搬到另一张桌。艾尔莎说，那时候大家都装作没注意，因为赫尔曼最不喜欢别人把这种事说成体贴。</p>`},
+    lab:{title:"哈斯下班前，总要把药秤擦到看不见粉末",source:"镇医务所清点册与学徒访谈",copy:`<p>哈斯说话直接，脾气也坏，病人若把剂量记在烟盒背面，他会当场训人。但每天最后一个病人离开后，他一定把黄铜药秤擦干净，再把砝码从大到小放回木盒。</p><p>学徒记得，他不许上一位病人的药粉留到下一位病人的托盘里。擦秤用的软布挂在窗边，冬天常常来不及干透，第二天仍带一点酒精和苦药混在一起的气味。</p><p>医务所的抽屉里保存着许多练字纸和废弃标签。哈斯会在空白边角写药名、日期、重量，也会因为一个字写得太潦草整行划掉重来。那些纸张没有被当作正式病历，只是一个长期做精细工作的医生留下的日常痕迹。</p>`},
+    tube:{title:"维克托拆机器时，习惯把每一枚螺丝排成一条线",source:"艾达私人边注与旅馆口述",copy:`<p>维克托处理机械时几乎不说话。他先铺一块旧手帕，拆下来的螺丝按长度从左到右排好，垫圈单独放，若有人顺手替他挪位置，他会停下来重新排一次。</p><p>旅馆女主人记得，他每天清晨喝不加糖的黑咖啡，喝完会把杯柄转到右侧，再把硬币压在碟子下面。这样的动作和他修机器时一样，像是在离开之前把东西恢复到自己认可的位置。</p><p>气动管控制室里长年有机油、黄铜和旧皮革的味道。维克托第一次进去时，没有表现出新奇，只在几段管线上用指节轻轻敲过。有人问他以前是否做过这类工作，他说：“很久以前靠手吃饭。”然后就没有再解释。</p>`},
+    cold:{title:"冷库管理员的冬季值班，总从一只搪瓷杯开始",source:"邮票冷藏库值班簿 · 1926—1928",copy:`<p>冷藏库保存的是怕潮的邮票纸、胶料和少量档案用品。管理员每天清晨先在门外喝完一杯热水，再进去抄温度，因为里面太冷，钢笔墨会变稠，手指也容易发僵。</p><p>值班簿边角记了许多与工作无关的小事：哪一扇门铰链需要上油，哪一批木架会在低温里收缩发响，谁又忘记把羊毛围巾从门后的钉子上取走。长期重复的工作让这些细节比日期更容易留在记忆里。</p><p>管理员退休后说，他最讨厌冬天有人把热咖啡带进冷库，因为杯口会很快结雾，纸张又怕潮。他在门边放了一块小木牌，上面只写四个字：“杯子留外。”这块牌后来一直挂到邮局改造。</p>`},
+    finale:{title:"艾达调查簿的最后一页，总比正文写得更慢",source:"艾达·克莱因私人调查簿",copy:`<p>艾达写正式记录很快。日期、位置、尺寸和人员，她会一项一项压进固定栏格里，字迹像在赶时间。真正写得慢的是页脚，那些不属于证据、却又舍不得完全丢掉的小事。</p><p>她常记谁把湿外套搭在了哪把椅子上，谁在等询问时把烟掐灭又重新点起，谁离开房间前把别人碰歪的杯子扶正。这样的句子不会进入结论，也不会改变任何证物的重量。</p><p>多年以后整理者才发现，几乎每宗旧案最后都有类似的边注。它们让调查簿不像一台只会产出答案的机器，更像有人真实地在那些房间里待过，听过钟声、闻过煤烟，也见过一些无法归档的小动作。</p>`}
   };
 
   const novelPages = {
@@ -314,7 +314,7 @@
     const s=sceneData[state.scene]||sceneData.deadroom;
     els.scene_image.src=s.image;els.scene_image.alt=`${s.name} · ${s.sub}`;els.scene_name.textContent=s.name;els.scene_subtitle.textContent=s.sub;els.scene_number.textContent=String(availableScenes().indexOf(state.scene)+1).padStart(2,"0");
     els.case_breadcrumb_text.textContent=`17—B › ${chapters[state.chapter].kicker} › ${s.name}`;els.case_page_heading.textContent=`${s.name} · ${s.sub}`;els.case_page_label.textContent=state.reviewMode?"二次复核页":"现场复原页";
-    const frag=caseFragments[state.scene];els.case_fragment_title.textContent=frag.title;els.case_fragment_copy.innerHTML=`<p>${esc(frag.copy)}</p>`;els.case_fragment_source.textContent=frag.source;
+    const frag=caseFragments[state.scene];els.case_fragment_title.textContent=frag.title;els.case_fragment_copy.innerHTML=frag.copy;els.case_fragment_source.textContent=frag.source;
     els.hotspots.innerHTML="";
     s.hotspots.filter(h=>!h.fromChapter||state.chapter>=h.fromChapter).forEach(h=>{const b=document.createElement("button");b.className="hotspot"+(isResolvedHotspot(h)?" resolved":"");b.style.left=h.x+"%";b.style.top=h.y+"%";b.style.width=h.w+"%";b.style.height=h.h+"%";b.setAttribute("aria-label",h.title);b.title=h.title;b.onclick=()=>handleHotspot(h);els.hotspots.appendChild(b);});
   }
@@ -630,7 +630,27 @@
   function portalSearch(q){const term=q.trim();if(!term)return;const entry=Object.entries(portalStories).find(([,v])=>[v.title,v.meta,...v.copy].join(" ").includes(term));if(entry)openPortalStory(entry[0]);else{openPortalStory("letter");els.portal_reading_title.textContent=`未找到“${term}”`;els.portal_reading_copy.innerHTML='<p>旧站检索只覆盖已经数字化的索引。没有结果不等于不存在记录。</p>';}}
 
   function visualForGeneric(title,scene){const img=sceneData[scene]?.image||"assets/images/deadroom.webp";return `<figure class="photo-dossier"><img src="${img}" alt="${esc(title)} 所在现场"><figcaption><b>${esc(title)}</b><span>现场照片与卷宗文字并列保存</span></figcaption></figure>`;}
-  function evidenceVisual(id){const d=evidenceData[id],img=sceneData[d.scene]?.image||"assets/images/deadroom.webp";const focus={c_lividity:"尸体姿势与固定尸斑",c_latch:"插销孔边缘新磨痕",c_window:"连续锈蚀的钉头",c_vent:"弯头内透明钓线",c_tea:"杯底沉淀 / 胃内容物对照",c_rigor:"后枕伤 / 桌角高度",e_letterA:"压痕显影",e_letterB:"水渍穿过剂量栏",e_letterC:"0.6 补注显色",c_capsule:"17日晚蓝墨 / 18日晨到达",c_shelf:"霜面羊毛纤维",c_drag:"由层板向门外拖痕",c_chart:"2°C 上补写数字1",c_hand:"三份h末笔回钩",c_sixth:"制服内衬夹层"}[id]||d.name;return `<div class="evidence-photo"><div class="photo-main"><img src="${img}" alt="${esc(d.name)} 所在场景"></div><aside><p class="modal-kicker">EVIDENCE DETAIL</p><h3>${esc(d.name)}</h3><div class="evidence-magnifier">${esc(focus)}</div><p>${esc(d.copy)}</p></aside></div>`;}
+  function evidenceVisual(id){
+    const d=evidenceData[id],img=sceneData[d.scene]?.image||"assets/images/deadroom.webp";
+    const detail={
+      c_lividity:{label:"尸体与周边位置",pos:"46% 68%",scale:1.72},
+      c_latch:{label:"门闩与插销区域",pos:"4% 49%",scale:1.95},
+      c_window:{label:"高窗木板与钉头",pos:"31% 11%",scale:1.9},
+      c_vent:{label:"通风弯头与格栅",pos:"68% 8%",scale:1.9},
+      c_tea:{label:"桌面杯具所在区域",pos:"70% 51%",scale:2.05},
+      c_rigor:{label:"头部与桌角相对位置",pos:"50% 70%",scale:1.72},
+      e_letterA:{label:"信纸表面与压痕",pos:"30% 62%",scale:1.9},
+      e_letterB:{label:"火漆封口与纸边",pos:"50% 60%",scale:1.9},
+      e_letterC:{label:"蓝边纸与笔画区域",pos:"69% 61%",scale:1.9},
+      c_capsule:{label:"投递胶囊与接收槽",pos:"76% 69%",scale:1.85},
+      c_shelf:{label:"冷库长层板霜面",pos:"49% 37%",scale:1.7},
+      c_drag:{label:"层板至门口地面",pos:"49% 74%",scale:1.7},
+      c_chart:{label:"温度记录表区域",pos:"82% 34%",scale:1.95},
+      c_hand:{label:"三份原件的书写区域",pos:"53% 56%",scale:1.65},
+      c_sixth:{label:"制服与内衬位置",pos:"45% 63%",scale:1.8}
+    }[id]||{label:d.name,pos:"50% 50%",scale:1.65};
+    return `<div class="evidence-photo"><div class="photo-main"><img src="${img}" alt="${esc(d.name)} 所在场景"></div><aside><p class="modal-kicker">EVIDENCE DETAIL</p><h3>${esc(d.name)}</h3><figure class="evidence-crop"><img src="${img}" alt="${esc(detail.label)}" style="object-position:${detail.pos};--evidence-zoom:${detail.scale}"><figcaption><b>局部复核</b><span>${esc(detail.label)}</span></figcaption></figure><p>${esc(d.copy)}</p></aside></div>`;
+  }
   function drawerVisual(){return `<div class="object-layout"><div class="object-scene"><img src="assets/images/office.webp" alt="办公室抽屉所在场景"></div><div class="object-tray"><span>扁平铅笔</span><span>短蜡烛</span><span>黑面包</span><span>便笺</span></div></div>`;}
   function archiveLedgerVisual(){return `<div class="ledger-visual"><div class="ledger-page"><b>死信处理守则</b><p>旧火漆：隔距慢热，约两指宽；勿贴火，勿硬撬。</p></div><div class="ledger-page blue"><b>用品采购 · 蓝边纸</b><p>纸张：淀粉上浆。批次 17-B。</p></div></div>`;}
   function paperVisual(type,done){return `<div class="paper-evidence ${done?"done":""}"><div class="paper-sheet type-${type}"><span>${type==="A"?(done?"17—B · 第六封未投递":"侧光下有浅沟"):type==="B"?(done?"处方剂量栏被水渍穿过":"旧火漆封口"):done?"0.6，不是6。——H":"蓝边纸上有透明痕迹"}</span></div></div>`;}
