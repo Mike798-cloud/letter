@@ -1,0 +1,169 @@
+/* Letter visual evidence upgrade v2
+   目标：使用作品现有现场照片承担证物视觉，不再用空白矩形、字母、线段、假机械图等简笔示意。 */
+
+#detail-visual .ve-photo-evidence,
+#detail-visual .ve-photo-compare,
+#detail-visual .ve-relation-photo{
+  width:100%;
+  min-height:clamp(330px,45vh,560px);
+  border:1px solid rgba(58,51,40,.48);
+  background:#d7cdb8;
+  overflow:hidden;
+}
+
+.ve-photo-evidence{
+  display:grid;
+  grid-template-columns:minmax(0,1.55fr) minmax(300px,.82fr);
+}
+
+.ve-photo-main{position:relative;margin:0;min-height:360px;background:#24251f;overflow:hidden}
+.ve-photo-main>img{width:100%;height:100%;display:block;object-fit:cover;filter:sepia(.12) saturate(.78) contrast(1.04)}
+.ve-photo-main:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(12,13,11,.03),rgba(12,13,11,.08) 62%,rgba(12,13,11,.55))}
+.ve-photo-main figcaption{position:absolute;z-index:2;left:18px;right:18px;bottom:16px;display:flex;align-items:flex-end;justify-content:space-between;gap:18px;color:#efe6d3;text-shadow:0 1px 2px #000;padding-top:48px}
+.ve-photo-main figcaption b{font:700 11px/1.35 Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase}
+.ve-photo-main figcaption span{font-size:12px;text-align:right;max-width:58%}
+
+.ve-photo-notes{padding:22px;background:#e8deca;border-left:1px solid rgba(70,61,47,.42);min-width:0}
+.ve-photo-kicker{margin:0 0 10px;font:700 9px/1.3 Arial,sans-serif;letter-spacing:.2em;color:#756a59}
+.ve-photo-notes h3{font-size:23px;font-weight:500;line-height:1.3;margin:0 0 14px}
+.ve-photo-notes>p:last-of-type{font-size:13px;line-height:1.85;color:#4f493e;margin:14px 0 0}
+.ve-photo-crop{position:relative;margin:0;height:190px;border:1px solid #847967;background:#24251f;overflow:hidden}
+.ve-photo-crop img{width:100%;height:100%;display:block;object-fit:cover;transform:scale(var(--ve-zoom,1.55));filter:sepia(.16) saturate(.72) contrast(1.08)}
+.ve-photo-crop figcaption{position:absolute;left:0;right:0;bottom:0;background:rgba(27,28,24,.84);color:#ece3d1;padding:7px 9px;font:10px/1.45 Arial,sans-serif;letter-spacing:.04em}
+.ve-record-lines{margin-top:14px;border-top:1px solid rgba(76,65,49,.26)}
+.ve-record-lines span{display:grid;grid-template-columns:72px 1fr;gap:9px;padding:8px 0;border-bottom:1px solid rgba(76,65,49,.2);font-size:11px;line-height:1.55}
+.ve-record-lines b{font:700 9px/1.5 Arial,sans-serif;letter-spacing:.1em;color:#645c4f;text-transform:uppercase}
+
+.ve-photo-compare,.ve-relation-photo{padding:18px 20px 20px;background:#d8cfbb}
+.ve-photo-compare header,.ve-relation-photo header{padding-bottom:12px;border-bottom:3px double #746b5b}
+.ve-photo-compare header p,.ve-relation-photo header p{margin:0;font:700 9px Arial,sans-serif;letter-spacing:.17em;color:#706655}
+.ve-photo-compare header h3,.ve-relation-photo header h3{margin:7px 0 5px;font-size:24px;font-weight:500}
+.ve-photo-compare header span,.ve-relation-photo header span{font-size:12px;color:#615a4d}
+.ve-photo-compare-grid,.ve-relation-scenes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.ve-photo-compare-grid figure,.ve-relation-scenes figure{position:relative;margin:0;min-height:220px;border:1px solid #776e5f;background:#24251f;overflow:hidden}
+.ve-photo-compare-grid img,.ve-relation-scenes img{width:100%;height:100%;display:block;object-fit:cover;filter:sepia(.14) saturate(.75) contrast(1.05)}
+.ve-photo-compare-grid figcaption,.ve-relation-scenes figcaption{position:absolute;left:0;right:0;bottom:0;background:rgba(28,29,25,.84);color:#efe6d4;padding:8px 10px;font-size:10px;line-height:1.4}
+.ve-photo-compare-grid figcaption b{display:block;font-size:12px;margin-bottom:2px}
+.ve-photo-compare-grid figcaption span{opacity:.78}
+.ve-photo-compare-note,.ve-relation-photo>p{margin:13px 0 0;font-size:12px;line-height:1.75;color:#4f493e}
+
+/* 互动谜题：保留真实操作控件，但把空白示意底图改成对应场景照片。 */
+#interactive-overlay .paper-work,
+#interactive-overlay .wax-work,
+#interactive-overlay .timeline-work,
+#interactive-overlay .chart-work{
+  position:relative!important;
+  overflow:hidden!important;
+  border:1px solid rgba(65,56,44,.58)!important;
+  box-shadow:none!important;
+}
+#interactive-overlay .paper-work{min-height:320px!important;background:linear-gradient(rgba(24,25,21,.23),rgba(24,25,21,.23)),url("images/office.webp") 52% 62%/cover no-repeat!important}
+#interactive-overlay .paper-work.blue{background:linear-gradient(rgba(24,25,21,.18),rgba(24,25,21,.18)),url("images/lab.webp") 50% 58%/cover no-repeat!important}
+#interactive-overlay .paper-work .indent-reveal,
+#interactive-overlay .paper-work .ink-reveal{position:absolute!important;left:10%!important;right:10%!important;top:18%!important;bottom:16%!important;width:auto!important;height:auto!important;margin:0!important;border:1px solid rgba(231,222,202,.5)!important;background:rgba(30,31,27,.66)!important;box-shadow:0 12px 30px rgba(0,0,0,.22)!important;color:#efe6d4!important;display:grid!important;place-items:center!important;padding:30px!important;text-align:center!important}
+#interactive-overlay .paper-work .indent-reveal:before,
+#interactive-overlay .paper-work .ink-reveal:before{content:"原件局部 / 逐步显影";position:absolute;left:12px;top:10px;font:700 9px Arial,sans-serif;letter-spacing:.14em;color:#d8cfbe}
+#interactive-overlay .paper-work .indent-reveal span,
+#interactive-overlay .paper-work .ink-reveal span{font-size:clamp(18px,2.2vw,28px)!important;line-height:1.8!important;color:#efe6d4!important;text-shadow:0 1px 2px #000;clip-path:inset(0 calc(100% - var(--reveal,0%)) 0 0)}
+
+#interactive-overlay .wax-work{min-height:330px!important;background:linear-gradient(rgba(30,30,26,.22),rgba(30,30,26,.22)),url("images/office.webp") 52% 62%/cover no-repeat!important}
+#interactive-overlay .wax-work .wax-envelope{position:absolute!important;left:8%!important;right:28%!important;top:16%!important;bottom:18%!important;width:auto!important;height:auto!important;margin:0!important;background:rgba(43,42,36,.58)!important;border:1px solid rgba(236,224,201,.4)!important;color:#eee5d2!important;box-shadow:0 12px 28px rgba(0,0,0,.2)!important}
+#interactive-overlay .wax-work .wax-envelope span{position:absolute;left:14px;bottom:12px;background:rgba(28,29,25,.84);padding:6px 8px;font-size:11px}
+#interactive-overlay .wax-work .wax-envelope i{position:absolute!important;left:48%!important;top:47%!important;width:28px!important;height:28px!important;border-radius:50%!important;background:#6f332d!important;border:4px double #4f241f!important;box-shadow:0 2px 5px rgba(0,0,0,.38)!important}
+#interactive-overlay .wax-work .heat-source{z-index:4!important;top:auto!important;bottom:16px!important;width:108px!important;height:84px!important;border:1px solid rgba(235,224,200,.45)!important;background:url("images/lab.webp") 77% 72%/330px auto no-repeat!important;box-shadow:0 8px 18px rgba(0,0,0,.26)!important;color:transparent!important;font-size:0!important;overflow:hidden!important}
+#interactive-overlay .wax-work .heat-source:after{content:"稳定热源";position:absolute;left:0;right:0;bottom:0;background:rgba(28,29,25,.86);color:#eee6d5;padding:5px;text-align:center;font:9px Arial,sans-serif;letter-spacing:.08em}
+#interactive-overlay .wax-work .safe-band{position:absolute!important;right:4%!important;top:14%!important;width:20%!important;height:auto!important;bottom:auto!important;border:1px solid rgba(236,224,201,.45)!important;background:rgba(31,32,28,.8)!important;color:#eee5d4!important;padding:12px!important;font-size:10px!important;line-height:1.55!important;text-align:left!important}
+
+#interactive-overlay .timeline-work{min-height:330px!important;background:linear-gradient(rgba(26,27,23,.3),rgba(26,27,23,.3)),url("images/tube.webp") center/cover no-repeat!important;padding:20px!important;display:grid!important;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr)!important;gap:14px!important;align-items:end!important}
+#interactive-overlay .timeline-work .time-axis,
+#interactive-overlay .timeline-work .cam-slots{position:static!important;width:auto!important;height:auto!important;margin:0!important;padding:14px!important;background:rgba(34,35,31,.78)!important;border:1px solid rgba(235,224,201,.42)!important;color:#eee5d4!important;box-shadow:none!important}
+#interactive-overlay .timeline-work .time-axis{display:grid!important;gap:10px!important}
+#interactive-overlay .timeline-work .time-axis span{position:static!important;background:none!important;border:0!important;border-bottom:1px solid rgba(235,224,201,.22)!important;color:#eee5d4!important;padding:8px 0!important;font-size:11px!important;line-height:1.45!important}
+#interactive-overlay .timeline-work .time-axis:before,
+#interactive-overlay .timeline-work .time-axis:after{display:none!important}
+#interactive-overlay .timeline-work .cam-slots{display:grid!important;grid-template-columns:repeat(2,1fr)!important;gap:8px!important}
+#interactive-overlay .timeline-work .cam-slots button{min-height:54px!important;border:1px solid rgba(235,224,201,.42)!important;background:rgba(19,20,18,.72)!important;color:#eee5d4!important;box-shadow:none!important}
+#interactive-overlay .timeline-work .cam-slots button.selected{background:#d8cfba!important;color:#2d2a24!important;border-color:#494235!important}
+#interactive-overlay .timeline-work .timing-pin{position:absolute!important;right:22px!important;top:18px!important;left:auto!important;bottom:auto!important;padding:6px 9px!important;background:rgba(31,32,28,.86)!important;color:#eee5d4!important;border:1px solid rgba(235,224,201,.45)!important;font-size:10px!important}
+
+#interactive-overlay .chart-work{min-height:330px!important;background:linear-gradient(rgba(25,26,22,.28),rgba(25,26,22,.28)),url("images/cold-vault.webp") center/cover no-repeat!important;padding:24px!important}
+#interactive-overlay .chart-work .chart-paper{position:absolute!important;left:12%!important;right:12%!important;top:15%!important;bottom:15%!important;width:auto!important;height:auto!important;margin:0!important;background:rgba(29,30,26,.74)!important;border:1px solid rgba(235,224,201,.5)!important;color:#eee5d4!important;box-shadow:0 12px 28px rgba(0,0,0,.24)!important}
+#interactive-overlay .chart-work .chart-paper b{position:absolute!important;left:16px!important;top:14px!important;color:#eee5d4!important;font:700 10px Arial,sans-serif!important;letter-spacing:.1em!important}
+#interactive-overlay .chart-work .under-temp{position:absolute!important;left:46%!important;top:48%!important;color:#eee5d4!important;font-size:28px!important}
+#interactive-overlay .chart-work .over-one{position:absolute!important;left:43%!important;top:44%!important;color:#c8b9a1!important;font-size:28px!important}
+#interactive-overlay .chart-work .side-light{position:absolute!important;top:-15%!important;bottom:-15%!important;width:24%!important;height:auto!important;background:linear-gradient(90deg,transparent,rgba(255,247,221,.64),rgba(255,247,221,.16),transparent)!important;filter:blur(2px)!important;pointer-events:none!important}
+
+/* 把旧版详情简笔视觉设为只在升级脚本尚未运行的瞬间存在；脚本随后替换为照片证物。 */
+#detail-visual>.paper-evidence,
+#detail-visual>.ledger-visual,
+#detail-visual>.wax-evidence,
+#detail-visual>.timing-dossier,
+#detail-visual>.chart-visual,
+#detail-visual>.hand-compare,
+#detail-visual>.book-visual,
+#detail-visual>.relation-board,
+#detail-visual>.object-layout{transition:none!important}
+
+@media (max-width:900px){
+  .ve-photo-evidence{grid-template-columns:1fr}
+  .ve-photo-main{min-height:300px}
+  .ve-photo-notes{border-left:0;border-top:1px solid rgba(70,61,47,.42)}
+  .ve-photo-compare-grid,.ve-relation-scenes{grid-template-columns:1fr}
+  .ve-photo-compare-grid figure,.ve-relation-scenes figure{min-height:190px}
+}
+
+@media (max-width:620px){
+  #detail-visual .ve-photo-evidence,#detail-visual .ve-photo-compare,#detail-visual .ve-relation-photo{min-height:0}
+  .ve-photo-main{min-height:235px}
+  .ve-photo-main figcaption{left:12px;right:12px;bottom:10px;display:block}
+  .ve-photo-main figcaption span{display:block;max-width:none;margin-top:5px;text-align:left}
+  .ve-photo-notes{padding:15px}
+  .ve-photo-notes h3{font-size:20px}
+  .ve-photo-crop{height:150px}
+  #interactive-overlay .timeline-work{grid-template-columns:1fr!important;align-items:stretch!important}
+  #interactive-overlay .wax-work .wax-envelope{right:12%!important}
+  #interactive-overlay .wax-work .safe-band{right:3%!important;top:3%!important;width:auto!important;max-width:44%!important}
+}
+
+/* ================================================================
+   v4 · 现场入口可发现性与点击区域校正
+   保留看图调查，但取消“像素狩猎”：定位签只提示可核查对象，不给结论。
+   ================================================================ */
+.stage .hotspots{z-index:4;pointer-events:none}
+.stage .hotspot{pointer-events:auto;overflow:visible;z-index:2;border-color:transparent}
+.stage .hotspot::before{
+  content:attr(aria-label);position:absolute;left:5px;top:5px;z-index:3;display:block;
+  max-width:min(190px,calc(100vw - 44px));padding:5px 8px 4px;
+  border:1px solid rgba(229,215,184,.72);background:rgba(28,29,24,.84);
+  box-shadow:2px 3px 0 rgba(0,0,0,.22);color:#eee5d2;
+  font:600 10px/1.25 "Noto Serif SC","Songti SC",STSong,serif;letter-spacing:.04em;
+  white-space:nowrap;pointer-events:none;opacity:.78;transform:translateZ(0)
+}
+.stage .hotspot:hover::before,.stage .hotspot:focus-visible::before{opacity:1;background:rgba(37,45,41,.95);border-color:#e8d8ad}
+.stage .hotspot.resolved::before{opacity:.5;background:rgba(53,61,48,.82)}
+.stage .hotspot:hover,.stage .hotspot:focus-visible{border-color:rgba(230,211,163,.62);background:rgba(228,201,133,.07)}
+.scene-caption{pointer-events:none!important}
+
+/* 第一章：凉茶原热区停在桌面上缘，照片中的杯具区域更靠中右。 */
+.hotspot[aria-label="凉茶"]{left:66%!important;top:42%!important;width:27%!important;height:28%!important;z-index:5!important}
+
+/* 大面积环境热区不再压住更小、且会影响主线推进的物件入口。 */
+.hotspot[aria-label="邮局大门"],.hotspot[aria-label="半开的抽屉"],.hotspot[aria-label="实验台"]{z-index:1!important}
+.hotspot[aria-label="橘猫"],.hotspot[aria-label="门房牛奶瓶"],.hotspot[aria-label="油纸包"],
+.hotspot[aria-label="信 A · 空白压痕"],.hotspot[aria-label="信 B · 火漆封面"],.hotspot[aria-label="信 C · 蓝边纸"],
+.hotspot[aria-label="死信柜与用品登记"],.hotspot[aria-label="碘酒与滴管"],.hotspot[aria-label="清水"],
+.hotspot[aria-label="棉签"],.hotspot[aria-label="面粉罐"],.hotspot[aria-label="酒精灯"],
+.hotspot[aria-label="旧法医学与纸张手册"],.hotspot[aria-label="温度记录表"]{z-index:4!important}
+
+/* 第二章：抽屉点击面只保留下部，避免与三封信底缘重叠。 */
+.hotspot[aria-label="半开的抽屉"]{top:80%!important;height:18%!important}
+/* 配药间：实验台不再覆盖试剂、棉签和热源的下缘。 */
+.hotspot[aria-label="实验台"]{top:79%!important;height:19%!important}
+/* 第三章：温度表与层板从重叠热区拆开。 */
+.hotspot[aria-label="温度记录表"]{left:76%!important;width:18%!important}
+
+@media(max-width:760px){
+  .stage .hotspot::before{left:3px;top:3px;max-width:150px;padding:4px 6px 3px;font-size:8px;letter-spacing:.02em;opacity:.9}
+  .stage .hotspot.resolved::before{opacity:.42}
+}
+@media(max-width:480px){.stage .hotspot::before{font-size:7.5px;padding:3px 5px}}
