@@ -8,7 +8,6 @@
   --folio-rule:#9d927c;
   --folio-accent:#3f5659;
 }
-
 /* ---------- 私印本：《雪落以前》 ---------- */
 .archive-modal{
   width:min(1180px,calc(100vw - 34px));
@@ -89,7 +88,6 @@
 .archive-page-copy{max-width:760px}
 .archive-page-copy p{margin:0 0 1.45em;font-size:15px;line-height:2.08;text-align:justify;text-justify:inter-ideograph;color:#34312a}
 .archive-running{max-width:760px;margin-top:38px;border-top:1px solid #a99d86;padding-top:13px;font-size:11px;line-height:1.7;color:#766d5e}
-
 /* ---------- 人物记录：恢复双页档案阅读，推论板独立到案卷管理 ---------- */
 .notebook-modal{
   width:min(1160px,calc(100vw - 34px));
@@ -130,7 +128,6 @@
 .notebook-row span{color:#746b5d}
 .notebook-row .checkpoint-open{grid-column:1/-1;justify-self:start;margin-top:2px;border:0;border-bottom:1px solid #765742;background:transparent;padding:4px 0;color:#654431;cursor:pointer}
 .review-note{margin-top:18px;padding:12px 13px;background:#d4dccf;border-left:3px solid #4d6654;line-height:1.6}
-
 #suspect-notes{padding-top:2px}
 #suspect-notes details{
   display:block;
@@ -153,7 +150,6 @@
 #suspect-notes summary::-webkit-details-marker{display:none}
 #suspect-notes p{margin:0;font-size:12px;line-height:1.9;color:#4a453b}
 #suspect-notes .profile-supplement{margin-top:8px;color:#655d50}
-
 /* ---------- 独立临时推论板 ---------- */
 .reasoning-modal{width:min(960px,calc(100vw - 34px));padding:30px 34px 32px;background:var(--folio-paper)}
 .reasoning-modal>h2{font-size:30px;font-weight:500;margin:4px 45px 10px 0}
@@ -166,7 +162,6 @@
 .standalone-reason-board .reason-column p{font-size:10px;line-height:1.65}
 .reasoning-footnote{margin:18px 0 0;padding-top:12px;border-top:1px solid #a99d86;font-size:10px;line-height:1.7;color:#776d5d}
 #open-reasoning-board{border-style:double}
-
 /* ---------- 细节统一 ---------- */
 .archive-modal,.notebook-modal,.reasoning-modal{box-shadow:12px 14px 0 rgba(9,10,8,.56)}
 .archive-modal .modal-close,.notebook-modal .modal-close,.reasoning-modal .modal-close{z-index:3}
@@ -177,7 +172,6 @@
   .archive-page{padding:40px 38px 34px}.archive-page::before{left:24px}
   .notebook-spread>article{padding:34px 28px 30px}
 }
-
 @media(max-width:760px){
   .archive-modal,.notebook-modal,.reasoning-modal{left:8px;right:8px;top:8px;bottom:8px;width:auto;max-height:none;transform:none;overflow:auto}
   .archive-modal{display:block;padding:0}
@@ -196,7 +190,6 @@
   .standalone-reason-board>div{grid-template-columns:1fr}
   .standalone-reason-board .reason-column{min-height:0}
 }
-
 @media(max-width:480px){
   .archive-tabs{grid-template-columns:1fr}
   .archive-page{padding:25px 17px 30px}
@@ -206,4 +199,97 @@
 
 @media(prefers-reduced-motion:reduce){
   .archive-tabs button,.reasoning-modal button{transition:none!important}
+}
+
+/* ---------- v2：长文档滚动修复 ----------
+   之前 archive/notebook 外层 overflow:hidden，但桌面端只有 max-height，
+   内部 grid item 又带 min-height，导致内容超出视口后没有形成可靠的滚动容器。
+   这里显式给弹窗可用高度，并把滚动责任交给实际阅读页。 */
+@media(min-width:761px){
+  .archive-modal,
+  .notebook-modal{
+    height:min(90vh,calc(100dvh - 28px));
+    max-height:min(90vh,calc(100dvh - 28px));
+    min-height:0;
+    align-items:stretch;
+  }
+
+  .archive-modal{
+    display:grid;
+    grid-template-rows:minmax(0,1fr);
+  }
+  .archive-index,
+  .archive-page{
+    min-height:0;
+    height:100%;
+    max-height:100%;
+    overflow-x:hidden;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    scrollbar-gutter:stable;
+  }
+
+  .notebook-spread{
+    min-height:0;
+    height:100%;
+    max-height:100%;
+    overflow:hidden;
+  }
+  .notebook-spread>article{
+    min-height:0;
+    height:100%;
+    max-height:100%;
+    overflow-x:hidden;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    scrollbar-gutter:stable;
+  }
+}
+
+/* 明确显示“竖状条”，避免系统 overlay scrollbar 过于隐蔽。 */
+.archive-index,
+.archive-page,
+.notebook-spread>article{
+  scrollbar-width:auto;
+  scrollbar-color:#8d816b #d8cdb6;
+}
+.archive-index::-webkit-scrollbar,
+.archive-page::-webkit-scrollbar,
+.notebook-spread>article::-webkit-scrollbar{
+  width:12px;
+}
+.archive-index::-webkit-scrollbar-track,
+.archive-page::-webkit-scrollbar-track,
+.notebook-spread>article::-webkit-scrollbar-track{
+  background:#d8cdb6;
+  border-left:1px solid #b8aa91;
+}
+.archive-index::-webkit-scrollbar-thumb,
+.archive-page::-webkit-scrollbar-thumb,
+.notebook-spread>article::-webkit-scrollbar-thumb{
+  background:#8d816b;
+  border:3px solid #d8cdb6;
+  border-radius:8px;
+}
+.archive-index::-webkit-scrollbar-thumb:hover,
+.archive-page::-webkit-scrollbar-thumb:hover,
+.notebook-spread>article::-webkit-scrollbar-thumb:hover{
+  background:#6f6554;
+}
+
+/* 小屏继续使用整页滚动，避免双滚动区域互相抢触摸事件。 */
+@media(max-width:760px){
+  .archive-index,
+  .archive-page,
+  .notebook-spread>article{
+    height:auto;
+    max-height:none;
+    overflow:visible;
+    scrollbar-gutter:auto;
+  }
+  .archive-modal,
+  .notebook-modal{
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
 }
