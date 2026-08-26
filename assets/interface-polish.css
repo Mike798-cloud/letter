@@ -293,3 +293,98 @@
     -webkit-overflow-scrolling:touch;
   }
 }
+
+/* ---------- v3：证物判断与紧凑临时物品匣 ---------- */
+/* 原来的“放入：时间 / 机关 / 人物”只是分类，不承担推理结果。现在由 reasoning-upgrade.js
+   将已登记证物改成四选一的证据边界判断，并把结果接到章节复核前置条件。 */
+.evidence-judgement{
+  flex:1 0 100%;
+  width:100%;
+  margin:0 0 4px;
+  padding:14px 15px 15px;
+  border:1px solid #93856e;
+  border-top:3px double #75654e;
+  background:#ded3bf;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.32);
+}
+.judgement-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:9px}
+.judgement-head span{font:700 9px/1.3 Arial,sans-serif;letter-spacing:.14em;color:#6f6251}
+.judgement-head b{font-size:10px;font-weight:600;color:#3f5659}
+.judgement-question{margin:0 0 12px;font-size:14px;line-height:1.75;font-weight:600;color:#302c25}
+.judgement-options{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.judgement-option{
+  min-width:0;min-height:62px;display:grid;grid-template-columns:28px minmax(0,1fr);align-items:start;gap:8px;
+  padding:9px 10px;border:1px solid #9c8d73;background:#eee5d4;text-align:left;cursor:pointer;box-shadow:none;
+}
+.judgement-option:hover:not(:disabled){background:#f4ecdc;border-color:#796a54}
+.judgement-option>span{display:grid;place-items:center;width:24px;height:24px;border:1px solid #8f8068;font:700 10px/1 Arial,sans-serif;color:#6a5c49}
+.judgement-option>b{min-width:0;font-size:12px;line-height:1.62;font-weight:500;color:#373229}
+.judgement-option.is-wrong{background:#ead8d0;border-color:#965e50}
+.judgement-option.is-correct{background:#dce2d5;border-color:#60705a}
+.judgement-option:disabled{opacity:1;cursor:default}
+.judgement-feedback{margin:10px 0 0;padding:9px 10px;border-left:3px solid #8c806c;background:#e9dfce;font-size:11px;line-height:1.72;color:#5f574a}
+.judgement-feedback.warning{border-left-color:#8d5145;background:#eadbd4}
+.judgement-feedback.success{border-left-color:#53674f;background:#dfe5d9;color:#455243}
+.evidence-card em.evidence-judgement-state{margin-right:4px;background:#82765f;color:#fff}
+.evidence-card em.evidence-judgement-state.done{background:#536a58}
+.evidence-card em.evidence-judgement-state.pending{background:#8a5c4e}
+
+.judgement-gate-sheet{min-height:210px;display:grid;grid-template-columns:1fr 70px 1fr;align-items:center;gap:16px;padding:26px;background:linear-gradient(145deg,#d9cbb1,#c9b797);border:1px solid #8c7a61}
+.judgement-gate-sheet>div{min-height:135px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#eee5d4;border:1px solid #938269;box-shadow:5px 6px 0 rgba(92,74,52,.08)}
+.judgement-gate-sheet span{font:700 9px/1.2 Arial,sans-serif;letter-spacing:.14em;color:#776a58}
+.judgement-gate-sheet b{font:500 42px/1.1 Georgia,serif;margin:6px 0;color:#302b24}
+.judgement-gate-sheet small{font-size:10px;color:#786e60}
+.judgement-gate-sheet>i{height:0;border-top:3px double #725f48;position:relative}
+.judgement-gate-sheet>i:after{content:"›";position:absolute;right:-5px;top:-16px;font-size:24px;color:#725f48}
+.judgement-missing{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px;padding-top:10px;border-top:1px solid #b3a68f}
+.judgement-missing>b{width:100%;font-size:10px;letter-spacing:.08em;color:#665c4e}
+.judgement-missing>span{padding:5px 7px;border:1px solid #a5957d;background:#eee5d4;font-size:10px}
+
+.judgement-log-chapter{margin-bottom:16px;border:1px solid #9a8c75;background:#e4d9c5}
+.judgement-log-chapter>header{display:flex;justify-content:space-between;align-items:center;padding:9px 10px;border-bottom:3px double #978970;background:#d5c8b1}
+.judgement-log-chapter>header b{font-size:12px}.judgement-log-chapter>header span{font:700 10px Arial,sans-serif}
+.judgement-log-row{display:grid;grid-template-columns:minmax(130px,.8fr) auto minmax(0,1.5fr);gap:8px;align-items:center;padding:9px 10px;border-bottom:1px dotted #aa9d86}
+.judgement-log-row:last-child{border-bottom:0}.judgement-log-row b{font-size:11px}.judgement-log-row span{font-size:9px;color:#7b6f5e}.judgement-log-row small{font-size:10px;line-height:1.55;color:#62594d}
+.judgement-log-row.done span{color:#4f654f;font-weight:700}.judgement-log-row.attempted span{color:#8a5147;font-weight:700}
+
+/* 临时物品匣：压低高度，所有道具在同一高度内横向适配，避免文字或按钮溢出。 */
+.inventory-drawer{
+  grid-template-columns:max-content 28px minmax(0,1fr) 28px auto;
+  gap:5px;
+  min-height:48px;
+  max-height:62px;
+  padding:5px 10px calc(5px + var(--safe-b));
+  overflow:hidden;
+}
+.drawer-label{font-size:8px;line-height:1.2;white-space:nowrap}
+.drawer-arrow{width:28px;height:34px;min-height:34px;padding:0;font-size:16px}
+.inventory-list{
+  min-width:0;height:36px;display:flex;align-items:stretch;gap:5px;
+  overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-inline:contain;
+}
+.inventory-list::-webkit-scrollbar{height:0}
+.inventory-item{
+  flex:0 0 126px;min-width:0;max-width:126px;height:36px;overflow:hidden;
+  display:grid;grid-template-columns:18px minmax(0,1fr);grid-template-rows:17px 13px;gap:0 5px;
+  align-content:center;padding:3px 6px;text-align:left;
+}
+.inventory-item small{grid-row:1/3;align-self:center;font-size:7px;margin:0}
+.inventory-item b,.inventory-item span{min-width:0;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inventory-item b{font-size:9px;line-height:17px}.inventory-item span{font-size:7px;line-height:13px}
+.empty-inventory{min-width:0;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;align-self:center;font-size:9px}
+
+@media(max-width:760px){
+  .judgement-options{grid-template-columns:1fr}
+  .judgement-gate-sheet{grid-template-columns:1fr 42px 1fr;min-height:170px;padding:16px;gap:10px}
+  .judgement-gate-sheet>div{min-height:105px}.judgement-gate-sheet b{font-size:32px}
+  .judgement-log-row{grid-template-columns:1fr auto}.judgement-log-row small{grid-column:1/-1}
+  .inventory-drawer{grid-template-columns:28px minmax(0,1fr) 28px auto;gap:4px;min-height:0;max-height:68px;padding:4px 6px calc(4px + var(--safe-b))}
+  .drawer-label{grid-column:1/-1;font-size:7px;line-height:1;margin:0}
+  .drawer-arrow{height:32px;min-height:32px}
+  .inventory-list{height:34px;gap:4px}
+  .inventory-item{flex-basis:116px;max-width:116px;height:34px;grid-template-rows:16px 12px;padding:3px 5px}
+}
+@media(max-width:480px){
+  .evidence-judgement{padding:12px 11px}.judgement-question{font-size:13px}.judgement-option{min-height:58px;padding:8px}.judgement-option>b{font-size:11.5px}
+  .judgement-gate-sheet{grid-template-columns:1fr;gap:8px}.judgement-gate-sheet>i{height:20px;border-top:0;border-left:3px double #725f48;margin:auto}.judgement-gate-sheet>i:after{content:"↓";right:-8px;top:1px}
+}
