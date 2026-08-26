@@ -9,6 +9,27 @@
   const REPLAY_KEY = "dead-letter-room-latch-replay-v1";
   const SAVE_KEY = "dead-letter-room-save-v5";
 
+  // 所有后续存档都写成 v5；同时兼容当前主脚本仍以 version:4 初始化的新游戏。
+  try {
+    const originalSetItem = Storage.prototype.setItem;
+    if (!Storage.prototype.__deadLetterV5Guard) {
+      Object.defineProperty(Storage.prototype, "__deadLetterV5Guard", { value: true, configurable: true });
+      Storage.prototype.setItem = function(key, value){
+        if (key === SAVE_KEY && typeof value === "string") {
+          try {
+            const data = JSON.parse(value);
+            if (data && typeof data === "object") {
+              data.version = 5;
+              if (data.supportTriggered && !data.flags?.letterB) data.supportTriggered = false;
+              value = JSON.stringify(data);
+            }
+          } catch (_) {}
+        }
+        return originalSetItem.call(this, key, value);
+      };
+    }
+  } catch (_) {}
+
   injectStyles();
 
   const aliasMap = {
@@ -407,6 +428,7 @@
       .fx-figure-wrap{position:relative;min-height:220px;background:linear-gradient(180deg,#efe5d5,#dfcfb1);border:1px solid rgba(88,69,48,.35);box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);overflow:hidden}
       .fx-figure-wrap::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.12),transparent 24%),repeating-linear-gradient(90deg,rgba(53,40,28,.025) 0 1px,transparent 1px 7px)}
       .fx-figure{display:block;width:100%;height:100%}
+      .fx-photo-figure{position:absolute;inset:0;overflow:hidden;background:#1c1b18}.fx-photo-figure img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.78) contrast(1.04) sepia(.12)}.fx-photo-vignette{position:absolute;inset:0;box-shadow:inset 0 0 80px rgba(20,15,10,.58);background:linear-gradient(180deg,transparent 55%,rgba(16,13,10,.5))}.fx-photo-stamp{position:absolute;left:14px;top:14px;padding:7px 9px;background:rgba(235,225,207,.88);border:1px solid rgba(75,60,43,.55);display:flex;gap:8px;align-items:baseline;color:#392f24}.fx-photo-stamp b{font:700 14px Arial,sans-serif}.fx-photo-stamp span{font:700 9px Arial,sans-serif;letter-spacing:.08em}.fx-photo-caption{position:absolute;left:14px;right:14px;bottom:12px;padding:8px 10px;background:rgba(31,27,22,.78);color:#eee4d3;font-size:11px;letter-spacing:.04em}
       .fx-side{display:flex;flex-direction:column;gap:10px}
       .fx-sheet{background:#f1e7d7;border:1px solid rgba(96,78,55,.35);padding:12px;box-shadow:0 8px 18px rgba(49,35,24,.08)}
       .fx-sheet h4{margin:0 0 8px;font:700 12px/1.2 Arial,sans-serif;letter-spacing:.08em;color:#5e4e3c;text-transform:uppercase}
@@ -421,6 +443,7 @@
       .fx-call{font:12px/1.3 Arial,sans-serif;fill:#342c22}
       .fx-call-line{stroke:#604f3f;stroke-width:1.5;fill:none;stroke-dasharray:4 4}
       .fx-white{fill:#f6f0e3}.fx-paperfill{fill:#ede1ce}.fx-paperline{stroke:#7d6a54;stroke-width:1}.fx-wood{fill:#78553a}.fx-wood-dark{fill:#5d412d}.fx-metal{fill:#736a61}.fx-metal-dark{fill:#48413a}.fx-glass{fill:#bac7ca}.fx-ink{fill:#2f261f}.fx-rust{fill:#83483f}.fx-thread{stroke:#d6e0de;stroke-width:3;fill:none}.fx-cold{fill:#dfe8ea}.fx-frost{fill:#f6f7f2}.fx-shadow{fill:rgba(0,0,0,.16)}.fx-bluefill{fill:#48636f}.fx-greenfill{fill:#53654f}.fx-goldfill{fill:#9a7a49}.fx-redfill{fill:#7d433a}
+      .fx-interact{flex:1 0 100%;margin-top:10px;padding:12px;border:1px solid rgba(93,73,52,.32);background:#eee4d3}.fx-interact h4{margin:0 0 8px;font:700 11px/1.3 Arial,sans-serif;letter-spacing:.08em;color:#5d4c3a}.fx-interact p{margin:0 0 9px;font-size:11px;line-height:1.6;color:#665849}.fx-materials{display:flex;gap:8px;flex-wrap:wrap}.fx-material{min-height:42px;border:1px solid #8f7e64;background:#f5edde;padding:7px 10px;cursor:grab;box-shadow:2px 2px 0 #8a7b6442}.fx-material.selected{background:#3f5556;color:#f3ead9;border-color:#283a3b}.fx-dropzone{margin-top:10px;min-height:64px;border:2px dashed #9e8968;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;padding:8px;text-align:center;color:#6b5a45;font-size:11px}.fx-dropzone.ready{border-style:solid;border-color:#52634b;background:#e3e9df}.fx-dropchip{padding:4px 7px;background:#d8c8ab;border:1px solid #9f8b69}.fx-scrub{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}.fx-scrub input{width:100%}.fx-scrub b{min-width:45px;text-align:right}.fx-original-action{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important}
       .forensic-tip{margin-top:10px;padding:9px 11px;border-left:3px solid #725844;background:rgba(103,82,58,.08);font-size:12px;line-height:1.65}
       .forensic-action{position:relative}.forensic-action::after{content:"现场重演";position:absolute;right:8px;top:-8px;font-size:9px;background:#6b5139;color:#f2eadc;padding:2px 4px;letter-spacing:.08em}
       .forensic-scene-pin{position:absolute;z-index:12;right:18px;top:18px;border:1px solid rgba(230,220,201,.7);background:rgba(25,27,25,.86);color:#e9dfcf;padding:8px 11px;cursor:pointer;font:12px inherit;box-shadow:0 5px 16px #0005}.forensic-scene-pin:hover{background:#39372f}.forensic-scene-pin small{display:block;font-size:9px;opacity:.7;margin-top:2px}
@@ -432,6 +455,7 @@
       .replay-figure{display:block;width:100%;height:auto;min-height:420px}
       .replay-point{position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid #f0e1bf;background:#5d4731e6;color:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:0 0 0 5px rgba(240,225,191,.12),0 8px 18px rgba(0,0,0,.16);font-weight:700}
       .replay-point.active{outline:3px solid #c9aa72}.replay-point.done{background:#53654e}.rp-vent{left:59%;top:23%}.rp-latch{left:26%;top:49%}
+      .replay-photo-stage{min-height:420px;background:#171813}.replay-room-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.75) contrast(1.04) brightness(.78)}.replay-photo-stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(12,10,8,.3),transparent 40%,rgba(12,10,8,.36)),linear-gradient(180deg,transparent 55%,rgba(12,10,8,.36))}.replay-photo-inset{position:absolute;z-index:2;right:2.5%;top:4%;width:34%;height:34%;border:5px solid #ded0b7;box-shadow:0 10px 28px #0008;background:#201d18;overflow:hidden}.replay-photo-inset img{width:100%;height:100%;object-fit:cover;filter:saturate(.72) contrast(1.08)}.replay-photo-inset span{position:absolute;left:0;right:0;bottom:0;padding:5px 7px;background:rgba(24,21,18,.8);color:#eee4d2;font-size:10px}.replay-rope-photo{position:absolute;z-index:3;inset:0;width:100%;height:100%;pointer-events:none}.replay-evidence-label{position:absolute;z-index:4;padding:5px 7px;background:rgba(235,225,207,.9);border-left:3px solid #7d5d3c;font-size:10px;color:#342b22;box-shadow:0 4px 12px #0004}.rl-vent{right:25%;top:42%}.rl-latch{left:14%;top:62%}
       .replay-controls{display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:14px;background:#d6c6aa;border:1px solid #a99475;border-top:0}.replay-controls input{width:100%}
       .replay-status{padding:10px 12px;margin-top:12px;border-left:3px solid #7c6345;background:#f1e8d8;line-height:1.65}.replay-status.success{border-color:#53654e;background:#e2e8dc}
       .forensic-timeline{display:grid;grid-template-columns:140px 1fr;gap:0;margin-top:16px;border-top:1px solid #9c8b72}.forensic-timeline dt,.forensic-timeline dd{margin:0;padding:12px;border-bottom:1px solid #aa997f}.forensic-timeline dt{font-weight:700;background:#dfd2bd}.forensic-timeline dd{background:#eee5d5;line-height:1.65}.logic-fix{margin-top:14px;padding:11px 12px;border:1px solid #aa997f;background:#f1e8d8;line-height:1.7}.logic-fix b{color:#69483a}
@@ -440,10 +464,10 @@
       .paper-modal,.hint-modal,.archive-modal,.notebook-modal,.support-modal,.ending-modal{max-height:min(92vh,calc(100dvh - 20px))!important;overflow:auto!important}
       #detail-modal{width:min(980px,calc(100vw - 20px))!important}
       .forensic-view .specimen-card,.forensic-view .relation-plate{display:none!important}
-      @media(max-width:1180px){.portal-shell{grid-template-columns:230px minmax(0,1fr) 210px!important}.game-layout{grid-template-columns:220px minmax(0,1fr) 250px!important}.casebar{padding-left:12px!important}}
-      @media(max-width:960px){.fx-body{grid-template-columns:1fr!important}.fx-side{order:2}.portal-shell{grid-template-columns:1fr!important}.portal-left,.portal-right{display:grid;grid-template-columns:1fr 1fr;gap:12px}.portal-main{order:-1}}
-      @media(max-width:860px){html,body{height:auto!important;overflow:auto!important}.game-screen{height:auto!important;min-height:100dvh!important;grid-template-rows:auto minmax(0,1fr) auto!important}.casebar{display:grid!important;grid-template-columns:1fr auto!important;align-items:start!important;padding:0 0 0 10px!important}.case-id{padding-top:6px}.case-tools{display:grid!important;grid-template-columns:repeat(4,minmax(56px,1fr))!important;grid-column:1/-1}.tool-button,.mobile-sheet-button{min-height:54px}.game-layout{grid-template-columns:1fr!important;grid-template-areas:"stage"!important}.location-rail,.evidence-panel{position:fixed!important;left:10px;right:10px;bottom:86px;top:auto;max-height:60vh;overflow:auto;z-index:25;transform:translateY(calc(100% + 24px));transition:transform .26s ease,opacity .26s ease;opacity:0}.location-rail.open,.evidence-panel.open{transform:translateY(0);opacity:1}.stage-wrap{min-width:0}.inventory-drawer{display:grid!important;grid-template-columns:auto auto 1fr auto auto!important;gap:8px;padding:8px 10px!important;height:auto!important}.scene-caption{left:12px!important;bottom:12px!important}.paper-modal,.hint-modal,.archive-modal,.notebook-modal,.support-modal,.ending-modal,.dispatch-window,.cover-file,.story-sheet{width:calc(100vw - 20px)!important;max-width:none!important;margin:10px auto!important}.detail-visual{min-height:240px!important}.forensic-window{width:calc(100vw - 16px)!important;padding:16px}.replay-figure{min-height:340px}.forensic-timeline{grid-template-columns:1fr}.forensic-timeline dt{padding-bottom:4px}.forensic-timeline dd{padding-top:5px}}
-      @media(max-width:640px){.portal-left,.portal-right{grid-template-columns:1fr}.casebar{grid-template-columns:1fr!important}.case-tools{grid-template-columns:repeat(4,1fr)!important}.inventory-drawer{grid-template-columns:auto 1fr auto auto!important}.drawer-label{grid-column:1/-1}.fx-head{font-size:10px}.fx-head b{font-size:12px}.fx-note-box{font-size:12px}.fx-sheet h4{font-size:11px}.fx-facts dt,.fx-facts dd{font-size:11px}.replay-point{width:40px;height:40px}.rp-vent{left:56%;top:24%}.rp-latch{left:22%;top:51%}}
+      .performance-lite .fx-photo-figure img,.performance-lite .replay-room-photo,.performance-lite .replay-photo-inset img{filter:none!important}
+      @media(max-width:900px){#detail-modal{width:min(96vw,900px)!important}.fx-body{grid-template-columns:1fr!important}.fx-side{order:2}.forensic-window{width:calc(100vw - 20px)!important;max-height:94dvh;padding:16px}.replay-photo-stage{min-height:360px}.forensic-timeline{grid-template-columns:1fr}.forensic-timeline dt{padding-bottom:5px}.forensic-timeline dd{padding-top:5px}}
+      @media(max-width:620px){#detail-modal{width:100%!important;max-height:calc(100dvh - 10px)!important;overflow:auto!important}.detail-visual{min-height:220px!important;padding:8px!important}.forensic-view{min-height:0!important;padding:10px}.fx-head{font-size:9px;align-items:flex-start}.fx-head b{font-size:11px}.fx-figure-wrap{min-height:190px}.fx-note-box{font-size:11px;line-height:1.62}.fx-facts dt,.fx-facts dd{font-size:10px}.replay-photo-stage{min-height:320px}.replay-photo-inset{width:42%;height:30%;right:2%;top:2%}.replay-evidence-label{font-size:9px}.rp-vent{left:54%;top:25%}.rp-latch{left:20%;top:54%}.replay-controls{grid-template-columns:1fr}.forensic-close{width:34px;height:34px}.forensic-window h2{font-size:21px}.fx-photo-caption{font-size:10px}}
+      @media(max-height:620px) and (orientation:landscape){#detail-modal{max-height:96dvh!important;overflow:auto!important}.forensic-window{max-height:96dvh}.fx-body{grid-template-columns:minmax(0,1.4fr) minmax(190px,.8fr)!important}.fx-figure-wrap{min-height:180px}.replay-photo-stage{min-height:300px}}
       @media(prefers-reduced-motion:reduce){.location-rail,.evidence-panel{transition:none!important}}
     `;
     document.head.appendChild(style);
@@ -457,18 +481,29 @@
     return `<div class="forensic-view"><div class="fx-head"><b>${esc(title)}</b><span>${esc(tag || "")}</span></div><div class="fx-body"><div class="fx-figure-wrap">${figure}</div><div class="fx-side">${side}</div></div><div class="fx-note-box">${note}</div></div>`;
   }
 
+  function currentSceneAsset(){
+    const name = $("scene-name")?.textContent || "";
+    if (name.includes("办公室")) return "assets/images/office.webp";
+    if (name.includes("配药") || name.includes("实验")) return "assets/images/lab.webp";
+    if (name.includes("气动管")) return "assets/images/tube.webp";
+    if (name.includes("冷藏") || name.includes("冷库")) return "assets/images/cold-vault.webp";
+    if (name.includes("邮局") && $("scene-subtitle")?.textContent?.includes("外")) return "assets/images/exterior.webp";
+    return "assets/images/deadroom.webp";
+  }
+
+  function scenePhotoFigure(title){
+    const src=currentSceneAsset();
+    return `<div class="fx-photo-figure"><img src="${src}" alt="${esc(title)}所在现场复原图" decoding="async"/><div class="fx-photo-vignette"></div><div class="fx-photo-stamp"><b>17—B</b><span>现场照片复核</span></div><div class="fx-photo-caption">${esc(title)} · 原始场景位置与物件关系</div></div>`;
+  }
+
   function genericItem(title, desc){
     return plate({
       title,
-      tag: "物件可视化",
-      figure: dossierFigure(title),
-      side: `<div class="fx-sheet"><h4>观察</h4><p style="margin:0;font-size:12px;line-height:1.72">${esc(desc)}</p><div class="fx-chip-row"><span class="fx-chip">旧站风格</span><span class="fx-chip">可辨识实物</span><span class="fx-chip">非简笔图标</span></div></div>`,
-      note: `${esc(title)} 的页面也统一做成图像化证物视图，避免出现只有说明文字或中央孤立小卡片的情况。`
+      tag: "现场照片 / 档案复核",
+      figure: scenePhotoFigure(title),
+      side: `<div class="fx-sheet"><h4>观察</h4><p style="margin:0;font-size:12px;line-height:1.72">${esc(desc)}</p><div class="fx-chip-row"><span class="fx-chip">场景原图</span><span class="fx-chip">位置可辨</span><span class="fx-chip">非简笔示意</span></div></div>`,
+      note: `${esc(title)} 不再以中央登记卡或空白说明页呈现，而是优先保留它与真实场景的空间关系；需要细读的事实再放在右侧复核栏。`
     });
-  }
-
-  function dossierFigure(title){
-    return `<svg class="fx-figure" viewBox="0 0 760 320" aria-hidden="true"><rect width="760" height="320" fill="#d9c8aa"/><rect x="56" y="38" width="420" height="248" rx="6" fill="#efe6d6" stroke="#8b7a62"/><rect x="495" y="52" width="205" height="216" rx="6" fill="#ebdfcb" stroke="#9c8b72"/><rect x="82" y="68" width="168" height="110" fill="#d4c2a4" stroke="#8b7a62"/><rect x="98" y="84" width="136" height="78" fill="#f1eadc" stroke="#85725b"/><circle cx="165" cy="123" r="28" fill="#b1a083"/><rect x="131" y="163" width="68" height="8" fill="#9d8b6d"/><text x="82" y="210" class="fx-call">${esc(title)}</text><text x="82" y="232" class="fx-call">旧档案视图 · 玩家可见实物与摆放位置</text><line x1="510" y1="96" x2="675" y2="96" class="fx-paperline"/><line x1="510" y1="132" x2="675" y2="132" class="fx-paperline"/><line x1="510" y1="168" x2="675" y2="168" class="fx-paperline"/><line x1="510" y1="204" x2="640" y2="204" class="fx-paperline"/><text x="510" y="78" class="fx-call">观察要点</text><circle cx="610" cy="250" r="36" fill="none" stroke="#ae6a5c" stroke-width="3"/><text x="584" y="255" class="fx-call" fill="#ae6a5c">Filed</text></svg>`;
   }
 
   function corpseFigure(){
@@ -637,13 +672,17 @@
     const key = `${rawTitle}::${kicker ? kicker.textContent.trim() : ""}::${copy ? copy.textContent.trim() : ""}`;
 
     if (kicker && kicker.textContent.includes("终局推理")) {
-      visual.innerHTML = deductionBoard(rawTitle, copy ? copy.textContent.trim() : "");
-      visual.dataset.fxKey = key;
+      if (visual.dataset.fxKey !== key || !visual.querySelector(".forensic-view")) {
+        visual.innerHTML = deductionBoard(rawTitle, copy ? copy.textContent.trim() : "");
+        visual.dataset.fxKey = key;
+      }
     } else {
       const maker = visuals[title];
       if (maker) {
-        visual.innerHTML = maker();
-        visual.dataset.fxKey = key;
+        if (visual.dataset.fxKey !== key || !visual.querySelector(".forensic-view")) {
+          visual.innerHTML = maker();
+          visual.dataset.fxKey = key;
+        }
       } else if (!visual.dataset.fxKey || visual.dataset.fxKey !== key || visual.querySelector(".specimen-card,.relation-plate") || !visual.textContent.trim()) {
         visual.innerHTML = genericItem(rawTitle, copy ? copy.textContent.trim() : "这是一页旧案卷中的物件或记录。它现在也采用图像化方式显示。");
         visual.dataset.fxKey = key;
@@ -653,6 +692,80 @@
     repairCaseLogic(rawTitle);
     patchDeduction(rawTitle);
     addReplayButton(rawTitle);
+    enhanceActionInteraction(rawTitle);
+  }
+
+  function enhanceActionInteraction(title){
+    const actions=$("detail-actions");
+    if(!actions) return;
+    const originals=[...actions.querySelectorAll("button.ink-button")];
+    const signature=title+"|"+originals.map(b=>b.textContent.trim()).join("|");
+    if(actions.dataset.fxActionKey===signature) return;
+    const byText=(part)=>originals.find(b=>b.textContent.includes(part));
+    const addPanel=(html)=>{const p=document.createElement("div");p.className="fx-interact";p.innerHTML=html;actions.prepend(p);return p;};
+    const hideOriginals=()=>originals.forEach(b=>{b.classList.add("fx-original-action");b.tabIndex=-1;b.setAttribute("aria-hidden","true");});
+
+    if(title==="显色液实验" && byText("碘酒 + 清水")){
+      hideOriginals();
+      const panel=addPanel('<h4>把两种材料放进玻璃杯</h4><p>鼠标可拖动；手机和平板可依次点选。材料进入杯中后再判断反应。</p><div class="fx-materials"><button class="fx-material" data-mat="iodine" draggable="true">碘酒</button><button class="fx-material" data-mat="water" draggable="true">清水</button><button class="fx-material" data-mat="flour" draggable="true">面粉</button></div><div class="fx-dropzone" data-drop>把两种材料放到这里</div>');
+      bindMaterialMix(panel,{
+        need:2,
+        resolve:(set)=>{
+          if(set.has("iodine")&&set.has("water")) return byText("碘酒 + 清水");
+          if(set.has("iodine")&&set.has("flour")) return byText("碘酒 + 面粉");
+          return byText("清水 + 柠檬");
+        }
+      });
+    }
+    else if(title==="明胶密封圈" && byText("明胶 + 水 + 加热")){
+      hideOriginals();
+      const panel=addPanel('<h4>按材料性质完成临时制模</h4><p>先让明胶吸水，再提供稳定热源。三样条件齐全，才能倒进模具冷却成圈。</p><div class="fx-materials"><button class="fx-material" data-mat="gelatin" draggable="true">干明胶片</button><button class="fx-material" data-mat="water" draggable="true">清水</button><button class="fx-material" data-mat="heat" draggable="true">酒精灯</button></div><div class="fx-dropzone" data-drop>制模盘 · 放入三项条件</div>');
+      bindMaterialMix(panel,{need:3,resolve:()=>byText("明胶 + 水 + 加热")});
+    }
+    else if(title==="信 A · 空白压痕" && byText("铅笔侧锋轻擦")){
+      hideOriginals();
+      const panel=addPanel('<h4>沿纸纤维轻擦</h4><p>不要重压。拖动滑杆模拟用软铅笔侧锋逐步扫过纸面。</p><div class="fx-scrub"><input type="range" min="0" max="100" value="0" aria-label="铅笔侧锋轻擦进度"><b>0%</b></div>');
+      bindScrub(panel,byText("铅笔侧锋轻擦"),82,"压痕已经完整挂上石墨。");
+    }
+    else if(title==="信 C · 淀粉墨" && byText("棉签沿透明笔迹")){
+      hideOriginals();
+      const panel=addPanel('<h4>让棉签沿透明笔迹薄涂</h4><p>移动过快会漏笔，整片倾倒又会遮线。用滑杆模拟逐行涂过。</p><div class="fx-scrub"><input type="range" min="0" max="100" value="0" aria-label="棉签显色进度"><b>0%</b></div>');
+      bindScrub(panel,byText("棉签沿透明笔迹"),86,"隐写字迹已经完整浮现。");
+    }
+    else if(title==="破损密封圈" && byText("安装明胶密封圈")){
+      hideOriginals();
+      const panel=addPanel('<h4>把新垫圈压入阀座</h4><p>拖到阀座或点击两次均可。确认整圈贴合后再恢复压力。</p><div class="fx-materials"><button class="fx-material" data-mat="gasket" draggable="true">明胶密封圈</button></div><div class="fx-dropzone" data-drop>阀座</div>');
+      bindMaterialMix(panel,{need:1,resolve:()=>byText("安装明胶密封圈")});
+    }
+    actions.dataset.fxActionKey=signature;
+  }
+
+  function bindScrub(panel,original,threshold,doneText){
+    if(!original)return;
+    const range=panel.querySelector('input[type="range"]'),out=panel.querySelector("b");
+    let fired=false;
+    range.addEventListener("input",()=>{
+      const v=Number(range.value);out.textContent=v+"%";
+      if(!fired&&v>=threshold){fired=true;out.textContent=doneText.trim();setTimeout(()=>original.click(),180);}
+    });
+  }
+
+  function bindMaterialMix(panel,{need,resolve}){
+    const drop=panel.querySelector("[data-drop]");
+    const chosen=new Set();
+    const render=()=>{
+      drop.innerHTML=chosen.size?[...chosen].map(x=>`<span class="fx-dropchip">${({iodine:"碘酒",water:"清水",flour:"面粉",gelatin:"明胶",heat:"稳定热源",gasket:"密封圈"}[x]||x)}</span>`).join(""):"放到这里";
+      panel.querySelectorAll(".fx-material").forEach(b=>b.classList.toggle("selected",chosen.has(b.dataset.mat)));
+      drop.classList.toggle("ready",chosen.size>=need);
+      if(chosen.size>=need){const target=resolve(chosen);if(target)setTimeout(()=>target.click(),180);}
+    };
+    const choose=(id)=>{if(chosen.has(id))chosen.delete(id);else if(chosen.size<need)chosen.add(id);render();};
+    panel.querySelectorAll(".fx-material").forEach(b=>{
+      b.addEventListener("click",()=>choose(b.dataset.mat));
+      b.addEventListener("dragstart",e=>e.dataTransfer.setData("text/plain",b.dataset.mat));
+    });
+    drop.addEventListener("dragover",e=>e.preventDefault());
+    drop.addEventListener("drop",e=>{e.preventDefault();const id=e.dataTransfer.getData("text/plain");if(id)choose(id);});
   }
 
   function patchDeduction(title){
@@ -786,8 +899,7 @@
 
   function openReplay(){
     const o = createOverlay(), w = $("forensic-window");
-    w.innerHTML = `<button class="forensic-close" aria-label="关闭">×</button><p class="kicker">17—B · 机关现场重演</p><h2>让空房间里的门闩自己落下</h2><p class="lead">按证物实际位置重走一遍：先确认钓线能够进入通风弯头，再把另一端挂到插销受力点，最后从门外缓慢拉紧。只有三步都成立，密室机关才算被亲手验证。</p><div class="replay-stage" id="replay-stage"><svg class="replay-figure" viewBox="0 0 1200 560" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><defs><linearGradient id="rpDoor" x1="0" x2="1"><stop offset="0" stop-color="#755239"/><stop offset="1" stop-color="#5e412d"/></linearGradient><linearGradient id="rpWall" x1="0" x2="1"><stop offset="0" stop-color="#2a2f2f"/><stop offset="1" stop-color="#202525"/></linearGradient><linearGradient id="rpBolt" x1="0" x2="1"><stop offset="0" stop-color="#8c8477"/><stop offset="1" stop-color="#4f4943"/></linearGradient></defs><rect width="1200" height="560" fill="#d8c7aa"/><rect x="0" y="0" width="318" height="560" fill="url(#rpDoor)"/><rect x="318" y="0" width="396" height="560" fill="url(#rpWall)"/><rect x="714" y="0" width="486" height="560" fill="url(#rpDoor)" opacity=".96"/><rect x="444" y="102" width="300" height="164" rx="72" fill="#26292b" stroke="#777772" stroke-width="30"/><path d="M732 96 h106 a42 42 0 0 1 42 42 v106" fill="none" stroke="#777772" stroke-width="30"/><rect x="94" y="250" width="148" height="40" fill="url(#rpBolt)" stroke="#26211d" stroke-width="4" id="replay-bolt-shape"/><rect x="198" y="232" width="74" height="84" fill="none" stroke="#4f4942" stroke-width="12"/><path id="replay-path" d="M 630 182 C 574 226, 492 256, 268 262" fill="none" stroke="rgba(225,236,231,.2)" stroke-width="6" stroke-dasharray="11 8"/><circle cx="630" cy="182" r="6" fill="#f0eadc" opacity=".85"/><circle cx="268" cy="262" r="6" fill="#f0eadc" opacity=".85"/><path d="M 268 262 C 302 250, 328 238, 360 216" stroke="#d9e3df" stroke-width="2" stroke-dasharray="4 4" fill="none" opacity=".45"/><text x="830" y="160" style="font:12px Arial,sans-serif;fill:#f4ece0">弯头里残留透明钓线</text><text x="102" y="338" style="font:12px Arial,sans-serif;fill:#f4ece0">插销会沿新磨痕方向横移</text></svg><button class="replay-point rp-vent" data-step="vent" aria-label="把钓线送入通风弯头">1</button><button class="replay-point rp-latch" data-step="latch" aria-label="把钓线挂到门闩受力点">2</button></div><div class="replay-controls"><label>3 · 从门外缓慢拉紧钓线<br/><input id="replay-pull" type="range" min="0" max="100" value="0" disabled/></label><b id="replay-pull-value">0%</b></div><div class="replay-status" id="replay-status">第一步：点击通风弯头，把透明钓线送进去。</div>`;
-
+    w.innerHTML = `<button class="forensic-close" aria-label="关闭">×</button><p class="kicker">17—B · 机关现场重演</p><h2>让空房间里的门闩自己落下</h2><p class="lead">重演不再用方块简图，而是以原现场复原图和管线照片为底。先在通风弯头确认钓线，再在门闩磨痕处挂线，最后从门外缓慢拉紧。</p><div class="replay-stage replay-photo-stage" id="replay-stage"><img class="replay-room-photo" src="assets/images/deadroom.webp" alt="死信室原现场复原图"/><div class="replay-photo-inset"><img src="assets/images/tube.webp" alt="气动管控制室原现场复原图"/><span>通风弯头 / 线材路径复核</span></div><svg class="replay-rope-photo" viewBox="0 0 1200 560" preserveAspectRatio="none" aria-hidden="true"><path id="replay-path" d="M 742 126 C 652 174, 554 226, 314 282" fill="none" stroke="rgba(232,239,234,.18)" stroke-width="6" stroke-dasharray="11 8"/><path id="replay-bolt-arrow" d="M 230 300 L 318 300" fill="none" stroke="rgba(202,174,123,.42)" stroke-width="7"/></svg><div class="replay-evidence-label rl-vent">弯头内残留钓线</div><div class="replay-evidence-label rl-latch">插销孔边缘新磨痕</div><button class="replay-point rp-vent" data-step="vent" aria-label="确认通风弯头钓线">1</button><button class="replay-point rp-latch" data-step="latch" aria-label="把钓线挂到门闩受力点">2</button></div><div class="replay-controls"><label>3 · 从门外缓慢拉紧钓线<br/><input id="replay-pull" type="range" min="0" max="100" value="0" disabled/></label><b id="replay-pull-value">0%</b></div><div class="replay-status" id="replay-status">第一步：在现场照片中确认通风弯头里的透明钓线。</div>`;
     w.querySelector(".forensic-close").onclick = closeOverlay;
     const stage = $("replay-stage");
     const status = $("replay-status");
@@ -796,7 +908,7 @@
     const path = $("replay-path");
     const vent = w.querySelector('[data-step="vent"]');
     const latch = w.querySelector('[data-step="latch"]');
-    const boltShape = $("replay-bolt-shape");
+    const boltArrow = $("replay-bolt-arrow");
     let step = 0;
 
     vent.onclick = () => {
@@ -818,7 +930,8 @@
     range.oninput = () => {
       const v = Number(range.value);
       value.textContent = `${v}%`;
-      boltShape.setAttribute("x", String(94 + Math.min(60, v * 0.6)));
+      boltArrow.setAttribute("stroke", `rgba(202,174,123,${0.42 + v/180})`);
+      boltArrow.setAttribute("stroke-width", String(7 + Math.min(5, v/20)));
       if (v >= 88 && step === 2) {
         step = 3;
         localStorage.setItem(REPLAY_KEY, "1");
@@ -832,18 +945,27 @@
     o.hidden = false;
   }
 
-  function postMutation(){
-    repairVisibleText();
+  function repairLiveRegions(){
+    ["chapter-title","objective-text","knowledge-list","detail-modal","notebook-modal","ending-modal","story-interlude","portal-reading"].forEach(id=>{const el=$(id);if(el)repairVisibleText(el);});
+  }
+
+  function postMutation(full=false){
+    if(full) repairVisibleText(document.body); else repairLiveRegions();
     applyDetailVisual();
     ensureColdPin();
     normalizeSave();
   }
 
   let queued = false;
-  const observer = new MutationObserver(() => {
+  const observer = new MutationObserver((mutations) => {
     if (queued) return;
+    const relevant=mutations.some(m=>{
+      const el=m.target.nodeType===1?m.target:m.target.parentElement;
+      return el?.closest?.("#detail-modal,#knowledge-list,#chapter-title,#objective-text,#notebook-modal,#ending-modal,#story-interlude,#scene-name,#stage,#portal-reading");
+    });
+    if(!relevant)return;
     queued = true;
-    queueMicrotask(() => { queued = false; postMutation(); });
+    requestAnimationFrame(() => { queued = false; postMutation(false); });
   });
   observer.observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ["class"] });
 
@@ -852,5 +974,5 @@
   window.addEventListener("beforeunload", normalizeSave);
   window.addEventListener("pageshow", postMutation);
 
-  postMutation();
+  postMutation(true);
 })();
