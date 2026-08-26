@@ -1,170 +1,176 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#171815">
-  <meta name="color-scheme" content="dark light">
-  <title>死信室 · The Dead Letter Room</title>
-  <link rel="stylesheet" href="assets/game.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta content="#171815" name="theme-color"/>
+<meta content="dark light" name="color-scheme"/>
+<title>死信室 · The Dead Letter Room</title>
+<link href="assets/game.css" rel="stylesheet"/>
 </head>
 <body>
-  <div id="app">
-    <section id="portal-screen" class="portal-screen" aria-labelledby="portal-title">
-      <header class="portal-topbar">
-        <div class="portal-brand"><b id="portal-title">烛影侦探社</b><span>民间调查 · 旧案研习 · 现场笔记</span></div>
-        <form id="portal-search" class="portal-search"><input id="portal-search-input" aria-label="站内搜索" placeholder="输入案件、地点或调查员"><button type="submit">站内检索</button></form>
-      </header>
-      <div class="portal-shell">
-        <aside class="portal-left">
-          <section class="portal-box"><h2>站点导航</h2><button class="portal-nav active" data-portal-tab="hall">首页 / 值班室</button><button class="portal-nav" data-portal-tab="cases">旧案陈列</button><button class="portal-nav" data-portal-tab="notes">前辈手记</button><button class="portal-nav" data-portal-tab="rules">调查守则</button></section>
-          <section class="portal-box portal-status"><h2>今夜值班</h2><p><b>在线 7 人</b><br>档案管理员：灰烬<br>值班调查员：北窗</p><p class="portal-faint">站点建立于 2001<br>最后整理：2007-12-31</p></section>
-          <section class="portal-box portal-quote"><h2>摘录</h2><p>“好的调查不是替死者说话，而是把他来不及留下的话，和我们自己的猜测分开。”</p><small>——《夜班手记》第十四页</small></section>
-        </aside>
-        <main class="portal-main">
-          <div class="portal-breadcrumb">当前位置：烛影侦探社 › 值班室</div>
-          <section class="portal-welcome"><p class="portal-date">2007 年 12 月 31 日 · 周一 · 23:47</p><h1>今晚没有新案子。至少十分钟前还没有。</h1><p>这里收着前辈们留下的现场记录、失败笔记和那些多年以后才看懂的案子。新来的调查员通常先读旧帖——因为真正到了现场，人很容易只看见自己期待看见的东西。</p></section>
-          <section class="portal-board" id="portal-hall">
-            <div class="portal-board-head"><b>值班室 · 最近更新</b><span>主题 / 作者 / 最后回复</span></div>
-            <button class="portal-thread urgent-thread" id="portal-urgent-thread"><span class="thread-tag">置顶</span><div><b>【值班】魏瑟堡旧邮局：整理员失联，地下档案室发现死者</b><small>刚刚更新 · 灰烬 · 等待在线调查员接入</small></div><time>23:48</time></button>
-            <button class="portal-thread" data-story="rain"><span class="thread-tag">手记</span><div><b>雨夜里最容易误判的，不是脚印，是等待</b><small>北窗 · 一次没有抓到凶手的调查</small></div><time>12-27</time></button>
-            <button class="portal-thread" data-story="lamp"><span class="thread-tag">旧案</span><div><b>煤油灯熄灭后的七分钟：为什么证词都“差不多”</b><small>柯石 · 现场时间感与记忆偏差</small></div><time>12-22</time></button>
-            <button class="portal-thread" data-story="letter"><span class="thread-tag">随笔</span><div><b>有些信不是寄丢的，是写信的人一直没敢寄</b><small>灰烬 · 关于未投递信件的三个旧案</small></div><time>12-16</time></button>
-            <button class="portal-thread" data-story="mistake"><span class="thread-tag">复盘</span><div><b>我曾因为一句“他看起来很冷静”把方向查反了</b><small>南桥 · 失败记录，欢迎新人看</small></div><time>12-04</time></button>
-          </section>
-          <section class="portal-reading" id="portal-reading" aria-live="polite">
-            <p class="portal-reading-kicker">前辈手记</p><h2 id="portal-reading-title">雨夜里最容易误判的，不是脚印，是等待</h2><div id="portal-reading-copy"><p>那年我在一座没有钟的车站守到天亮。后来才明白，现场里最危险的东西往往不是假的证据，而是一个太像答案的故事。</p><p>所以我给新人留下一条笨规矩：先写下你看见了什么，再写你认为它意味着什么。两句话之间，至少空一行。</p></div><button id="portal-reading-close">返回帖子列表</button>
-          </section>
-        </main>
-        <aside class="portal-right">
-          <section class="portal-box"><h2>新人先读</h2><ol><li>不要替证人补完一句话。</li><li>不要把“可疑”当成“有罪”。</li><li>现场事实和推论分开记录。</li><li>如果一个答案太早出现，先怀疑它。</li></ol></section>
-          <section class="portal-box"><h2>近期旧案</h2><p><a href="#" data-story="letter">17-B · 六封没有寄出的信</a></p><p><a href="#" data-story="lamp">04-C · 熄灯后的走廊</a></p><p><a href="#" data-story="rain">11-A · 雨站台</a></p></section>
-          <button id="portal-continue" class="portal-continue hidden">继续上次调查</button>
-        </aside>
-      </div>
-      <footer class="portal-footer">烛影侦探社 · 非官方民间调查资料站 · 所有旧案均以原始记录为准</footer>
-    </section>
+<div id="app">
+<section aria-labelledby="portal-title" class="portal-screen" id="portal-screen">
+<header class="portal-topbar">
+<div class="portal-brand"><b id="portal-title">烛影侦探社</b><span>旧案复核 · 调查手记 · 人物存档 · 夜读文库</span></div>
+<form class="portal-search" id="portal-search"><input aria-label="站内搜索" id="portal-search-input" placeholder="输入案件、人物、地点或作者"/><button type="submit">站内检索</button></form>
+</header>
+<div class="portal-shell">
+<aside class="portal-left">
+<section class="portal-box"><h2>站点导航</h2>
+<button class="portal-nav active" data-portal-tab="hall">首页 / 值班室</button>
+<button class="portal-nav" data-portal-tab="cases">旧案陈列</button>
+<button class="portal-nav" data-portal-tab="notes">前辈手记</button>
+<button class="portal-nav" data-portal-tab="rules">调查守则</button>
+</section>
+<section class="portal-box portal-status"><h2>今夜值班</h2><p><b>在线 7 人</b><br/>档案管理员：灰烬<br/>值班调查员：北窗<br/>数字化志愿者：小满</p><p class="portal-faint">站点建立于 2001<br/>旧帖迁移完成：73%</p></section>
+<section class="portal-box portal-quote"><h2>页角抄录</h2><p>“人死后会留下许多事实。最难保存的，是他没有来得及成为的那个人。”</p><small>——灰烬，《没有寄出的部分》</small></section>
+</aside>
+<main class="portal-main">
+<div class="portal-breadcrumb" id="portal-breadcrumb">当前位置：烛影侦探社 › 值班室</div>
+<div id="portal-home-view">
+<section class="portal-welcome">
+<p class="portal-date">12 月 31 日 · 周一 · 23:47</p>
+<h1>今晚没有新案子。至少十分钟前还没有。</h1>
+<p>这里收着前辈们留下的旧案、失败记录、人物小传和一些说不清该归在哪一栏的文字。新人通常先读别人走错的路，因为真正面对一份卷宗时，人很容易把自己盼望发生的事，当成已经发生过的事。</p>
+<p class="portal-welcome-note">值班室没有“标准答案”栏目。事实写在案卷里；至于一个人为什么会走到那一步，往往要等很久以后才有人读懂。</p>
+</section>
+<section class="portal-board" id="portal-hall">
+<div class="portal-board-head"><b>值班室 · 最近更新</b><span>主题 / 作者 / 最后回复</span></div>
+<button class="portal-thread urgent-thread" id="portal-urgent-thread"><span class="thread-tag">置顶</span><div><b>【复核请求】魏瑟堡旧邮局：17—B封存卷宗出现未登记证物</b><small>刚刚更新 · 灰烬 · 等待在线调查员接入</small></div><time>23:48</time></button>
+<button class="portal-thread" data-story="rain"><span class="thread-tag">手记</span><div><b>雨夜里最容易误判的，不是脚印，是等待</b><small>北窗 · 一次没有抓到凶手的调查</small></div><time>12-27</time></button>
+<button class="portal-thread" data-story="lamp"><span class="thread-tag">旧案</span><div><b>煤油灯熄灭后的七分钟：四个人为什么都说“没多久”</b><small>柯石 · 现场时间感与记忆偏差</small></div><time>12-22</time></button>
+<button class="portal-thread" data-story="letter"><span class="thread-tag">随笔</span><div><b>有些信不是寄丢的，是写信的人一直没敢寄</b><small>灰烬 · 关于未投递信件的三个旧案</small></div><time>12-16</time></button>
+<button class="portal-thread" data-story="mistake"><span class="thread-tag">复盘</span><div><b>我曾因为一句“他看起来很冷静”把方向查反了</b><small>南桥 · 失败记录，欢迎新人看</small></div><time>12-04</time></button>
+<button class="portal-thread" data-story="hermann"><span class="thread-tag">传记</span><div><b>赫尔曼·福格尔：一个把退信柜钥匙带回家的人</b><small>旧邮政人物志 · 补录自退休职员口述</small></div><time>11-29</time></button>
+<button class="portal-thread" data-story="anna"><span class="thread-tag">人物</span><div><b>安娜·韦伯的五页纸：她写给女儿的天气比写自己更多</b><small>小满 · 私人文稿整理札记</small></div><time>11-18</time></button>
+<button class="portal-thread" data-story="snow"><span class="thread-tag">散文诗</span><div><b>《雪落在没有地址的地方》</b><small>匿名投稿 · 夜读文库第 41 期</small></div><time>11-11</time></button>
+<button class="portal-thread" data-story="clerk"><span class="thread-tag">小传</span><div><b>次要人物也有下班以后：记老邮局抄写员艾尔莎</b><small>北窗 · 为什么卷宗边角的人值得被记住</small></div><time>10-30</time></button>
+</section>
+</div>
+<section aria-live="polite" class="portal-reading" id="portal-reading">
+<div class="portal-article-head"><p class="portal-reading-kicker" id="portal-reading-kicker">前辈手记</p><h2 id="portal-reading-title"></h2><p class="portal-reading-meta" id="portal-reading-meta"></p></div>
+<div class="portal-reading-copy" id="portal-reading-copy"></div>
+<div class="portal-article-foot"><span>烛影侦探社 · 旧站备份页</span><button id="portal-reading-close">‹ 返回上一页</button></div>
+</section>
+</main>
+<aside class="portal-right">
+<section class="portal-box"><h2>新人先读</h2><ol><li>看见什么，与它意味着什么，分开写。</li><li>证人可以记错，但不要替他补完。</li><li>可疑不是有罪，沉默也不是。</li><li>如果答案来得太早，先留一格空白。</li></ol></section>
+<section class="portal-box portal-library"><h2>夜读文库</h2><p><a data-story="waiting" href="#">随笔 · 《等人的房间》</a></p><p><a data-story="snow" href="#">散文诗 · 《雪落在没有地址的地方》</a></p><p><a data-story="hermann" href="#">人物志 · 赫尔曼·福格尔</a></p><p><a data-story="anna" href="#">人物志 · 安娜·韦伯</a></p></section>
+<section class="portal-box"><h2>近期旧案</h2><p><a data-story="case17" href="#">17-B · 六封没有寄出的信</a></p><p><a data-story="lamp" href="#">04-C · 熄灯后的走廊</a></p><p><a data-story="rain" href="#">11-A · 雨站台</a></p></section>
+<button class="portal-continue hidden" id="portal-continue">继续 17—B 案卷复核</button>
+</aside>
+</div>
+<footer class="portal-footer">烛影侦探社 · 民间旧案复核站 · 原始记录与后人批注分栏保存 · 页面样式保留旧站习惯</footer>
+</section>
+<section aria-labelledby="dispatch-title" aria-modal="true" class="dispatch-modal hidden" id="dispatch-modal" role="dialog">
+<div class="dispatch-window">
+<div class="dispatch-titlebar"><b>值班电报 / ARCHIVE PRIORITY</b><span>23:48:16</span></div>
+<div class="dispatch-body"><p class="dispatch-mark">!</p><div><p class="dispatch-kicker">旧案突发复核 · 魏瑟堡邮局 / 17—B</p><h2 id="dispatch-title">封存八十年的案卷，刚刚多出了一封从未登记过的信。</h2><p>修缮队刚刚打开封存多年的邮局地下层。现场门从内侧锁住，死者身份登记为邮政局长赫尔曼·福格尔。负责整理档案的人只来得及上传一句话：</p><blockquote>“请先别看旧结论。17—B 的原始页已经上传，从第一张现场照片重新走一遍。”</blockquote><p>修缮队今天清理旧邮局夹墙时，找到一只不在1927年证物目录里的布包。里面有局长制服、第六封未投递信，以及几张与原结论对不上的冷库附件。站内已调取当年现场照片和艾达·克莱因的原始调查簿。</p></div></div>
+<div class="dispatch-actions"><span class="dispatch-audio-note">接入后将开启轻量环境声，可在案卷栏随时关闭。</span><button id="dispatch-later">先读完这一页</button><button id="dispatch-enter">接入 17—B 原始案卷</button></div>
+</div>
+</section>
+<section aria-labelledby="game-title" class="title-screen hidden" id="title-screen">
+<div class="cover-file">
+<div class="cover-index"><span>魏瑟堡邮政区</span><b>档案 17—B</b></div>
+<p class="eyebrow">A PAPER TRACE MYSTERY · CASE 01</p>
+<h1 id="game-title">死信室</h1>
+<p class="latin">THE DEAD LETTER ROOM</p>
+<p class="premise">1927年11月。<br/>局长死在从内部锁住的地下室。<br/>所有物证都能解释——除了一封没能送达的信。</p>
+<div class="title-actions">
+<button class="ink-button primary" id="new-game">登记此案</button>
+<button class="ink-button" id="continue-game">继续调查</button>
+</div>
+<button class="text-button" id="title-sound">开启声音 · 推荐佩戴耳机</button>
+<p class="cover-note">完整篇 · 约 55—65 分钟 · 自动存档<br/>请允许文字慢一点抵达。</p>
+</div>
+<div aria-hidden="true" class="cover-stamp">UNDELIVERED<br/><b>1927</b></div>
+</section>
+<main class="game-screen hidden" id="game-screen">
+<header class="casebar">
+<div class="case-site-brand"><button class="case-home-link" id="case-home">烛影侦探社</button><span>›</span><b>魏瑟堡旧案复核室</b><small>档案 17—B</small></div>
+<div class="case-id"><span id="chapter-kicker">第一章</span><strong id="chapter-title">滞留</strong></div>
+<div class="case-tools">
+<button aria-label="打开地点目录" class="mobile-sheet-button" id="mobile-locations">地点</button>
+<button aria-label="阅读连载小说" class="tool-button" id="archive-btn"><i>文库</i><span>《雪落以前》</span><b id="archive-badge">1</b></button>
+<button aria-label="调查笔记" class="tool-button" id="notebook-btn"><i>人物</i><span>人物侧记</span></button>
+<button aria-label="提示" class="tool-button" id="hint-btn"><i>帮助</i><span>调查提示</span></button>
+<button aria-label="支持创作" class="tool-button support-button" id="support-btn"><i>站务</i><span>支持本站</span></button>
+<button aria-label="声音" class="tool-button" id="sound-btn"><i>声音</i><span>声音</span></button>
+<button aria-label="菜单" class="tool-button" id="menu-btn"><i>案卷</i><span>案卷管理</span></button>
+</div>
+</header>
+<section class="game-layout">
+<aside aria-label="地点" class="location-rail" id="location-rail">
+<div class="rail-head"><span>17—B / 页面目录</span><button aria-label="关闭地点目录" id="close-locations">×</button></div>
+<nav id="location-nav"></nav>
+<div class="clock-card"><span>原案调查时间</span><strong id="game-clock">07:40</strong><small>1927 · 11 · 18</small></div>
+<div class="rail-note"><b>复核说明</b><p>你看到的是原始照片、现场测量和艾达·克莱因的调查记录。后人整理文字以灰色边注标识，不计入证物。</p></div>
+</aside>
+<section class="stage-wrap">
+<div class="case-breadcrumb"><span id="case-breadcrumb-text">17—B › 第一章 › 死信室</span><b>只以原始证物推进</b></div>
+<article class="case-page">
+<header class="case-page-head"><div><p id="case-page-label">现场复原页</p><h1 id="case-page-heading">魏瑟堡邮局 · 地下死信室</h1></div><div class="case-page-index"><span>WEISSBURG ARCHIVE</span><b>17—B</b></div></header>
+<div class="objective-strip"><span>本页调查问题</span><p id="objective-text">邮政局长究竟死于何时？</p><b id="objective-progress">0 / 6</b></div>
+<div aria-live="polite" class="stage" id="stage">
+<img alt="" class="scene-image" id="scene-image"/>
+<div aria-hidden="true" class="press-dots"></div><div class="hotspots" id="hotspots"></div>
+<div class="scene-caption" id="scene-caption"><span id="scene-number">01</span><div><strong id="scene-name">魏瑟堡邮局</strong><small id="scene-subtitle">地下死信室</small></div></div>
+<div class="dialogue hidden" id="dialogue"><span id="dialogue-speaker">艾达</span><p id="dialogue-text"></p><button aria-label="继续" id="dialogue-next">继续 ›</button></div>
+</div>
+<section class="case-fragment"><div class="case-fragment-label">卷宗边页 · 非证物</div><h2 id="case-fragment-title">一个人的名字，往往最后才从案卷里长出来</h2><div id="case-fragment-copy"></div><small id="case-fragment-source"></small></section>
+</article>
+</section>
+<aside class="evidence-panel" id="evidence-panel">
+<div class="panel-heading"><span>证物索引 / VERIFIED</span><small id="evidence-count">0 / 15</small></div>
+<div class="evidence-list" id="evidence-list"></div>
+<div class="knowledge-heading">已经验证的物理事实</div><div class="knowledge-list" id="knowledge-list"><p>尚无记录</p></div>
 
-    <section id="dispatch-modal" class="dispatch-modal hidden" role="dialog" aria-modal="true" aria-labelledby="dispatch-title">
-      <div class="dispatch-window">
-        <div class="dispatch-titlebar"><b>值班电报 / PRIORITY</b><span>23:48:16</span></div>
-        <div class="dispatch-body"><p class="dispatch-mark">!</p><div><p class="dispatch-kicker">突发委托 · 魏瑟堡旧邮局</p><h2 id="dispatch-title">地下死信室发现一名死者。</h2><p>修缮队刚刚打开封存多年的邮局地下层。现场门从内侧锁住，死者身份登记为邮政局长赫尔曼·福格尔。负责整理档案的人只来得及上传一句话：</p><blockquote>“尸体的情况有些不对。门我没动，屋里的东西也都留在原位。请尽快派人来。”</blockquote><p>纸质卷宗已经接入本站。需要一名在线调查员从原始记录开始。</p></div></div>
-        <div class="dispatch-actions"><span class="dispatch-audio-note">接入后将开启轻量环境声，可在案卷栏随时关闭。</span><button id="dispatch-later">先读完这一页</button><button id="dispatch-enter">接入现场</button></div>
-      </div>
-    </section>
-
-    <section id="title-screen" class="title-screen hidden" aria-labelledby="game-title">
-      <div class="cover-file">
-        <div class="cover-index"><span>魏瑟堡邮政区</span><b>档案 17—B</b></div>
-        <p class="eyebrow">A PAPER TRACE MYSTERY · CASE 01</p>
-        <h1 id="game-title">死信室</h1>
-        <p class="latin">THE DEAD LETTER ROOM</p>
-        <p class="premise">1927年11月。<br>局长死在从内部锁住的地下室。<br>所有物证都能解释——除了一封没能送达的信。</p>
-        <div class="title-actions">
-          <button id="new-game" class="ink-button primary">登记此案</button>
-          <button id="continue-game" class="ink-button">继续调查</button>
-        </div>
-        <button id="title-sound" class="text-button">开启声音 · 推荐佩戴耳机</button>
-        <p class="cover-note">完整篇 · 约 55—65 分钟 · 自动存档<br>请允许文字慢一点抵达。</p>
-      </div>
-      <div class="cover-stamp" aria-hidden="true">UNDELIVERED<br><b>1927</b></div>
-    </section>
-
-    <main id="game-screen" class="game-screen hidden">
-      <header class="casebar">
-        <button id="mobile-locations" class="mobile-sheet-button" aria-label="打开地点目录">地点</button>
-        <div class="case-id"><span id="chapter-kicker">第一章</span><strong id="chapter-title">滞留</strong></div>
-        <div class="case-tools">
-          <button id="archive-btn" class="tool-button" aria-label="阅读连载小说"><i>A-01</i><span>连载</span><b id="archive-badge">1</b></button>
-          <button id="notebook-btn" class="tool-button" aria-label="调查笔记"><i>A-02</i><span>笔记</span></button>
-          <button id="hint-btn" class="tool-button" aria-label="提示"><i>A-03</i><span>提示</span></button>
-          <button id="support-btn" class="tool-button support-button" aria-label="支持创作"><i>A-04</i><span>支持</span></button>
-          <button id="sound-btn" class="tool-button" aria-label="声音"><i>A-05</i><span>声音</span></button>
-          <button id="menu-btn" class="tool-button" aria-label="菜单"><i>A-06</i><span>菜单</span></button>
-        </div>
-      </header>
-
-      <section class="game-layout">
-        <aside id="location-rail" class="location-rail" aria-label="地点">
-          <div class="rail-head"><span>调查地点</span><button id="close-locations" aria-label="关闭地点目录">×</button></div>
-          <nav id="location-nav"></nav>
-          <div class="clock-card"><span>调查时间</span><strong id="game-clock">07:40</strong><small>1927 · 11 · 18</small></div>
-        </aside>
-
-        <section class="stage-wrap">
-          <div id="stage" class="stage" aria-live="polite">
-            <img id="scene-image" class="scene-image" alt="">
-            <div class="press-dots" aria-hidden="true"></div>
-            <div id="hotspots" class="hotspots"></div>
-            <div id="scene-caption" class="scene-caption"><span id="scene-number">01</span><div><strong id="scene-name">魏瑟堡邮局</strong><small id="scene-subtitle">地下死信室</small></div></div>
-            <div id="dialogue" class="dialogue hidden"><span id="dialogue-speaker">艾达</span><p id="dialogue-text"></p><button id="dialogue-next" aria-label="继续">继续 ›</button></div>
-          </div>
-          <div class="objective-strip"><span>当前问题</span><p id="objective-text">邮政局长究竟死于何时？</p><b id="objective-progress">0 / 6</b></div>
-        </section>
-
-        <aside id="evidence-panel" class="evidence-panel">
-          <div class="panel-heading"><span>证物登记</span><small id="evidence-count">0 / 15</small></div>
-          <div id="evidence-list" class="evidence-list"></div>
-          <div class="knowledge-heading">已经验证的物理事实</div>
-          <div id="knowledge-list" class="knowledge-list"><p>尚无记录</p></div>
-        </aside>
-      </section>
-
-      <footer class="inventory-drawer">
-        <span class="drawer-label">物品匣</span><button id="inventory-prev" class="drawer-arrow" aria-label="向前翻物品">‹</button>
-        <div id="inventory-list" class="inventory-list"><p class="empty-inventory">道具会收进这里。</p></div>
-        <button id="inventory-next" class="drawer-arrow" aria-label="向后翻物品">›</button><button id="mobile-evidence" class="mobile-sheet-button" aria-label="打开证物登记">证物</button>
-      </footer>
-    </main>
-
-    <div id="modal-backdrop" class="modal-backdrop hidden"></div>
-
-    <section id="detail-modal" class="paper-modal hidden" role="dialog" aria-modal="true" aria-labelledby="detail-title">
-      <button class="modal-close" data-close="detail-modal" aria-label="关闭">×</button><p class="modal-kicker" id="detail-kicker">现场观察</p><h2 id="detail-title">物证</h2>
-      <div id="detail-visual" class="detail-visual"></div><p id="detail-copy" class="detail-copy"></p><div id="detail-actions" class="modal-actions"></div>
-    </section>
-
-    <section id="archive-modal" class="archive-modal hidden" role="dialog" aria-modal="true" aria-labelledby="archive-title">
-      <button class="modal-close" data-close="archive-modal" aria-label="关闭">×</button>
-      <aside class="archive-index"><p class="modal-kicker">死信室私印本 · 无出版记录</p><h2 id="archive-title">《雪落以前》</h2><p class="archive-author">署名：A. W.　／　共六页</p><div id="archive-tabs" class="archive-tabs"></div>
-        <form id="archive-search" class="archive-search"><label for="archive-query">旧目录检索</label><div><input id="archive-query" autocomplete="off" placeholder="输入姓名或词语"><button>查找</button></div><p id="archive-result">目录仍有几枚钉孔。</p></form>
-      </aside>
-      <article class="archive-page"><p id="archive-page-no" class="archive-page-no">第一叶</p><h3 id="archive-page-title"></h3><div id="archive-page-copy"></div><p class="archive-running">—— 有些故事没有结尾，只剩下收件人。</p></article>
-    </section>
-
-    <section id="notebook-modal" class="notebook-modal hidden" role="dialog" aria-modal="true" aria-label="调查笔记">
-      <button class="modal-close" data-close="notebook-modal" aria-label="关闭">×</button><div class="notebook-spread"><article><p class="modal-kicker">ADA KLEIN · 私人记录</p><h2>调查问题</h2><div id="notebook-objectives"></div></article><article><p class="modal-kicker">口供边注</p><h2>四个没有说完的名字</h2><div id="suspect-notes"></div></article></div>
-    </section>
-
-    <section id="hint-modal" class="paper-modal hint-modal hidden" role="dialog" aria-modal="true" aria-labelledby="hint-title">
-      <button class="modal-close" data-close="hint-modal" aria-label="关闭">×</button><p class="modal-kicker">铅笔边注</p><h2 id="hint-title">艾达的提示</h2><p id="hint-text" class="hint-text"></p><button id="next-hint" class="ink-button">再具体一点</button>
-    </section>
-
-    <section id="support-modal" class="support-modal hidden" role="dialog" aria-modal="true" aria-labelledby="support-title">
-      <button class="modal-close" data-close="support-modal" aria-label="关闭">×</button><div class="support-stamp">1元</div><p class="modal-kicker">完整内容始终免费</p><h2 id="support-title">给夜班留一盏灯</h2><p>如果这封信曾让你停一下，可以自愿支持 1 元。无论是否支持，案件、小说和结局都完整开放。</p><img src="assets/images/support-qr.png" alt="支付宝一元支持二维码"><small>支付宝扫码 · abc studio</small><div class="support-actions"><button id="support-done" class="ink-button primary">已经支持 ♡</button><button id="support-later" class="ink-button">先继续查案</button></div>
-    </section>
-
-    <section id="menu-modal" class="paper-modal hidden" role="dialog" aria-modal="true" aria-labelledby="menu-title">
-      <button class="modal-close" data-close="menu-modal" aria-label="关闭">×</button><p class="modal-kicker">档案管理</p><h2 id="menu-title">暂停调查</h2><div class="menu-stack"><button id="resume-game" class="ink-button primary">继续</button><button id="reset-game" class="ink-button">重新调查</button><button id="back-title" class="ink-button">返回封面</button></div><p class="autosave-note">证物、阅读进度、实验和章节都会自动保存。</p>
-    </section>
-
-    <section id="ending-modal" class="ending-modal hidden" role="dialog" aria-modal="true" aria-labelledby="ending-title">
-      <p class="eyebrow">CASE CLOSED · 18 NOV 1927</p><h2 id="ending-title">没有凶手的密室</h2><div id="ending-copy"></div><button id="ending-letter" class="ink-button primary">拆开第六封信</button>
-      <div id="final-letter" class="final-letter hidden"></div><div id="ending-stats" class="ending-stats"></div><button id="ending-restart" class="ink-button">重新登记此案</button>
-    </section>
-
-    <div id="toast" class="toast hidden" role="status"></div>
-    <section id="story-interlude" class="story-interlude hidden" aria-modal="true" role="dialog" aria-labelledby="story-heading">
-      <div class="story-grain" aria-hidden="true"></div>
-      <article class="story-sheet">
-        <div class="story-register"><span id="story-register">WEISSBURG · 1927</span><b id="story-folio">INTERLUDE 01</b></div>
-        <p id="story-kicker" class="story-kicker">案卷间页</p>
-        <h2 id="story-heading">雾停在门外</h2>
-        <div id="story-lines" class="story-lines" aria-live="polite"></div>
-        <button id="story-continue" class="story-continue hidden">进入死信室</button>
-      </article>
-    </section>
-  </div>
-  <script src="assets/game.js"></script>
+</aside>
+</section>
+<footer class="inventory-drawer"><span class="drawer-label">临时物品 / TOOL TRAY</span><button aria-label="向前翻物品" class="drawer-arrow" id="inventory-prev">‹</button><div class="inventory-list" id="inventory-list"><p class="empty-inventory">道具会登记在这里。</p></div><button aria-label="向后翻物品" class="drawer-arrow" id="inventory-next">›</button><button aria-label="打开证物登记" class="mobile-sheet-button" id="mobile-evidence">证物</button></footer>
+</main>
+<div class="modal-backdrop hidden" id="modal-backdrop"></div>
+<section aria-labelledby="detail-title" aria-modal="true" class="paper-modal hidden" id="detail-modal" role="dialog">
+<button aria-label="关闭" class="modal-close" data-close="detail-modal">×</button><p class="modal-kicker" id="detail-kicker">现场观察</p><h2 id="detail-title">物证</h2>
+<div class="detail-visual" id="detail-visual"></div><p class="detail-copy" id="detail-copy"></p><div class="modal-actions" id="detail-actions"></div>
+</section>
+<section aria-labelledby="archive-title" aria-modal="true" class="archive-modal hidden" id="archive-modal" role="dialog">
+<button aria-label="关闭" class="modal-close" data-close="archive-modal">×</button>
+<aside class="archive-index"><p class="modal-kicker">站内文库镜像 · 死信室私印本 · 无出版记录</p><h2 id="archive-title">《雪落以前》</h2><p class="archive-author">署名：A. W.　／　共六页</p><div class="archive-tabs" id="archive-tabs"></div>
+<form class="archive-search" id="archive-search"><label for="archive-query">旧目录检索</label><div><input autocomplete="off" id="archive-query" placeholder="输入姓名或词语"/><button>查找</button></div><p id="archive-result">目录仍有几枚钉孔。</p></form>
+</aside>
+<article class="archive-page"><p class="archive-page-no" id="archive-page-no">第一叶</p><h3 id="archive-page-title"></h3><div id="archive-page-copy"></div><p class="archive-running">—— 有些故事没有结尾，只剩下收件人。</p></article>
+</section>
+<section aria-label="调查笔记" aria-modal="true" class="notebook-modal hidden" id="notebook-modal" role="dialog">
+<button aria-label="关闭" class="modal-close" data-close="notebook-modal">×</button><div class="notebook-spread"><article><p class="modal-kicker">17—B / CASE REVIEW</p><h2>复核进度</h2><div id="notebook-objectives"></div></article><article><p class="modal-kicker">人物不是证物，但不该只剩下嫌疑人标签</p><h2>人物侧记 · 非证物</h2><div id="suspect-notes"></div></article></div>
+</section>
+<section aria-labelledby="hint-title" aria-modal="true" class="paper-modal hint-modal hidden" id="hint-modal" role="dialog">
+<button aria-label="关闭" class="modal-close" data-close="hint-modal">×</button><p class="modal-kicker">铅笔边注</p><h2 id="hint-title">艾达的提示</h2><p class="hint-text" id="hint-text"></p><button class="ink-button" id="next-hint">再具体一点</button>
+</section>
+<section aria-labelledby="support-title" aria-modal="true" class="support-modal hidden" id="support-modal" role="dialog">
+<button aria-label="关闭" class="modal-close" data-close="support-modal">×</button><div class="support-stamp">1元</div><p class="modal-kicker">完整内容始终免费</p><h2 id="support-title">给夜班留一盏灯</h2><p>如果这封信曾让你停一下，可以自愿支持 1 元。无论是否支持，案件、小说和结局都完整开放。</p><img alt="支付宝一元支持二维码" src="assets/images/support-qr.png"/><small>支付宝扫码 · abc studio</small><div class="support-actions"><button class="ink-button primary" id="support-done">已经支持 ♡</button><button class="ink-button" id="support-later">先继续查案</button></div>
+</section>
+<section aria-labelledby="menu-title" aria-modal="true" class="paper-modal hidden" id="menu-modal" role="dialog">
+<button aria-label="关闭" class="modal-close" data-close="menu-modal">×</button><p class="modal-kicker">档案管理</p><h2 id="menu-title">暂停调查</h2><div class="menu-stack"><button class="ink-button primary" id="resume-game">继续</button><button class="ink-button" id="reset-game">重新调查</button><button class="ink-button" id="back-title">返回封面</button></div><p class="autosave-note">证物、阅读进度、实验和章节都会自动保存。</p>
+</section>
+<section aria-labelledby="ending-title" aria-modal="true" class="ending-modal hidden" id="ending-modal" role="dialog">
+<p class="eyebrow">CASE CLOSED · 18 NOV 1927</p><h2 id="ending-title">没有凶手的密室</h2><div id="ending-copy"></div><button class="ink-button primary" id="ending-letter">拆开第六封信</button>
+<div class="final-letter hidden" id="final-letter"></div><div class="ending-stats" id="ending-stats"></div><button class="ink-button" id="ending-restart">重新登记此案</button>
+</section>
+<div class="toast hidden" id="toast" role="status"></div>
+<section aria-labelledby="story-heading" aria-modal="true" class="story-interlude hidden" id="story-interlude" role="dialog">
+<div aria-hidden="true" class="story-grain"></div>
+<article class="story-sheet">
+<div class="story-register"><span id="story-register">WEISSBURG · 1927</span><b id="story-folio">INTERLUDE 01</b></div>
+<p class="story-kicker" id="story-kicker">案卷间页</p>
+<h2 id="story-heading">雾停在门外</h2>
+<div aria-live="polite" class="story-lines" id="story-lines"></div>
+<button class="story-continue hidden" id="story-continue">进入死信室</button>
+</article>
+</section>
+</div>
+<script src="assets/game.js"></script>
 </body>
 </html>

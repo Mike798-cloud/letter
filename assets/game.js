@@ -1,8 +1,8 @@
 (() => {
   "use strict";
 
-  const SAVE_KEY = "dead-letter-room-save-v4";
-  const LEGACY_SAVE_KEYS = ["dead-letter-room-save-v3", "dead-letter-room-save-v2", "dead-letter-room-save-v1"];
+  const SAVE_KEY = "dead-letter-room-save-v5";
+  const LEGACY_SAVE_KEYS = ["dead-letter-room-save-v4", "dead-letter-room-save-v3", "dead-letter-room-save-v2", "dead-letter-room-save-v1"];
   const SUPPORT_SEEN = "dead-letter-room-support-seen";
   const SUPPORT_PAID = "dead-letter-room-support-paid";
 
@@ -56,6 +56,16 @@
     chapter1:{chapter:2,scene:"office",minutes:25},
     chapter2:{chapter:3,scene:"tube",minutes:25},
     chapter3:{chapter:4,scene:"finale",minutes:25}
+  };
+
+  const caseFragments = {
+    exterior:{title:"门房老奥托记得的，是一盏没有按时熄掉的灯",source:"2007 年口述档案补录 · 奥托之子提供",copy:`<p>老奥托在邮局做了三十一年门房。儿子记得他晚年总抱怨福格尔局长不会照顾自己：冬天最冷的时候，别人都把办公室的煤炉封好，他却常为等一封晚到的车邮，把灯留到最后。</p><p>“他说有些人白天不敢来寄信。”老奥托曾这样解释。没人知道那些人是谁。门房只负责第二天一早把门再打开。</p>`},
+    deadroom:{title:"裁缝铺账本里，有一行没人会当作证据的记录",source:"施耐德裁缝铺 · 1927 年 10 月账页",copy:`<p>赫尔曼的制服在案发前三周补过一次内衬。裁缝在账本边上写：『客人坚持保留左胸旧布，不肯整片换新。说那里放过很久的东西，针孔不要动。』</p><p>这条记录不能回答死亡时间，也不能解释门闩。它只是让档案里的“死者”第一次像一个会犹豫、会把某样东西贴身留很多年的人。</p>`},
+    office:{title:"艾尔莎说，局长从不在玛戈面前提“收养”两个字",source:"抄写员艾尔莎·克劳斯退休访谈 · 1958",copy:`<p>艾尔莎十九岁进邮局，座位就在局长办公室外。她记得玛戈小时候放学会坐在高柜旁写作业，写累了就趴在退信袋上睡。</p><p>有人问赫尔曼为什么不让孩子改口叫父亲。他只低头盖邮戳，说：“称呼是她自己的东西。”艾尔莎后来想，也许有些体谅太安静，安静到被体谅的人根本听不见。</p>`},
+    lab:{title:"哈斯的诊所关门那天，他留下了一只没有带走的药秤",source:"镇医务所清点册 · 利奥波德·哈斯条目",copy:`<p>哈斯脾气坏，字也难看，却把药秤擦得很亮。他的学徒回忆，老人每次写到小数点都会停一下，再补得很重。十九年前那张被雨水泡坏的处方，让他此后几十年都保留了这个习惯。</p><p>愧疚和有罪不是一回事。可一个人若在同一个笔画上停顿十九年，旁人很难不去想：他究竟在替谁记住那场雨。</p>`},
+    tube:{title:"维克托总把自己说成过路人，可他记得每一种旧机器的声音",source:"艾达·克莱因私人边注 · 未列入正式证词",copy:`<p>维克托修阀门时很少看图纸。他用指节敲黄铜外壳，听回声，就知道里面哪一段还在漏气。艾达问他从哪里学的，他笑了一下：“在不该留下姓名的地方。”</p><p>他后来确实没有在魏瑟堡久留。邮局登记簿只留下一个潦草签名，像一个人已经习惯在所有地方提前告别。</p>`},
+    cold:{title:"玛戈留下过一张买两人份早餐的收据",source:"福格尔宅邸杂项袋 · 非证物附件 3",copy:`<p>收据日期是十一月十七日傍晚：黑麦面包两份、腌李子一小罐、咖啡豆半磅。店员在背面记着“明早来取鲜奶”。</p><p>它与密室手法没有直接关系，因此没有进入证物索引。可多年后的整理员把它夹回卷宗时，在旁边写了一句：她在争吵以前，大概仍以为第二天早上会和他坐在同一张桌边。</p>`},
+    finale:{title:"艾达结案后没有写“真相大白”",source:"艾达·克莱因 · 私人调查簿最后一页",copy:`<p>她只写：『事实已经足够，人的部分还没有。』下面空了两行，又补了一句：『我们能还原一个夜晚，却不能替任何人把没说出口的话重新说一遍。』</p><p>卷宗到这里越来越完整。也正因为完整，那些已经来不及改变的事才显得更清楚。</p>`}
   };
 
   const novelPages = {
@@ -190,7 +200,7 @@
 
   const $ = (id) => document.getElementById(id);
   const els = {};
-  ["portal-screen","portal-search","portal-search-input","dispatch-modal","dispatch-enter","dispatch-later","portal-continue","portal-reading","portal-reading-title","portal-reading-copy","portal-reading-close","portal-urgent-thread","title-screen","game-screen","continue-game","chapter-kicker","chapter-title","scene-image","hotspots","scene-number","scene-name","scene-subtitle","objective-text","objective-progress","game-clock","location-nav","location-rail","evidence-panel","evidence-list","evidence-count","knowledge-list","inventory-list","dialogue","dialogue-speaker","dialogue-text","dialogue-next","modal-backdrop","detail-modal","detail-kicker","detail-title","detail-visual","detail-copy","detail-actions","archive-modal","archive-tabs","archive-page-no","archive-page-title","archive-page-copy","archive-query","archive-result","archive-badge","notebook-modal","notebook-objectives","suspect-notes","hint-modal","hint-text","support-modal","support-btn","sound-btn","menu-modal","ending-modal","ending-title","ending-copy","ending-stats","ending-letter","final-letter","toast","story-interlude","story-register","story-folio","story-kicker","story-heading","story-lines","story-continue"].forEach(id=>els[id.replaceAll("-","_")]=$(id));
+  ["portal-screen","portal-search","portal-search-input","portal-home-view","portal-breadcrumb","dispatch-modal","dispatch-enter","dispatch-later","portal-continue","portal-reading","portal-reading-kicker","portal-reading-title","portal-reading-meta","portal-reading-copy","portal-reading-close","portal-urgent-thread","title-screen","game-screen","case-home","case-breadcrumb-text","case-page-label","case-page-heading","case-fragment-title","case-fragment-copy","case-fragment-source","continue-game","chapter-kicker","chapter-title","scene-image","hotspots","scene-number","scene-name","scene-subtitle","objective-text","objective-progress","game-clock","location-nav","location-rail","evidence-panel","evidence-list","evidence-count","knowledge-list","inventory-list","dialogue","dialogue-speaker","dialogue-text","dialogue-next","modal-backdrop","detail-modal","detail-kicker","detail-title","detail-visual","detail-copy","detail-actions","archive-modal","archive-tabs","archive-page-no","archive-page-title","archive-page-copy","archive-query","archive-result","archive-badge","notebook-modal","notebook-objectives","suspect-notes","hint-modal","hint-text","support-modal","support-btn","sound-btn","menu-modal","ending-modal","ending-title","ending-copy","ending-stats","ending-letter","final-letter","toast","story-interlude","story-register","story-folio","story-kicker","story-heading","story-lines","story-continue"].forEach(id=>els[id.replaceAll("-","_")]=$(id));
 
   function save(){ localStorage.setItem(SAVE_KEY, JSON.stringify(state)); }
   function load(){
@@ -198,7 +208,7 @@
       const raw=localStorage.getItem(SAVE_KEY)||LEGACY_SAVE_KEYS.map(k=>localStorage.getItem(k)).find(Boolean);
       const parsed=JSON.parse(raw||"null");
       if(parsed){
-        state=Object.assign(defaultState(),parsed,{version:4});
+        state=Object.assign(defaultState(),parsed,{version:5});
         state.fragments=Array.isArray(parsed.fragments)?parsed.fragments:[1];
         state.readFragments=Array.isArray(parsed.readFragments)?parsed.readFragments:[];
         state.knowledge=Array.isArray(parsed.knowledge)?parsed.knowledge:[];
@@ -253,6 +263,11 @@
     const s=sceneData[state.scene]||sceneData.deadroom;
     els.scene_image.src=s.image; els.scene_image.alt=s.name+"，"+s.sub; els.scene_name.textContent=s.name; els.scene_subtitle.textContent=s.sub;
     els.scene_number.textContent=String(availableScenes().indexOf(state.scene)+1).padStart(2,"0"); els.hotspots.innerHTML="";
+    if(els.case_breadcrumb_text)els.case_breadcrumb_text.textContent=`17—B › ${chapters[state.chapter].kicker} · ${chapters[state.chapter].title} › ${s.name}`;
+    if(els.case_page_label)els.case_page_label.textContent=state.scene==="finale"?"案情重建页":"原案现场复原页";
+    if(els.case_page_heading)els.case_page_heading.textContent=`${s.name} · ${s.sub}`;
+    const fragment=caseFragments[state.scene];
+    if(fragment&&els.case_fragment_title){els.case_fragment_title.textContent=fragment.title;els.case_fragment_copy.innerHTML=fragment.copy;els.case_fragment_source.textContent=fragment.source;}
     s.hotspots.filter(h=>!h.fromChapter||state.chapter>=h.fromChapter).forEach(h=>{ const b=document.createElement("button");b.className="hotspot"+(isHotspotDone(h)?" done":"");b.style.cssText=`left:${h.x}%;top:${h.y}%;width:${h.w}%;height:${h.h}%`;b.title=h.title;b.setAttribute("aria-label",h.title);b.onclick=()=>activate(h);els.hotspots.appendChild(b); });
   }
   function isHotspotDone(h){
@@ -303,9 +318,9 @@
     if(id!=="opening")toast(`进入${chapters[state.chapter].kicker}：${chapters[state.chapter].title}`,"success");
     if(id==="opening"){
       dialogue([
-        "艾达|门闩先别动。我会从屋里原来的位置开始看。昨晚发生什么，你按自己记得的顺序说就好。",
-        "玛戈|我和他吵过。为了那封一直没寄出去的信……后来我先走了。",
-        "艾达|好。我先记下这句话。别急着猜原因，等我把现场看完，我们再从头对一次时间。"
+        "艾达|门闩先留着。你昨晚是什么时候见到赫尔曼的，就从那里说起，不用替任何人解释。",
+        "玛戈|晚饭以后。我来找他，为了母亲留下的信。我们吵了几句……我先走了。",
+        "艾达|记得哪一句就说哪一句。想不起来的地方先空着，也比后来替自己补上要好。"
       ]);
     }
   }
@@ -529,7 +544,7 @@
     showDetail("短波调频",`${accessible}<br><small class="detail-note">这是系列暗线，不影响本案结局。</small>`,null,choices,"无线电记录");
   }
   function deadletters(){
-    const stories=["一封寄给1912年的自己：『不要搭上星期四的船。』","一张没有地址的明信片，只画着一棵被劈成两半的橡树。","一封儿童笔迹的信：『妈妈说死人不会回信，可邮差先生回了。』","一只空信封，打开后能闻到遥远海港的盐味。"];
+    const stories=["一封寄给1912年的自己：『不要搭上星期四的船。』信封背面又补：『如果已经搭了，就记得告诉莉娜，我不是故意没回来。』","一张没有地址的明信片，只画着一棵被劈成两半的橡树。右下角写着：『我们在树还完整的时候见过。』","一封儿童笔迹的信：『妈妈说死人不会回信，可邮差先生回了。』下面有赫尔曼的铅笔字：『回的是邮局。别让孩子等。』","一只空信封。夹层里粘着一粒海盐和半张码头票，收件人栏只有一个名字：阿黛尔。","一封被退回三次的求职信。寄信人后来在邮局做了二十三年夜班，第四次没有再寄，因为收信的工厂已经倒闭。","一张没有正文的讣告剪报，背面写：『我原本只是想告诉你，我已经学会做那道汤。』"];
     const i=(state.actions+state.clues.length)%stories.length;showDetail("随机死信",stories[i],"✉");
   }
   function suitcase(){
@@ -570,9 +585,11 @@
   function openHint(){const n=Math.min(state.hints[state.chapter]||0,2);els.hint_text.textContent=hints[state.chapter][n];$("next-hint").textContent=n>=2?"这是最具体的提示":"再具体一点";openModal("hint-modal");}
   function nextHint(){state.hints[state.chapter]=Math.min((state.hints[state.chapter]||0)+1,2);save();openHint();}
   function openNotebook(){
-    const entries=Object.values(chapters).map((c,i)=>{const n=i+1,done=state.chapter>n||state.ending;return `<div class="note-entry ${done?"complete":""}"><b>${c.kicker} · ${c.objective}</b><p>${n<=state.chapter?`${n===state.chapter?"正在调查":"已经解决"} · ${n===state.chapter?progress()+" / "+c.target:c.target+" / "+c.target}`:"尚未开启"}</p></div>`;}).join("");
+    const entries=Object.values(chapters).map((c,i)=>{const n=i+1,done=state.chapter>n||state.ending;return `<div class="note-entry ${done?"complete":""}"><b>${c.kicker} · ${c.objective}</b><p>${n<=state.chapter?`${n===state.chapter?"正在复核":"已归档"} · ${n===state.chapter?progress()+" / "+c.target:c.target+" / "+c.target}`:"尚未开放"}</p></div>`;}).join("");
     els.notebook_objectives.innerHTML=entries;
-    els.suspect_notes.innerHTML=`<div class="note-entry"><b>玛戈·福格尔</b><p>${state.chapter<3?"赫尔曼的养女，曾做护士。昨夜承认与赫尔曼为一封旧信争吵；谈起他时常先叫『局长』，再改口。":"熟悉处方记录与冷库工作。她承认昨夜争吵，但要求艾达不要替她回答最后发生了什么。"}</p></div><div class="note-entry"><b>利奥波德·哈斯</b><p>${state.flags.letterB?"十九年前为安娜开过氯醛处方。面对受损剂量栏时，他只强调：缺失的墨迹不能当作原本的数字。":"镇上医生。杯底镇静剂让他的职业显得可疑，但胃内容物暂时不能支持『喝下药』这一点。"}</p></div><div class="note-entry"><b>维克托·莱茵</b><p>邮票商，熟悉旧邮局的管道和邮戳。他对自己的身份含糊其辞，但愿意说明机械结构。</p></div><div class="note-entry"><b>安娜·韦伯</b><p>${state.flags.letterA?"玛戈的生母，也是《雪落以前》的署名者。编号17—B与她有关；前五封信已经交付，第六封仍未投递。":"玛戈的生母。《雪落以前》的署名者。她的名字仍留在旧目录的钉孔附近。"}</p></div>`;openModal("notebook-modal");
+    const margo=state.chapter<3?"赫尔曼的养女，曾在诊所做护士。她说起争吵时没有回避自己的愤怒，却始终把赫尔曼叫作『局长』。旧订报证上，她小时候的姓仍是韦伯。":"她熟悉处方、冷库和邮局作息。越接近真相，她越少为自己辩解。艾达在边注里写：『不要把沉默当作供认。她已经背着一个答案生活了十九年。』";
+    const haas=state.flags.letterB?"十九年前为安娜开过处方。水渍毁掉剂量栏后，他养成了把小数点描得很重的习惯。镇上人不喜欢他的坏脾气，却记得穷人来看病时，他常把收费栏空着。":"镇上医生。杯底的镇静剂让他的职业显得可疑，但检验暂时不能证明药进入过死者体内。诊所学徒说，他最怕别人把『不知道』逼成一个确定答案。";
+    els.suspect_notes.innerHTML=`<div class="note-entry person"><b>赫尔曼·福格尔</b><p>邮局长。十九年前在雨站台把无人来接的玛戈带回家，此后替安娜保存每年一封的信。他很少解释自己做过的事，因此许多善意直到太晚才有名字。</p></div><div class="note-entry person"><b>玛戈·福格尔</b><p>${margo}</p></div><div class="note-entry person"><b>利奥波德·哈斯</b><p>${haas}</p></div><div class="note-entry person"><b>维克托·莱茵</b><p>邮票商，熟悉旧式气动管。他把自己的过去说得很轻，只承认在战争之后换过很多名字。对机器比对人坦白，也许是因为机器不会追问他从哪里来。</p></div><div class="note-entry person"><b>安娜·韦伯</b><p>${state.flags.letterA?"玛戈的生母，《雪落以前》的署名者。她在病中写给女儿的五页纸很少谈疼痛，大多写天气、早餐和鞋带——像是在努力把自己留在女儿未来最普通的日子里。":"玛戈的生母。《雪落以前》的署名者。旧目录仍保留她的编号17—B，钉孔附近有多次翻阅留下的磨损。"}</p></div><div class="note-entry person minor"><b>艾尔莎·克劳斯</b><p>邮局抄写员，案卷里只出现过两次。她后来回忆：赫尔曼从不在玛戈面前说『收养』，只说『她住在我家』。这句话既像尊重，也像一种不敢越界的笨拙。</p></div>`;openModal("notebook-modal");
   }
 
   function renderArchive(page=state.archivePage||1){
@@ -610,34 +627,48 @@
   function backTitle(){closeAll();els.game_screen.classList.add("hidden");els.title_screen.classList.add("hidden");els.portal_screen.classList.remove("hidden");els.portal_continue.classList.toggle("hidden",!hasStoredSave());}
 
   const portalStories={
-    rain:{title:"雨夜里最容易误判的，不是脚印，是等待",copy:"<p>那年我在一座没有钟的车站守到天亮。后来才明白，现场里最危险的往往不是假的证据，而是一个太像答案的故事。</p><p>所以我给新人留下一条笨规矩：先写下你看见了什么，再写你认为它意味着什么。两句话之间，至少空一行。</p>"},
-    lamp:{title:"煤油灯熄灭后的七分钟",copy:"<p>四个人都说灯灭后自己只在走廊停了片刻。我们差点把四份相似证词当成了互相印证。</p><p>直到第二天，一个学徒说：煤油灯刚熄时，他听见楼下的钟敲了两次。所谓“片刻”，在不同的人嘴里，从三分钟到十一分钟不等。</p>"},
-    letter:{title:"有些信不是寄丢的，是写信的人一直没敢寄",copy:"<p>我整理过三起未投递信件。它们最后都没有改变案情，却改变了我对死者的看法。</p><p>证物告诉我们一个人做过什么；信件偶尔会告诉我们，他原本想成为什么样的人。两种东西不要混在一起，但也别轻易丢掉后者。</p>"},
-    mistake:{title:"我曾因为一句“他看起来很冷静”把方向查反了",copy:"<p>那句话不是事实，只是描述。可我太早把“冷静”理解成“预谋”，于是后面每一条证据都被我硬塞进同一个故事里。</p><p>真正救回调查的是一张购物小票。它没有情绪，也没有立场，只把时间写得清清楚楚。</p>"}
+    casesIndex:{tab:"cases",kicker:"站点导航 · 旧案陈列",meta:"整理：灰烬 / 页面修订 12-28",title:"旧案陈列：那些最后没有变成传奇的调查",copy:`<p>旧案陈列不按“精彩程度”排序。很多案子只有两三页，没有密室，没有惊人的犯人，甚至没有真正意义上的结局。它们被留下，是因为调查里最容易犯的错误，常常发生在这些不起眼的案子里。</p><h3>11—A · 雨站台</h3><p>一个男人在雨夜失踪，站台上只有一排被雨水打断的脚印。调查最后没有找到他。北窗把这案子列入本站，是为了提醒新人：没有结论的调查仍然可以留下可靠的事实。</p><h3>04—C · 熄灯后的走廊</h3><p>四名证人都说“只过了一会儿”，但他们对时间的感受相差八分钟。后来证明没有人撒谎，只是每个人都把自己的害怕压缩成了一个模糊的词。</p><h3>17—B · 魏瑟堡死信室</h3><p>1927年的旧案，原结论为意外死亡。最近一次数字化清点发现，封存物与原始索引不符，本页暂时锁定，等待值班复核。</p><p class="portal-pullquote">旧案真正可怕的地方，不是死人会回来，而是一个错误的解释有时会活得比所有当事人都久。</p>`},
+    notesIndex:{tab:"notes",kicker:"站点导航 · 前辈手记",meta:"共 146 篇 / 失败记录优先收录",title:"前辈手记：我们为什么把走错的路也保存下来",copy:`<p>站里最早的一批成员约定，成功案件只写事实，失败案件则必须把“当时为什么会相信那个错误答案”也写下来。后来大家发现，后者比前者更有用。</p><h3>北窗：先写看见的，再写理解的</h3><p>我曾把一扇开着的窗写成“逃生通道”。多年后重看照片，才发现那只是一扇开着的窗。语言一旦替事实多走一步，后面的推理就很容易跟着走远。</p><h3>南桥：不要用性格证明行为</h3><p>“他很冷静”“她看起来心虚”“那个人不像会撒谎”都不是物证。我们可以记下感觉，但必须把它放在与事实不同的栏里。</p><h3>灰烬：留一格给不知道</h3><p>调查者最难学会的不是怀疑，而是允许某一格暂时空着。很多冤枉都开始于我们太急着把空白填满。</p>`},
+    rulesIndex:{tab:"rules",kicker:"站点导航 · 调查守则",meta:"值班室共同修订 / 第 7 版",title:"调查守则：十条很慢、但能少伤害一个人的规矩",copy:`<ol class="portal-rules"><li><b>事实与推论分栏。</b> “杯里有药”不等于“死者喝了药”。</li><li><b>不要替证人补完沉默。</b> 他说“不记得”，就先把“不记得”写下来。</li><li><b>先排除物理上不可能的，再讨论人心。</b></li><li><b>不要把职业当作罪证。</b> 医生会接触药，邮差会接触信，仅此而已。</li><li><b>错误答案也要记录为什么错。</b></li><li><b>任何“恰好”都需要第二件独立证据。</b></li><li><b>私人文字不是口供。</b> 日记和信可以帮助理解人，但不能自动替代物证。</li><li><b>别急着替死者变得高尚。</b> 他可以有缺点，也仍值得被准确地记住。</li><li><b>结案以后再读一遍人物记录。</b> 看看你有没有把谁只写成“嫌疑人”。</li><li><b>允许遗憾保持遗憾。</b> 调查能说明发生过什么，却不总能补回本来可能发生的生活。</li></ol>`},
+    rain:{tab:"hall",kicker:"前辈手记 · 11—A",meta:"北窗 / 最后修改 12-27 02:13",title:"雨夜里最容易误判的，不是脚印，是等待",copy:`<p>那年我在一座没有钟的车站守到天亮。一个男人失踪了，雨把脚印洗得断断续续。我们都盯着站台边缘，以为下一班车会带来答案。</p><p>没有。天亮以后，只来了一位卖热牛奶的老妇人。她说失踪者每周三都会替邻居买一份报纸，因为邻居眼睛不好。这件小事与失踪原因毫无关系，却让我第一次意识到：卷宗里的“失踪者”，在别人生活里原来只是一个每周会敲一次门的人。</p><p>后来案子没有破。我也没有再把“没有破”写成“毫无所得”。至少我们知道他最后一晚没有奔跑、没有争执，也没有留下告别。剩下的空白，只能诚实地空着。</p><p class="portal-pullquote">先写下你看见了什么，再写你认为它意味着什么。两句话之间，至少空一行。</p>`},
+    lamp:{tab:"hall",kicker:"旧案复盘 · 04—C",meta:"柯石 / 现场时间专题",title:"煤油灯熄灭后的七分钟：四个人为什么都说“没多久”",copy:`<p>灯灭时，走廊里有四个人。事后他们分别说自己只停了“一小会儿”“几分钟”“没多久”“等灯亮”。我们差点把四份相似证词当成互相印证。</p><p>第二天，一个学徒想起楼下的钟敲过两次。重新计时后，四个人所谓的“片刻”分别是三分钟、五分钟、八分钟和十一分钟。没人撒谎；恐惧只是让每个人心里的钟走得不一样。</p><p>从那以后我不再问“你等了多久”，而会问“你等的时候听见了什么、做了什么、谁经过”。时间不是人脑里的一把尺，它更像一团会被情绪揉皱的纸。</p>`},
+    letter:{tab:"hall",kicker:"夜读随笔 · 未投递信件",meta:"灰烬 / 12-16",title:"有些信不是寄丢的，是写信的人一直没敢寄",copy:`<p>我整理过三起未投递信件。第一封放在父亲书桌里二十二年，第二封被夹在离婚协议背面，第三封寄信人与收件人每天在同一张餐桌吃饭。</p><p>它们最后都没有改变案情，却改变了我对死者的看法。证物告诉我们一个人做过什么；信件偶尔会告诉我们，他原本想成为什么样的人。</p><p>两种东西不要混在一起。别用一句温柔的话洗掉一个人的错误，也别因为错误已经无法挽回，就假装那句温柔从未写过。</p><p class="portal-pullquote">最让人难过的信，通常不是写给远方，而是写给近得只隔一扇门的人。</p>`},
+    mistake:{tab:"hall",kicker:"失败复盘 · 南桥",meta:"公开给新人 / 12-04",title:"我曾因为一句“他看起来很冷静”把方向查反了",copy:`<p>那句话不是事实，只是描述。可我太早把“冷静”理解成“预谋”，于是后面每一条证据都被我硬塞进同一个故事里。</p><p>真正把调查救回来的是一张购物小票。它没有情绪，也没有立场，只把时间写得清清楚楚。那个被我怀疑了两天的人，所谓的“冷静”，只是因为他小时候口吃，一紧张反而一句话都说不出来。</p><p>我后来去道歉。他说没关系。我知道那不是真的没关系，所以把这篇复盘留到现在。</p>`},
+    hermann:{tab:"hall",kicker:"人物志 · 魏瑟堡邮政区",meta:"退休职员口述整理 / 非案情结论",title:"赫尔曼·福格尔：一个把退信柜钥匙带回家的人",copy:`<p>赫尔曼做了二十六年邮局长。档案里的评语很乏味：准时、节俭、脾气固执。真正认识他的人记住的却是别的——他总把退信柜最后一格留空，说“总得给明天来的那一封留位置”。</p><p>1910年前后的冬天，他常带一个小女孩来上班。女孩在高柜旁写字，困了就睡在两只麻袋中间。有人问是不是他的女儿，赫尔曼先说“不是”，隔了一会儿又补：“她叫玛戈。”</p><p>这句回答后来被艾尔莎记了几十年。她说赫尔曼不是不会爱人，只是不擅长把爱变成一句别人听得懂的话。</p><p>人物志原本到这里就结束。17—B复核开启后，管理员在页尾加了一行灰字：<em>有些迟到不是因为路远。</em></p>`},
+    anna:{tab:"hall",kicker:"人物文稿 · A.W.",meta:"小满 / 私印本整理札记",title:"安娜·韦伯的五页纸：她写给女儿的天气比写自己更多",copy:`<p>安娜留下的文字很少。病历里只有姓名和体温，租房簿上只有三个月欠款。真正像她自己的东西，是五页没有出版过的小说。</p><p>她写雨站台、烧焦的牛奶、窗台上第一场雪，写孩子总把左脚鞋带系得更紧。病痛只出现一次：“今天手没有力气，所以字比昨天难看。”随后下一句又在写玛戈喜欢的果酱。</p><p>我整理到这里时忽然明白，她不是不知道自己快死了。恰恰因为知道，她才把有限的纸都留给那些最普通、最像未来的东西。</p><p>一个快要离开的人拼命写日常，也许不是逃避死亡。也许她只是希望女儿以后想起自己时，不只剩下病床。</p>`},
+    snow:{tab:"hall",kicker:"夜读文库 · 散文诗",meta:"匿名投稿 / 第 41 期",title:"雪落在没有地址的地方",copy:`<div class="portal-poem"><p>雪先落在屋檐，<br>再落在没有人去取的信箱。</p><p>有人把名字写得很端正，<br>却在地址那一栏停了很久。</p><p>我们总以为离别发生在门关上的时候。<br>其实更早一些——<br>发生在一句话已经来到嘴边，<br>又被咽回去的时候。</p><p>第二天的早餐仍会被写进纸上，<br>牛奶仍会送到门口。<br>只是两把椅子里，<br>有一把从此只剩下“本来”。</p></div><p class="portal-poem-note">管理员注：这首文字收录于17—B复核之前。没有证据表明作者与该案有关。</p>`},
+    clerk:{tab:"hall",kicker:"人物小传 · 卷宗边角",meta:"北窗 / 10-30",title:"次要人物也有下班以后：记老邮局抄写员艾尔莎",copy:`<p>艾尔莎在17—B正式卷宗里只有两行：确认办公室钥匙数量，确认局长昨日下午到岗。若只看案卷，她像一件会说话的办公用品。</p><p>退休访谈里，她却讲了一个多小时。她年轻时想去剧院做服装，最后因为父亲生病留在镇上；每年冬天替同事织手套；战争那几年把所有坏消息都抄成两份，一份入档，一份自己留着，怕哪天有人回来找。</p><p>她说赫尔曼死后，玛戈有很长一段时间不从邮局门前经过。艾尔莎也没有去劝。她只在每年第一场雪时，把办公室窗台擦干净。</p><p>我们后来把这篇放进人物栏目，是想提醒自己：所谓“次要人物”，只是因为调查者的纸不够大。</p>`},
+    waiting:{tab:"hall",kicker:"夜读随笔",meta:"灰烬 / 无案号",title:"等人的房间",copy:`<p>我见过很多等人的房间。车站、医院、警局走廊、凌晨的厨房。它们都有一个共同点：桌上会多留一只杯子，灯会晚关一会儿，门外一点声音都足以让人抬头。</p><p>等待最残忍的地方，不在于人没有来，而在于等待者会替未来保留位置。那位置起初只是一把椅子，久了以后会变成生活的一部分。</p><p>所以我从不轻易对家属说“别等了”。调查可以结束，卷宗可以归档，但人不是靠一句结论从等待里走出来的。</p>`},
+    case17:{tab:"hall",kicker:"旧案索引 · 17—B",meta:"状态：复核中",title:"17—B · 魏瑟堡死信室",copy:`<p><b>原案日期：</b>1927年11月18日<br><b>地点：</b>魏瑟堡旧邮局地下死信室<br><b>原始登记：</b>意外死亡，现场从内侧闩锁<br><b>复核原因：</b>数字化清点发现未登记私人信件、冷库附件与原证物索引不一致。</p><p>本站不展示旧案原结论的推导过程，以免复核者先入为主。值班调查员接入后，将按原始照片、证物登记和艾达·克莱因的现场笔记重新建立证据关系。</p><p class="portal-pullquote">请不要把“旧结论”当作起点。过去被写下来，不等于过去已经被写对。</p>`}
   };
   let dispatchTimer=null,dispatchDeferred=false;
-  function openPortalStory(key){const x=portalStories[key];if(!x)return;els.portal_reading_title.textContent=x.title;els.portal_reading_copy.innerHTML=x.copy;els.portal_reading.classList.add("open");}
-  function closePortalStory(){els.portal_reading.classList.remove("open");}
+  function setPortalActive(tab="hall"){document.querySelectorAll(".portal-nav").forEach(b=>b.classList.toggle("active",b.dataset.portalTab===tab));}
+  function bindPortalStoryLinks(root=document){root.querySelectorAll("[data-story]").forEach(el=>{el.onclick=e=>{e.preventDefault();openPortalStory(el.dataset.story);};});}
+  function openPortalStory(key){
+    const x=portalStories[key];if(!x)return;
+    els.portal_home_view.classList.add("hidden");els.portal_reading.classList.add("open");
+    els.portal_reading_kicker.textContent=x.kicker||"站内文章";els.portal_reading_title.textContent=x.title;els.portal_reading_meta.textContent=x.meta||"";els.portal_reading_copy.innerHTML=x.copy;
+    els.portal_breadcrumb.textContent=`当前位置：烛影侦探社 › ${x.tab==="cases"?"旧案陈列":x.tab==="notes"?"前辈手记":x.tab==="rules"?"调查守则":"值班室"} › ${x.title}`;
+    setPortalActive(x.tab||"hall");bindPortalStoryLinks(els.portal_reading_copy);els.portal_reading.scrollIntoView({block:"start"});
+  }
+  function closePortalStory(){els.portal_reading.classList.remove("open");els.portal_home_view.classList.remove("hidden");els.portal_breadcrumb.textContent="当前位置：烛影侦探社 › 值班室";setPortalActive("hall");}
   function showDispatch(){if(state.started||dispatchDeferred||!els.game_screen.classList.contains("hidden"))return;els.dispatch_modal.classList.remove("hidden");}
+  function showPortalSearch(q){
+    const query=q.toLowerCase();const results=Object.entries(portalStories).filter(([k,x])=>!k.endsWith("Index")&&(x.title+x.kicker+x.meta+x.copy.replace(/<[^>]+>/g," ")).toLowerCase().includes(query));
+    els.portal_home_view.classList.add("hidden");els.portal_reading.classList.add("open");els.portal_reading_kicker.textContent="站内检索";els.portal_reading_title.textContent=`“${q}” 的检索结果`;els.portal_reading_meta.textContent=`找到 ${results.length} 条可读取页面`;
+    els.portal_reading_copy.innerHTML=results.length?`<div class="portal-search-results">${results.map(([k,x])=>`<button class="portal-search-hit" data-story="${k}"><b>${x.title}</b><span>${x.kicker}</span></button>`).join("")}</div>`:"<p>旧站索引里没有匹配这一关键词。可以试试人物姓名、案件编号、地点或作者。</p>";
+    els.portal_breadcrumb.textContent="当前位置：烛影侦探社 › 站内检索";setPortalActive("hall");bindPortalStoryLinks(els.portal_reading_copy);
+  }
   function initPortal(){
-    els.portal_continue.classList.toggle("hidden",!hasStoredSave());
-    document.querySelectorAll("[data-story]").forEach(el=>el.onclick=e=>{e.preventDefault();openPortalStory(el.dataset.story);});
+    els.portal_continue.classList.toggle("hidden",!hasStoredSave());bindPortalStoryLinks(els.portal_screen);
     els.portal_reading_close.onclick=closePortalStory;
-    els.portal_search.onsubmit=e=>{
-      e.preventDefault();
-      const q=els.portal_search_input.value.trim().toLowerCase();
-      const threads=[...document.querySelectorAll(".portal-thread")];
-      if(!q){threads.forEach(t=>t.classList.remove("search-miss"));closePortalStory();return;}
-      let hit=0;threads.forEach(t=>{const ok=t.textContent.toLowerCase().includes(q);t.classList.toggle("search-miss",!ok);if(ok)hit++;});
-      if(!hit){els.portal_reading_title.textContent="没有找到相关旧帖";els.portal_reading_copy.innerHTML="<p>旧站索引里没有匹配这一关键词。可以试试案件编号、地点或调查员姓名。</p>";els.portal_reading.classList.add("open");}
-      else closePortalStory();
-    };
+    els.portal_search.onsubmit=e=>{e.preventDefault();const q=els.portal_search_input.value.trim();if(!q){closePortalStory();return;}showPortalSearch(q);};
     els.portal_urgent_thread.onclick=()=>{dispatchDeferred=false;showDispatch();};
     els.dispatch_later.onclick=()=>{dispatchDeferred=true;els.dispatch_modal.classList.add("hidden");};
     els.dispatch_enter.onclick=()=>{if(!audio.ctx||!audio.enabled)initAudio();start(true);};
     els.portal_continue.onclick=()=>start(false);
-    document.querySelectorAll(".portal-nav").forEach(b=>b.onclick=()=>{document.querySelectorAll(".portal-nav").forEach(x=>x.classList.remove("active"));b.classList.add("active");if(b.dataset.portalTab==="hall")closePortalStory();else openPortalStory({cases:"letter",notes:"mistake",rules:"rain"}[b.dataset.portalTab]||"rain");});
-    clearTimeout(dispatchTimer);dispatchTimer=setTimeout(()=>showDispatch(),9000);
+    document.querySelectorAll(".portal-nav").forEach(b=>b.onclick=()=>{const tab=b.dataset.portalTab;if(tab==="hall")closePortalStory();else openPortalStory({cases:"casesIndex",notes:"notesIndex",rules:"rulesIndex"}[tab]);});
+    clearTimeout(dispatchTimer);dispatchTimer=setTimeout(()=>showDispatch(),10500);
   }
 
   function initAudio(){
@@ -665,10 +696,11 @@
     const patterns={"长 · 短短 · 长":[.42,.13,.13,.42],"短 · 长长 · 短":[.13,.42,.42,.13],"长长 · 短 · 短":[.42,.42,.13,.13]},seq=patterns[label]||[];let t=audio.ctx.currentTime+.08;
     seq.forEach(d=>{const o=audio.ctx.createOscillator(),g=audio.ctx.createGain();o.type="sine";o.frequency.value=510;g.gain.setValueAtTime(.025,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(audio.master);o.start(t);o.stop(t+d+.01);t+=d+.11;});
   }
-  function updateSound(){$("sound-btn").innerHTML=`<i>A-05</i><span>${audio.enabled?"声音":"静音"}</span>`;$("title-sound").textContent=audio.enabled?"关闭声音 · 环境声与间页乐音已开启":"开启声音 · 推荐佩戴耳机";}
+  function updateSound(){$("sound-btn").innerHTML=`<i>声音</i><span>${audio.enabled?"已开启":"已静音"}</span>`;$("title-sound").textContent=audio.enabled?"关闭声音 · 环境声与间页乐音已开启":"开启声音 · 推荐佩戴耳机";}
 
   function bind(){
     initPortal();
+    if(els.case_home)els.case_home.onclick=backTitle;
     $("new-game").onclick=()=>start(true);els.continue_game.onclick=()=>start(false);els.continue_game.classList.toggle("hidden",!hasStoredSave());
     $("title-sound").onclick=initAudio;$("sound-btn").onclick=initAudio;$("archive-btn").onclick=()=>openArchive();$("archive-search").onsubmit=searchArchive;$("notebook-btn").onclick=openNotebook;$("hint-btn").onclick=openHint;$("next-hint").onclick=nextHint;$("support-btn").onclick=openSupport;$("menu-btn").onclick=()=>openModal("menu-modal");
     $("support-done").onclick=()=>{localStorage.setItem(SUPPORT_PAID,"1");closeAll();toast("谢谢你让这间死信室继续亮着灯 ♡","success");render();};$("support-later").onclick=closeAll;
