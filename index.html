@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"/>
@@ -38,7 +37,7 @@
 </section>
 <section class="portal-board" id="portal-hall">
 <div class="portal-board-head"><b>值班室 · 最近更新</b><span>主题 / 作者 / 最后回复</span></div>
-<button class="portal-thread urgent-thread" id="portal-urgent-thread"><span class="thread-tag">置顶</span><div><b>【复核请求】魏瑟堡旧邮局：17—B封存卷宗出现未登记证物</b><small>刚刚更新 · 灰烬 · 等待在线调查员接入</small></div><time>23:48</time></button>
+<button class="portal-thread urgent-thread" id="portal-urgent-thread"><span class="thread-tag">置顶</span><div><b>〖复核请求〗魏瑟堡旧邮局：17—B封存卷宗出现未登记证物</b><small>刚刚更新 · 灰烬 · 等待在线调查员接入</small></div><time>23:48</time></button>
 <button class="portal-thread" data-story="rain"><span class="thread-tag">手记</span><div><b>雨夜里最容易误判的，不是脚印，是等待</b><small>北窗 · 一次没有抓到凶手的调查</small></div><time>12-27</time></button>
 <button class="portal-thread" data-story="lamp"><span class="thread-tag">旧案</span><div><b>煤油灯熄灭后的七分钟：四个人为什么都说“没多久”</b><small>柯石 · 现场时间感与记忆偏差</small></div><time>12-22</time></button>
 <button class="portal-thread" data-story="letter"><span class="thread-tag">随笔</span><div><b>有地址的信，也会寄不出去</b><small>灰烬 · 关于“明天再说”的几张旧纸</small></div><time>12-16</time></button>
@@ -126,7 +125,6 @@
 <div class="panel-heading"><span>证物索引 / VERIFIED</span><small id="evidence-count">0 / 15</small></div>
 <div class="evidence-list" id="evidence-list"></div>
 <div class="knowledge-heading">已经验证的物理事实</div><div class="knowledge-list" id="knowledge-list"><p>尚无记录</p></div>
-
 </aside>
 </section>
 <footer class="inventory-drawer"><span class="drawer-label">临时物品 / TOOL TRAY</span><button aria-label="向前翻物品" class="drawer-arrow" id="inventory-prev">‹</button><div class="inventory-list" id="inventory-list"><p class="empty-inventory">道具会登记在这里。</p></div><button aria-label="向后翻物品" class="drawer-arrow" id="inventory-next">›</button><button aria-label="打开证物登记" class="mobile-sheet-button" id="mobile-evidence">证物</button></footer>
@@ -153,7 +151,7 @@
 <button aria-label="关闭" class="modal-close" data-close="support-modal">×</button><div class="support-stamp">1元</div><p class="modal-kicker">完整内容始终免费</p><h2 id="support-title">给夜班留一盏灯</h2><p>如果这封信曾让你停一下，可以自愿支持 1 元。无论是否支持，案件、小说和结局都完整开放。</p><img alt="支付宝一元支持二维码" src="assets/images/support-qr.png"/><small>支付宝扫码 · abc studio</small><div class="support-actions"><button class="ink-button primary" id="support-done">已经支持 ♡</button><button class="ink-button" id="support-later">先继续查案</button></div>
 </section>
 <section aria-labelledby="menu-title" aria-modal="true" class="paper-modal hidden" id="menu-modal" role="dialog">
-<button aria-label="关闭" class="modal-close" data-close="menu-modal">×</button><p class="modal-kicker">档案管理</p><h2 id="menu-title">暂停调查</h2><div class="menu-stack"><button class="ink-button primary" id="resume-game">继续</button><button class="ink-button" id="reset-game">重新调查</button><button class="ink-button" id="back-title">返回封面</button></div><p class="autosave-note">证物、阅读进度、实验和章节都会自动保存。</p>
+<button aria-label="关闭" class="modal-close" data-close="menu-modal">×</button><p class="modal-kicker">档案管理</p><h2 id="menu-title">暂停调查</h2><div class="menu-stack"><button class="ink-button primary" id="resume-game">继续</button><button class="ink-button" id="reset-game">重新调查</button><button class="ink-button" id="back-title">返回烛影侦探社</button></div><p class="autosave-note">证物、阅读进度、实验和章节都会自动保存。</p>
 </section>
 <section aria-labelledby="ending-title" aria-modal="true" class="ending-modal hidden" id="ending-modal" role="dialog">
 <p class="eyebrow">CASE CLOSED · 18 NOV 1927</p><h2 id="ending-title">没有凶手的密室</h2><div id="ending-copy"></div><button class="ink-button primary" id="ending-letter">拆开第六封信</button>
@@ -172,5 +170,6 @@
 </section>
 </div>
 <script src="assets/game.js"></script>
+<script src="assets/literature-patch.js"></script>
 </body>
 </html>
