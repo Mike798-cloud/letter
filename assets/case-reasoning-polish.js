@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const PATCH = '2026-08-26-case-reasoning-v2';
+  const PATCH = '2026-08-26-case-reasoning-v3';
   if (document.documentElement.dataset.caseReasoningPolish === PATCH) return;
   document.documentElement.dataset.caseReasoningPolish = PATCH;
 
@@ -160,16 +160,81 @@
     });
   }
 
-  function renderResolved(actions, qData) {
-    actions.dataset.reasoningTitle = canonicalTitle($('detail-title')?.textContent?.trim() || '');
-    actions.innerHTML = `<section class="reasoning-question reasoning-resolved">
-      <div class="reasoning-head"><span>现场判断 / 已登记</span><b>${esc(qData.q)}</b></div>
-      <div class="reasoning-resolution"><span>${String.fromCharCode(65 + qData.correct)}</span><p>${esc(qData.options[qData.correct].replace(/^[A-D][\.、]\s*/, ''))}</p></div>
-      <p class="reasoning-feedback correct"><b>判断已记入案卷。</b>${esc(qData.why)}</p>
-    </section>`;
+  const GAME_SAVE_KEY = 'dead-letter-room-save-v5';
+  const REASONING_SAVE_KEY = 'dead-letter-room-reasoning-v3';
+  const stateMarkers = {
+    '赫尔曼的尸体': { clue: 'c_lividity' },
+    '内侧门闩': { clue: 'c_latch' },
+    '钉死的高窗': { clue: 'c_window' },
+    '通风管': { clue: 'c_vent' },
+    '凉茶': { clue: 'c_tea' },
+    '石地与头部': { clue: 'c_rigor' },
+    '投递胶囊': { clue: 'c_capsule' },
+    '空置长层板': { clue: 'c_shelf' },
+    '地面拖痕': { clue: 'c_drag' },
+    '温度记录表': { flag: 'chartSolved' },
+    '三份笔迹': { flag: 'handSolved' }
+  };
+
+  function readJSON(key, fallback) {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch (_) {
+      return fallback;
+    }
+  }
+  function readGameState() { return readJSON(GAME_SAVE_KEY, null); }
+  function coreDone(title) {
+    const marker = stateMarkers[canonicalTitle(title)];
+    const s = readGameState();
+    if (!marker || !s) return false;
+    if (marker.clue) return Array.isArray(s.clues) && s.clues.includes(marker.clue);
+    if (marker.flag) return !!(s.flags && s.flags[marker.flag]);
+    return false;
+  }
+  function rememberReasoning(title, correctIndex) {
+    const data = readJSON(REASONING_SAVE_KEY, {});
+    data[canonicalTitle(title)] = { answer: correctIndex, at: Date.now() };
+    try { localStorage.setItem(REASONING_SAVE_KEY, JSON.stringify(data)); } catch (_) {}
   }
 
-  function optionButton(text, idx, qData, originalAction, host) {
+  function renderResolved(actions, qData, title) {
+    const canonical = canonicalTitle(title || $('detail-title')?.textContent?.trim() || '');
+    actions.dataset.reasoningTitle = canonical;
+    actions.querySelectorAll('.reasoning-question').forEach(el => el.remove());
+    actions.querySelectorAll(':scope > button.reasoning-core-action').forEach(btn => {
+      btn.hidden = true;
+      btn.setAttribute('aria-hidden', 'true');
+      btn.tabIndex = -1;
+    });
+    const section = document.createElement('section');
+    section.className = 'reasoning-question reasoning-resolved';
+    section.innerHTML = `<div class="reasoning-head"><span>现场判断 / 已登记</span><b>${esc(qData.q)}</b></div>
+      <div class="reasoning-resolution"><span>${String.fromCharCode(65 + qData.correct)}</span><p>${esc(qData.options[qData.correct].replace(/^[A-D][\.、]\s*/, ''))}</p></div>
+      <p class="reasoning-feedback correct"><b>判断已记入案卷。</b>${esc(qData.why)}</p>`;
+    actions.prepend(section);
+  }
+
+  function verifyAndRemember(title, qData, feedback) {
+    let tries = 0;
+    const check = () => {
+      if (coreDone(title)) {
+        rememberReasoning(title, qData.correct);
+        return;
+      }
+      tries += 1;
+      if (tries < 8) {
+        setTimeout(check, 35);
+      } else if (feedback && document.body.contains(feedback)) {
+        feedback.className = 'reasoning-feedback wrong';
+        feedback.innerHTML = '<b>登记没有完成。</b>请关闭后重新打开这一证物再试；当前判断不会被误记为已完成。';
+      }
+    };
+    check();
+  }
+
+  function optionButton(text, idx, qData, originalButton, host, title) {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'reasoning-option';
@@ -181,11 +246,16 @@
         host.querySelectorAll('.reasoning-option').forEach(x => { x.dataset.locked = '1'; x.disabled = true; });
         b.classList.add('correct');
         feedback.className = 'reasoning-feedback correct';
-        feedback.innerHTML = `<b>判断成立，证物将登记并计入本章进度。</b>${esc(qData.why)}`;
-        // 正确判断才调用原案卷登记函数；原游戏会随即保存 clue/flag，并据此决定章节是否可推进。
-        window.setTimeout(() => {
-          try { originalAction(); } catch (err) { console.error('[case-reasoning] original action failed', err); }
-        }, 120);
+        feedback.innerHTML = `<b>判断成立，正在登记证物。</b>${esc(qData.why)}`;
+
+        // 保留原游戏按钮在 DOM 中并同步触发。这样原案卷自己的 state / save / afterClue / checkChapter3
+        // 会按原流程执行，章节推进不再依赖补丁自行猜测游戏内部状态。
+        try {
+          originalButton.click();
+        } catch (err) {
+          console.error('[case-reasoning] core action failed', err);
+        }
+        verifyAndRemember(title, qData, feedback);
       } else {
         b.classList.add('wrong');
         b.dataset.locked = '1';
@@ -197,35 +267,55 @@
     return b;
   }
 
+  function selectCoreAction(actions) {
+    const buttons = [...actions.querySelectorAll(':scope > button.ink-button')];
+    const usable = buttons.filter(btn =>
+      !btn.dataset.forensicReplay &&
+      !btn.classList.contains('forensic-action') &&
+      !btn.classList.contains('reasoning-shadow-action')
+    );
+    if (!usable.length) return null;
+    const preferred = usable.find(btn => /登记为证物|用侧光确认底层数字|登记共同书写特征|已登记/.test(btn.textContent.trim()));
+    return preferred || (usable.length === 1 ? usable[0] : null);
+  }
+
   function upgradeDirectConclusion() {
     const modal = $('detail-modal'), actions = $('detail-actions'), titleEl = $('detail-title');
     if (!modal || !actions || !titleEl || modal.classList.contains('hidden')) return;
     const title = canonicalTitle(titleEl.textContent.trim());
     const qData = questions[title];
-    if (!qData) return; // 只改真正需要案件判断的节点，避免套用通用模板题。
+    if (!qData) return;
 
-    const buttons = [...actions.querySelectorAll(':scope > button.ink-button')];
-    if (buttons.length !== 1) return; // 已经是实验、程序题或多选流程，不重复包一层选择题。
-    const originalButton = buttons[0];
-    const label = originalButton.textContent.trim();
-
-    // 原案卷已经登记的 clue/flag 本身就是持久状态。再次打开时直接显示已完成判断，不再重复答题。
-    if (/已登记|已确认|已完成/.test(label)) {
-      if (!actions.querySelector('.reasoning-resolved')) renderResolved(actions, qData);
+    // 以主游戏存档为唯一“是否完成”依据。刷新、关闭弹窗、重新进入地点后都能稳定恢复。
+    if (coreDone(title)) {
+      if (!actions.querySelector('.reasoning-resolved')) renderResolved(actions, qData, title);
       return;
     }
-    if (actions.dataset.reasoningTitle === title && actions.querySelector('.reasoning-question')) return;
 
-    const originalFn = typeof originalButton.onclick === 'function' ? originalButton.onclick : () => originalButton.click();
+    // 若同一弹窗已经升级，不因 forensic-enhance 后续插入按钮而重复重建题目。
+    if (actions.dataset.reasoningTitle === title && actions.querySelector('.reasoning-question:not(.reasoning-resolved)')) return;
+
+    const originalButton = selectCoreAction(actions);
+    if (!originalButton) return;
+    const label = originalButton.textContent.trim();
+    if (/已登记|已确认|已完成/.test(label) && coreDone(title)) {
+      renderResolved(actions, qData, title);
+      return;
+    }
+
+    actions.querySelectorAll('.reasoning-question').forEach(el => el.remove());
+    originalButton.classList.add('reasoning-core-action');
+    originalButton.hidden = true;
+    originalButton.setAttribute('aria-hidden', 'true');
+    originalButton.tabIndex = -1;
     actions.dataset.reasoningTitle = title;
-    actions.innerHTML = '';
 
     const wrap = document.createElement('section');
     wrap.className = 'reasoning-question';
     wrap.innerHTML = `<div class="reasoning-head"><span>现场判断 / 只选一项</span><b>${esc(qData.q)}</b></div><div class="reasoning-grid"></div><p class="reasoning-feedback" aria-live="polite">选择与当前证物边界一致的一项。错误判断不会写入证物，也不会增加本章进度。</p>`;
     const grid = wrap.querySelector('.reasoning-grid');
-    qData.options.forEach((opt, idx) => grid.appendChild(optionButton(opt, idx, qData, originalFn, wrap)));
-    actions.appendChild(wrap);
+    qData.options.forEach((opt, idx) => grid.appendChild(optionButton(opt, idx, qData, originalButton, wrap, title)));
+    actions.prepend(wrap);
   }
 
   function polishForensicReplay() {
