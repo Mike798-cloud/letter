@@ -1,8 +1,8 @@
 (() => {
   "use strict";
 
-  const SAVE_KEY = "dead-letter-room-save-v3";
-  const LEGACY_SAVE_KEYS = ["dead-letter-room-save-v2", "dead-letter-room-save-v1"];
+  const SAVE_KEY = "dead-letter-room-save-v4";
+  const LEGACY_SAVE_KEYS = ["dead-letter-room-save-v3", "dead-letter-room-save-v2", "dead-letter-room-save-v1"];
   const SUPPORT_SEEN = "dead-letter-room-support-seen";
   const SUPPORT_PAID = "dead-letter-room-support-paid";
 
@@ -19,35 +19,35 @@
       lines:[
         "雾在魏瑟堡的石阶上停了一夜，清晨七点四十分还没有散。",
         "邮局地下一层，一扇从内侧闩住的门后，赫尔曼·福格尔倒在成堆的死信旁。",
-        "十九年前，他从一场漫长的等待里接过一个没有等到母亲的女孩；十九年后，她站在门外，第一次不知道该叫他“局长”还是“父亲”。",
-        "艾达·克莱因把手套收进大衣口袋。她没有先问谁最可疑，只问这间房最后一次说真话，是什么时候。"
+        "十九年前，赫尔曼在一座雨站台上把一个无人来接的女孩带回邮局。此后很多年，她住在他家里，却始终习惯叫他“局长”。",
+        "艾达·克莱因脱下被雾打湿的手套，先确认门闩没有被碰过，才走到玛戈面前。她问：“昨晚你离开这里的时候，赫尔曼还在和你说话吗？”"
       ]
     },
     chapter1:{
       register:"CASE 17—B · FIELD NOTE", folio:"INTERLUDE 02", kicker:"第一章之后 · 地下楼梯", heading:"三只没有邮戳的信封", button:"去局长办公室", theme:"paper",
       lines:[
-        "地下室的潮气黏在袖口。六件证物已经装进纸袋，却没有一件肯替任何人说出结论。",
-        "玛戈在楼梯口等着。她没有问尸体，只问书桌上那本《雪落以前》有没有被翻动。",
-        "“他昨晚念到一半。”她说，“念到那个孩子还在等一封信。”",
-        "办公室磨砂玻璃后，三只没有邮戳的信封并排躺着。像三句话，被同一个人咽回去太久。"
+        "地下室渐渐安静下来。证物袋沿墙排开，铅笔写下时间、位置和痕迹，没人急着替那些记录作解释。",
+        "玛戈一直等在楼梯拐角。艾达上来时，她先问的不是尸体，而是赫尔曼桌上的《雪落以前》。",
+        "“昨晚他念到一半。”她低头揉着袖口，“念到那个孩子还在等母亲。然后我们就吵起来了。”",
+        "办公室的磨砂玻璃后，三只没有邮戳的信封并排压在台灯下。纸页都很旧，只有最上面那只信封的折痕还新，像是昨夜才被人反复拿起又放下。"
       ]
     },
     chapter2:{
       register:"PRIVATE MAIL · INDEX 17—B", folio:"INTERLUDE 03", kicker:"第二章之后 · 局长办公室", heading:"墙里的呼吸", button:"去气动管控制室", theme:"glass",
       lines:[
-        "三封信一封比一封更像是写给过去。显出来的名字，都指向十九年前的安娜·韦伯。",
-        "玛戈把那张旧处方翻过来，又翻回去。她的拇指始终压着那块被水吃掉的小数点。",
-        "这时，办公室墙里的气动管忽然一震。一只黄铜胶囊迟到了整整一个清晨。",
-        "维克托把它放到桌边，没有拆信，只低声说：“这管子昨晚就在漏气。有人比我们更早知道它会迟到。”"
+        "三封信终于能读了。安娜·韦伯的名字散在不同年份的纸上；有的墨已经发褐，有的仍深得像刚刚写下。",
+        "玛戈把旧处方翻过去，又翻回来。她的拇指始终停在那块被水洇开的剂量栏上，直到纸角被捏出一道新的折痕。",
+        "墙里的气动管就在这时响了一声。黄铜胶囊撞进接收槽，在安静的办公室里显得格外突兀。",
+        "维克托没有碰它，只抬头看了眼墙上的维修表：“昨晚这条管线漏气。可这东西还是到了，只是晚了很久。”"
       ]
     },
     chapter3:{
-      register:"COLD VAULT · TEMPERATURE LOG", folio:"INTERLUDE 04", kicker:"第三章之后 · 冷库门口", heading:"别替我回答", button:"开始重建案情", theme:"cold",
+      register:"COLD VAULT · TEMPERATURE LOG", folio:"INTERLUDE 04", kicker:"第三章之后 · 冷库门口", heading:"冷库门外", button:"开始重建案情", theme:"cold",
       lines:[
-        "冷库的霜在鞋底下发出很轻的碎响。新墨、旧墨、羊毛纤维和一条迟到的邮路，终于落在同一天上。",
-        "玛戈站在门外，没有进来。她盯着温度表上的数字，像盯着一个迟早会被叫到的名字。",
-        "“你想问什么就问。”她说。停了一会儿，又补上一句：“但别替我回答。”",
-        "艾达合上调查簿。现在需要的不是更多证物，而是让已经找到的证物彼此作证。"
+        "冷库门一开，霜气贴着地面慢慢散出来。艾达把层板纤维、地面拖痕和温度表的记录依次夹进调查簿，没有先写结论。",
+        "玛戈站在门外。她没有进来，只盯着温度表上被改过的那一格。过了很久，她说：“那一晚，我确实来过这里。”",
+        "艾达没有追问。她把调查簿翻到新的一页，把已经确认的证物编号一件件写下。",
+        "她把几份证词合到一边。接下来只看已经验证过的时间、痕迹和纸面记录，再把它们一项项对在一起。"
       ]
     }
   };
@@ -175,7 +175,7 @@
   const itemNames = Object.fromEntries(Object.entries(itemData).map(([id,v])=>[id,v.name]));
 
   const defaultState = () => ({
-    version: 3, started: false, chapter: 1, scene: "deadroom", clock: 460,
+    version: 4, started: false, chapter: 1, scene: "deadroom", clock: 460,
     clues: [], inventory: [], knowledge: [], flags: {},
     hints: {1:0,2:0,3:0,4:0}, mistakes: 0, actions: 0, catFeeds: 0,
     radioSteps: 0, ending: false, supportTriggered: false, pendingStory: null,
@@ -190,7 +190,7 @@
 
   const $ = (id) => document.getElementById(id);
   const els = {};
-  ["title-screen","game-screen","continue-game","chapter-kicker","chapter-title","scene-image","hotspots","scene-number","scene-name","scene-subtitle","objective-text","objective-progress","game-clock","location-nav","location-rail","evidence-panel","evidence-list","evidence-count","knowledge-list","inventory-list","dialogue","dialogue-speaker","dialogue-text","dialogue-next","modal-backdrop","detail-modal","detail-kicker","detail-title","detail-visual","detail-copy","detail-actions","archive-modal","archive-tabs","archive-page-no","archive-page-title","archive-page-copy","archive-query","archive-result","archive-badge","notebook-modal","notebook-objectives","suspect-notes","hint-modal","hint-text","support-modal","support-btn","sound-btn","menu-modal","ending-modal","ending-title","ending-copy","ending-stats","ending-letter","final-letter","toast","story-interlude","story-register","story-folio","story-kicker","story-heading","story-lines","story-continue"].forEach(id=>els[id.replaceAll("-","_")]=$(id));
+  ["portal-screen","portal-search","portal-search-input","dispatch-modal","dispatch-enter","dispatch-later","portal-continue","portal-reading","portal-reading-title","portal-reading-copy","portal-reading-close","portal-urgent-thread","title-screen","game-screen","continue-game","chapter-kicker","chapter-title","scene-image","hotspots","scene-number","scene-name","scene-subtitle","objective-text","objective-progress","game-clock","location-nav","location-rail","evidence-panel","evidence-list","evidence-count","knowledge-list","inventory-list","dialogue","dialogue-speaker","dialogue-text","dialogue-next","modal-backdrop","detail-modal","detail-kicker","detail-title","detail-visual","detail-copy","detail-actions","archive-modal","archive-tabs","archive-page-no","archive-page-title","archive-page-copy","archive-query","archive-result","archive-badge","notebook-modal","notebook-objectives","suspect-notes","hint-modal","hint-text","support-modal","support-btn","sound-btn","menu-modal","ending-modal","ending-title","ending-copy","ending-stats","ending-letter","final-letter","toast","story-interlude","story-register","story-folio","story-kicker","story-heading","story-lines","story-continue"].forEach(id=>els[id.replaceAll("-","_")]=$(id));
 
   function save(){ localStorage.setItem(SAVE_KEY, JSON.stringify(state)); }
   function load(){
@@ -198,7 +198,7 @@
       const raw=localStorage.getItem(SAVE_KEY)||LEGACY_SAVE_KEYS.map(k=>localStorage.getItem(k)).find(Boolean);
       const parsed=JSON.parse(raw||"null");
       if(parsed){
-        state=Object.assign(defaultState(),parsed,{version:3});
+        state=Object.assign(defaultState(),parsed,{version:4});
         state.fragments=Array.isArray(parsed.fragments)?parsed.fragments:[1];
         state.readFragments=Array.isArray(parsed.readFragments)?parsed.readFragments:[];
         state.knowledge=Array.isArray(parsed.knowledge)?parsed.knowledge:[];
@@ -303,9 +303,9 @@
     if(id!=="opening")toast(`进入${chapters[state.chapter].kicker}：${chapters[state.chapter].title}`,"success");
     if(id==="opening"){
       dialogue([
-        "艾达|门闩确实落在里面。先别告诉我谁有动机。",
-        "玛戈|昨晚我和他吵过一架。争的是一封他拖了十九年都没寄出的信。",
-        "艾达|那就从房间开始。人会记错，痕迹通常慢一点撒谎。"
+        "艾达|门闩先别动。我会从屋里原来的位置开始看。昨晚发生什么，你按自己记得的顺序说就好。",
+        "玛戈|我和他吵过。为了那封一直没寄出去的信……后来我先走了。",
+        "艾达|好。我先记下这句话。别急着猜原因，等我把现场看完，我们再从头对一次时间。"
       ]);
     }
   }
@@ -333,21 +333,21 @@
   }
   function letterA(){
     if(state.flags.letterA){showDetail("信 A · 已显影",evidenceData.e_letterA.copy,null,[],"纸张压痕");return;}
-    const ok=hasItem("pencil");showDetail("信 A · 空白压痕",ok?"纸面没有墨，侧光下却能看见一排浅沟。铅笔的软芯不会弄湿纸，也不会像钢笔那样重新压伤它。":"纸面似乎完全空白。斜着看，纤维里有一道道极浅的沟槽。",null,ok?[{label:"用铅笔侧锋轻擦",primary:true,run:()=>solveLetter("letterA","e_letterA","玛戈|17—B……那是我母亲留下的旧编号。赫尔曼从不让我碰那一格柜子。","纸张压痕可以在不浸湿旧纸的情况下显现。") }]:[],"纸张检查");
+    const ok=hasItem("pencil");showDetail("信 A · 空白压痕",ok?"纸面没有墨，侧光下却能看见一排浅沟。铅笔的软芯不会弄湿纸，也不会像钢笔那样重新压伤它。":"纸面似乎完全空白。斜着看，纤维里有一道道极浅的沟槽。",null,ok?[{label:"用铅笔侧锋轻擦",primary:true,run:()=>solveLetter("letterA","e_letterA","玛戈|17—B……我小时候在母亲的东西上见过这个编号。赫尔曼后来把那一格柜子一直锁着。","纸张压痕可以在不浸湿旧纸的情况下显现。") }]:[],"纸张检查");
   }
   function letterB(){
     if(state.flags.letterB){showDetail("信 B · 已开启",evidenceData.e_letterB.copy,null,[],"旧医疗纸片");return;}
     if(!hasItem("candle")&&!hasItem("burner")){showDetail("信 B · 火漆封面","火漆已经发脆，下面垫着一张更薄的旧纸。硬撬会把两层一起扯破。",null,[],"封缄检查");return;}
     showDetail("信 B · 控制火焰","你只需要让旧火漆软下来，而不是把它熔成一滩。选择加热方式。",null,[
       {label:"让火焰贴住火漆",run:()=>wrong("火漆冒烟，纸边很快卷起。你及时把火移开。")},
-      {label:"隔两指宽缓慢温热",run:()=>{unlockFragment(3);solveLetter("letterB","e_letterB","哈斯|那是我十九年前开的处方。纸被水泡过，别把缺掉的地方当成我写过的东西。","间接加热能让旧火漆软化，同时减少对薄纸的灼伤。");}},
+      {label:"隔两指宽缓慢温热",run:()=>{unlockFragment(3);solveLetter("letterB","e_letterB","哈斯|这是我十九年前开的处方。那场雨之后纸被泡坏了，剂量栏缺了一块；我能确认的，只有现在还看得见的笔画。","间接加热能让旧火漆软化，同时减少对薄纸的灼伤。");}},
       {label:"放到窗边冷却",run:()=>wrong("低温只会让旧火漆更脆，封口没有松动。")}
     ],"封缄实验");
   }
   function letterC(){
     if(state.flags.letterC){showDetail("信 C · 已显影",evidenceData.e_letterC.copy,null,[],"隐写字迹");return;}
     if(!hasItem("diluted")||!hasItem("swab")){showDetail("信 C · 蓝边纸","纸上有几乎透明的书写痕。深色碘酒若直接滴下去，会把细线全部盖住。",null,[],"纸张检查");return;}
-    showDetail("信 C · 淀粉墨","稀释后的碘液已经调好。棉签可以控制显色范围。",null,[{label:"用棉签沿透明笔迹薄涂",primary:true,run:()=>{unlockFragment(4);solveLetter("letterC","e_letterC","玛戈|零点六……我小时候只见过那张被水泡坏的处方。赫尔曼从来没给我看过这一句。","碘与淀粉墨发生显色反应，稀释后更容易保留细笔画。",()=>{state.inventory=state.inventory.filter(x=>x!=="diluted");});}}],"显色实验");
+    showDetail("信 C · 淀粉墨","稀释后的碘液已经调好。棉签可以控制显色范围。",null,[{label:"用棉签沿透明笔迹薄涂",primary:true,run:()=>{unlockFragment(4);solveLetter("letterC","e_letterC","玛戈|零点六……这行字我以前没见过。我记得的那张处方，剂量栏一直是缺的。","碘与淀粉墨发生显色反应，稀释后更容易保留细笔画。",()=>{state.inventory=state.inventory.filter(x=>x!=="diluted");});}}],"显色实验");
   }
   function solveLetter(flag,clue,dialogueLine,knowledge,after){
     state.flags[flag]=true;addClue(clue,knowledge);if(after)after();closeAll();dialogue([dialogueLine],()=>{maybeSupport();checkChapter2();render();});
@@ -383,7 +383,7 @@
   function valve(){
     if(!state.flags.gasketInstalled){showDetail("延时阀","管道漏气，阀门转动也不会输送胶囊。先修复密封圈。","⌾");return;}
     showDetail("延时阀","四个刻度分别对应立即、六小时、十二小时、二十四小时。死者的信带着前一日邮戳，却在今晨落下。","⌾",[
-      {label:"立即",run:()=>wrong("这无法解释前一日的邮戳。")},{label:"6 小时",run:()=>wrong("投递时间仍然晚了整整十八小时。")},{label:"12 小时",run:()=>wrong("还差半天。")},{label:"24 小时",run:()=>{state.flags.tubeSolved=true;addClue("c_capsule","延时阀的24小时档能解释17日邮戳为何到18日清晨才出现。");closeAll();dialogue(["维克托|二十四小时。难怪胶囊今天才落下来。至于是谁把它放进去——管子可没有眼睛。"],()=>{checkChapter3();render();});}}
+      {label:"立即",run:()=>wrong("这无法解释前一日的邮戳。")},{label:"6 小时",run:()=>wrong("投递时间仍然晚了整整十八小时。")},{label:"12 小时",run:()=>wrong("还差半天。")},{label:"24 小时",run:()=>{state.flags.tubeSolved=true;addClue("c_capsule","延时阀的24小时档能解释17日邮戳为何到18日清晨才出现。");closeAll();dialogue(["维克托|这是二十四小时档。胶囊如果昨晚进了管线，今早落到办公室，时间正好。至于是谁放进去的，机械本身回答不了。"],()=>{checkChapter3();render();});}}
     ]);
   }
   function chart(){
@@ -493,7 +493,7 @@
   function finish(){
     state.ending=true;save();closeAll();
     els.ending_title.textContent="没有凶手的密室";
-    els.ending_copy.innerHTML="<p>11月17日夜里，玛戈为了母亲那张残缺处方与赫尔曼争执。赫尔曼后退时失去重心，后枕撞上桌角。致命伤发生在那一刻；杯里的药没有被喝下，也没有第二件凶器。</p><p>玛戈看着他倒下，却仍把十九年前那枚消失的小数点当作一桩没有偿还的罪。她让尸体在 <b>2°C</b> 冷库里停了一夜，改写温度，做出迟到的信，再用钓线把门闩落下。她不是在制造一种杀人方法，而是在制造一个自己愿意相信的答案。</p><p>到这里，案件已经能闭合。可赫尔曼制服内衬有一段新缝线——那里藏着一封既没有邮戳，也从未真正离开寄信人的信。</p>";
+    els.ending_copy.innerHTML="<p>11月17日夜里，玛戈为了母亲那张残缺处方与赫尔曼争执。赫尔曼退到桌边时失去重心，后枕撞上桌角。那一下就是致命伤；杯里的药没有被喝下，现场也没有第二件凶器。</p><p>可玛戈没有相信这是一场意外。十九年前那枚被水洇掉的小数点，在她心里已经长成了一个解释。她把赫尔曼移进 <b>2°C</b> 冷库，改写温度，安排一封迟到的信，又从通风管牵落插销。她想把一个失手的夜晚改造成一桩早有缘由的谋杀——仿佛只要罪名足够清楚，过去就终于有人可以偿还。</p><p>案情到这里已经闭合。艾达却在赫尔曼制服内衬摸到一段新缝线。针脚很笨，像是昨晚才缝上去的。里面有第六封信：没有邮戳，也从未真正离开寄信人的身边。</p>";
     els.ending_letter.classList.remove("hidden");els.final_letter.classList.add("hidden");
     const eggs=(state.flags.catLetter?1:0)+(state.flags.radioEgg?1:0)+(state.flags.suitcaseEgg?1:0);
     els.ending_stats.innerHTML=`<div><b>${state.clues.length}</b><span>登记证物</span></div><div><b>${state.mistakes}</b><span>错误尝试</span></div><div><b>${eggs} / 3</b><span>系列暗线</span></div>`;
@@ -522,7 +522,7 @@
     const steps=["长 · 短短 · 长","短 · 长长 · 短","长长 · 短 · 短"],correct=[1,0,2],k=state.radioSteps;
     const target=steps[correct[k]];if(audio.enabled)playMorse(target);
     const choices=steps.map((x,i)=>({label:x,run:()=>{
-      if(i===correct[k]){state.radioSteps++;closeAll();if(state.radioSteps===3){state.flags.radioEgg=true;dialogue(["收音机|——月亮升起时，老橡树下见。——","维克托|别看我。我只卖邮票，不替陌生人解释约会地点。"],render);}else setTimeout(radio,280);}
+      if(i===correct[k]){state.radioSteps++;closeAll();if(state.radioSteps===3){state.flags.radioEgg=true;dialogue(["收音机|——月亮升起时，老橡树下见。——","维克托|这不是本案的通讯码。我以前见过类似格式，但现在说不准是谁留下的。"],render);}else setTimeout(radio,280);}
       else{state.radioSteps=0;wrong("旋钮从窄频带里滑了出去，节拍重新开始。");setTimeout(radio,280);}
     }}));
     const accessible=audio.enabled?"静电里有三段长短不同的脉冲。选择与你听到的一致的节拍。":`扬声器没有开启。旁边的记录针在纸带上留下：${target}。`;
@@ -535,7 +535,7 @@
   function suitcase(){
     if(state.flags.suitcaseEgg){showDetail("维克托的手提箱","暗格已经打开。里面的护照分别把他称作商人、记者和『野兔七号』。","▣");return;}
     showDetail("维克托的手提箱","三枚邮票按王冠、乌鸦、橡树排列。箱扣也有三枚图案。","▣",[
-      {label:"王冠 → 乌鸦 → 橡树",run:()=>{state.flags.suitcaseEgg=true;closeAll();dialogue(["维克托|邮票商只是其中一份职业。","艾达|那另外两份呢？","维克托|一份不能说。另一份已经不存在了。"],render);}},
+      {label:"王冠 → 乌鸦 → 橡树",run:()=>{state.flags.suitcaseEgg=true;closeAll();dialogue(["维克托|这三本护照都是真的，只是属于不同年份。","艾达|你以前替谁工作？","维克托|等这案子结束。如果你还想知道，我会把能说的部分告诉你。"],render);}},
       {label:"乌鸦 → 橡树 → 王冠",run:()=>wrong("锁扣弹回原位。")},{label:"橡树 → 王冠 → 乌鸦",run:()=>wrong("锁扣弹回原位。")}
     ]);
   }
@@ -602,12 +602,43 @@
   function start(newGame=false){
     clearStoryTimers();storyActive=false;els.story_interlude.classList.add("hidden");
     if(newGame)reset();else load();
-    state.started=true;els.title_screen.classList.add("hidden");els.game_screen.classList.remove("hidden");render();
+    state.started=true;els.portal_screen.classList.add("hidden");els.dispatch_modal.classList.add("hidden");els.title_screen.classList.add("hidden");els.game_screen.classList.remove("hidden");render();
     if(newGame){queueStory("opening");return;}
     if(state.pendingStory){setTimeout(()=>playStory(state.pendingStory),80);return;}
     if(state.ending)setTimeout(finish,80);
   }
-  function backTitle(){closeAll();els.game_screen.classList.add("hidden");els.title_screen.classList.remove("hidden");els.continue_game.classList.toggle("hidden",!hasStoredSave());}
+  function backTitle(){closeAll();els.game_screen.classList.add("hidden");els.title_screen.classList.add("hidden");els.portal_screen.classList.remove("hidden");els.portal_continue.classList.toggle("hidden",!hasStoredSave());}
+
+  const portalStories={
+    rain:{title:"雨夜里最容易误判的，不是脚印，是等待",copy:"<p>那年我在一座没有钟的车站守到天亮。后来才明白，现场里最危险的往往不是假的证据，而是一个太像答案的故事。</p><p>所以我给新人留下一条笨规矩：先写下你看见了什么，再写你认为它意味着什么。两句话之间，至少空一行。</p>"},
+    lamp:{title:"煤油灯熄灭后的七分钟",copy:"<p>四个人都说灯灭后自己只在走廊停了片刻。我们差点把四份相似证词当成了互相印证。</p><p>直到第二天，一个学徒说：煤油灯刚熄时，他听见楼下的钟敲了两次。所谓“片刻”，在不同的人嘴里，从三分钟到十一分钟不等。</p>"},
+    letter:{title:"有些信不是寄丢的，是写信的人一直没敢寄",copy:"<p>我整理过三起未投递信件。它们最后都没有改变案情，却改变了我对死者的看法。</p><p>证物告诉我们一个人做过什么；信件偶尔会告诉我们，他原本想成为什么样的人。两种东西不要混在一起，但也别轻易丢掉后者。</p>"},
+    mistake:{title:"我曾因为一句“他看起来很冷静”把方向查反了",copy:"<p>那句话不是事实，只是描述。可我太早把“冷静”理解成“预谋”，于是后面每一条证据都被我硬塞进同一个故事里。</p><p>真正救回调查的是一张购物小票。它没有情绪，也没有立场，只把时间写得清清楚楚。</p>"}
+  };
+  let dispatchTimer=null,dispatchDeferred=false;
+  function openPortalStory(key){const x=portalStories[key];if(!x)return;els.portal_reading_title.textContent=x.title;els.portal_reading_copy.innerHTML=x.copy;els.portal_reading.classList.add("open");}
+  function closePortalStory(){els.portal_reading.classList.remove("open");}
+  function showDispatch(){if(state.started||dispatchDeferred||!els.game_screen.classList.contains("hidden"))return;els.dispatch_modal.classList.remove("hidden");}
+  function initPortal(){
+    els.portal_continue.classList.toggle("hidden",!hasStoredSave());
+    document.querySelectorAll("[data-story]").forEach(el=>el.onclick=e=>{e.preventDefault();openPortalStory(el.dataset.story);});
+    els.portal_reading_close.onclick=closePortalStory;
+    els.portal_search.onsubmit=e=>{
+      e.preventDefault();
+      const q=els.portal_search_input.value.trim().toLowerCase();
+      const threads=[...document.querySelectorAll(".portal-thread")];
+      if(!q){threads.forEach(t=>t.classList.remove("search-miss"));closePortalStory();return;}
+      let hit=0;threads.forEach(t=>{const ok=t.textContent.toLowerCase().includes(q);t.classList.toggle("search-miss",!ok);if(ok)hit++;});
+      if(!hit){els.portal_reading_title.textContent="没有找到相关旧帖";els.portal_reading_copy.innerHTML="<p>旧站索引里没有匹配这一关键词。可以试试案件编号、地点或调查员姓名。</p>";els.portal_reading.classList.add("open");}
+      else closePortalStory();
+    };
+    els.portal_urgent_thread.onclick=()=>{dispatchDeferred=false;showDispatch();};
+    els.dispatch_later.onclick=()=>{dispatchDeferred=true;els.dispatch_modal.classList.add("hidden");};
+    els.dispatch_enter.onclick=()=>{if(!audio.ctx||!audio.enabled)initAudio();start(true);};
+    els.portal_continue.onclick=()=>start(false);
+    document.querySelectorAll(".portal-nav").forEach(b=>b.onclick=()=>{document.querySelectorAll(".portal-nav").forEach(x=>x.classList.remove("active"));b.classList.add("active");if(b.dataset.portalTab==="hall")closePortalStory();else openPortalStory({cases:"letter",notes:"mistake",rules:"rain"}[b.dataset.portalTab]||"rain");});
+    clearTimeout(dispatchTimer);dispatchTimer=setTimeout(()=>showDispatch(),9000);
+  }
 
   function initAudio(){
     if(audio.ctx){audio.enabled=!audio.enabled;if(audio.enabled){audio.ctx.resume();setAmbience(state.scene);}else audio.ctx.suspend();updateSound();return;}
@@ -637,6 +668,7 @@
   function updateSound(){$("sound-btn").innerHTML=`<i>A-05</i><span>${audio.enabled?"声音":"静音"}</span>`;$("title-sound").textContent=audio.enabled?"关闭声音 · 环境声与间页乐音已开启":"开启声音 · 推荐佩戴耳机";}
 
   function bind(){
+    initPortal();
     $("new-game").onclick=()=>start(true);els.continue_game.onclick=()=>start(false);els.continue_game.classList.toggle("hidden",!hasStoredSave());
     $("title-sound").onclick=initAudio;$("sound-btn").onclick=initAudio;$("archive-btn").onclick=()=>openArchive();$("archive-search").onsubmit=searchArchive;$("notebook-btn").onclick=openNotebook;$("hint-btn").onclick=openHint;$("next-hint").onclick=nextHint;$("support-btn").onclick=openSupport;$("menu-btn").onclick=()=>openModal("menu-modal");
     $("support-done").onclick=()=>{localStorage.setItem(SUPPORT_PAID,"1");closeAll();toast("谢谢你让这间死信室继续亮着灯 ♡","success");render();};$("support-later").onclick=closeAll;
@@ -655,5 +687,5 @@
     solveChapter3:()=>{["tubeSolved","coldSolved","chartSolved","handSolved"].forEach(x=>state.flags[x]=true);["c_capsule","c_shelf","c_drag","c_chart","c_hand"].forEach(addClue);state.chapter=4;state.scene="finale";render();},
     finish:()=>{state.flags.deductionStep=6;finish();return state;}
   };
-  bind();load();
+  load();bind();
 })();

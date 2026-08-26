@@ -10,7 +10,50 @@
 </head>
 <body>
   <div id="app">
-    <section id="title-screen" class="title-screen" aria-labelledby="game-title">
+    <section id="portal-screen" class="portal-screen" aria-labelledby="portal-title">
+      <header class="portal-topbar">
+        <div class="portal-brand"><b id="portal-title">烛影侦探社</b><span>民间调查 · 旧案研习 · 现场笔记</span></div>
+        <form id="portal-search" class="portal-search"><input id="portal-search-input" aria-label="站内搜索" placeholder="输入案件、地点或调查员"><button type="submit">站内检索</button></form>
+      </header>
+      <div class="portal-shell">
+        <aside class="portal-left">
+          <section class="portal-box"><h2>站点导航</h2><button class="portal-nav active" data-portal-tab="hall">首页 / 值班室</button><button class="portal-nav" data-portal-tab="cases">旧案陈列</button><button class="portal-nav" data-portal-tab="notes">前辈手记</button><button class="portal-nav" data-portal-tab="rules">调查守则</button></section>
+          <section class="portal-box portal-status"><h2>今夜值班</h2><p><b>在线 7 人</b><br>档案管理员：灰烬<br>值班调查员：北窗</p><p class="portal-faint">站点建立于 2001<br>最后整理：2007-12-31</p></section>
+          <section class="portal-box portal-quote"><h2>摘录</h2><p>“好的调查不是替死者说话，而是把他来不及留下的话，和我们自己的猜测分开。”</p><small>——《夜班手记》第十四页</small></section>
+        </aside>
+        <main class="portal-main">
+          <div class="portal-breadcrumb">当前位置：烛影侦探社 › 值班室</div>
+          <section class="portal-welcome"><p class="portal-date">2007 年 12 月 31 日 · 周一 · 23:47</p><h1>今晚没有新案子。至少十分钟前还没有。</h1><p>这里收着前辈们留下的现场记录、失败笔记和那些多年以后才看懂的案子。新来的调查员通常先读旧帖——因为真正到了现场，人很容易只看见自己期待看见的东西。</p></section>
+          <section class="portal-board" id="portal-hall">
+            <div class="portal-board-head"><b>值班室 · 最近更新</b><span>主题 / 作者 / 最后回复</span></div>
+            <button class="portal-thread urgent-thread" id="portal-urgent-thread"><span class="thread-tag">置顶</span><div><b>【值班】魏瑟堡旧邮局：整理员失联，地下档案室发现死者</b><small>刚刚更新 · 灰烬 · 等待在线调查员接入</small></div><time>23:48</time></button>
+            <button class="portal-thread" data-story="rain"><span class="thread-tag">手记</span><div><b>雨夜里最容易误判的，不是脚印，是等待</b><small>北窗 · 一次没有抓到凶手的调查</small></div><time>12-27</time></button>
+            <button class="portal-thread" data-story="lamp"><span class="thread-tag">旧案</span><div><b>煤油灯熄灭后的七分钟：为什么证词都“差不多”</b><small>柯石 · 现场时间感与记忆偏差</small></div><time>12-22</time></button>
+            <button class="portal-thread" data-story="letter"><span class="thread-tag">随笔</span><div><b>有些信不是寄丢的，是写信的人一直没敢寄</b><small>灰烬 · 关于未投递信件的三个旧案</small></div><time>12-16</time></button>
+            <button class="portal-thread" data-story="mistake"><span class="thread-tag">复盘</span><div><b>我曾因为一句“他看起来很冷静”把方向查反了</b><small>南桥 · 失败记录，欢迎新人看</small></div><time>12-04</time></button>
+          </section>
+          <section class="portal-reading" id="portal-reading" aria-live="polite">
+            <p class="portal-reading-kicker">前辈手记</p><h2 id="portal-reading-title">雨夜里最容易误判的，不是脚印，是等待</h2><div id="portal-reading-copy"><p>那年我在一座没有钟的车站守到天亮。后来才明白，现场里最危险的东西往往不是假的证据，而是一个太像答案的故事。</p><p>所以我给新人留下一条笨规矩：先写下你看见了什么，再写你认为它意味着什么。两句话之间，至少空一行。</p></div><button id="portal-reading-close">返回帖子列表</button>
+          </section>
+        </main>
+        <aside class="portal-right">
+          <section class="portal-box"><h2>新人先读</h2><ol><li>不要替证人补完一句话。</li><li>不要把“可疑”当成“有罪”。</li><li>现场事实和推论分开记录。</li><li>如果一个答案太早出现，先怀疑它。</li></ol></section>
+          <section class="portal-box"><h2>近期旧案</h2><p><a href="#" data-story="letter">17-B · 六封没有寄出的信</a></p><p><a href="#" data-story="lamp">04-C · 熄灯后的走廊</a></p><p><a href="#" data-story="rain">11-A · 雨站台</a></p></section>
+          <button id="portal-continue" class="portal-continue hidden">继续上次调查</button>
+        </aside>
+      </div>
+      <footer class="portal-footer">烛影侦探社 · 非官方民间调查资料站 · 所有旧案均以原始记录为准</footer>
+    </section>
+
+    <section id="dispatch-modal" class="dispatch-modal hidden" role="dialog" aria-modal="true" aria-labelledby="dispatch-title">
+      <div class="dispatch-window">
+        <div class="dispatch-titlebar"><b>值班电报 / PRIORITY</b><span>23:48:16</span></div>
+        <div class="dispatch-body"><p class="dispatch-mark">!</p><div><p class="dispatch-kicker">突发委托 · 魏瑟堡旧邮局</p><h2 id="dispatch-title">地下死信室发现一名死者。</h2><p>修缮队刚刚打开封存多年的邮局地下层。现场门从内侧锁住，死者身份登记为邮政局长赫尔曼·福格尔。负责整理档案的人只来得及上传一句话：</p><blockquote>“尸体的情况有些不对。门我没动，屋里的东西也都留在原位。请尽快派人来。”</blockquote><p>纸质卷宗已经接入本站。需要一名在线调查员从原始记录开始。</p></div></div>
+        <div class="dispatch-actions"><span class="dispatch-audio-note">接入后将开启轻量环境声，可在案卷栏随时关闭。</span><button id="dispatch-later">先读完这一页</button><button id="dispatch-enter">接入现场</button></div>
+      </div>
+    </section>
+
+    <section id="title-screen" class="title-screen hidden" aria-labelledby="game-title">
       <div class="cover-file">
         <div class="cover-index"><span>魏瑟堡邮政区</span><b>档案 17—B</b></div>
         <p class="eyebrow">A PAPER TRACE MYSTERY · CASE 01</p>
