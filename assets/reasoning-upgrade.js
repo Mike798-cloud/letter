@@ -543,7 +543,7 @@
     // 结局页“重新登记此案”会立即清空主案卷，因此这里同步清掉本补丁记录。
     // 标题页“登记此案”可能先弹出复核方式选择，不在点击瞬间清空；真正开始新案卷后
     // 由下方主存档变化检测统一处理，避免玩家只是打开选择框就丢掉判断记录。
-    ["ending-restart"].forEach(id => {
+    ["ending-restart","reset-game"].forEach(id => {
       $(id)?.addEventListener("click", () => {
         judgements = {};
         saveJudgements();
@@ -552,32 +552,30 @@
       }, true);
     });
 
-    const detail = $("detail-modal");
-    if (detail) {
-      const observer = new MutationObserver(() => {
+    const detailActions = $("detail-actions");
+    if (detailActions) {
+      new MutationObserver(() => {
         if (detailMutationLock) return;
         detailMutationLock = true;
         queueMicrotask(() => {
-          detailMutationLock = false;
-          replaceLegacyReasonActions();
-          inspectAutoCheckpoint();
+          try { replaceLegacyReasonActions(); }
+          finally { detailMutationLock = false; }
         });
-      });
-      observer.observe(detail, {subtree:true, childList:true, attributes:true, characterData:true});
+      }).observe(detailActions, {childList:true});
     }
+
+    const detailTitle = $("detail-title");
+    if (detailTitle) new MutationObserver(inspectAutoCheckpoint).observe(detailTitle, {childList:true, characterData:true, subtree:true});
+    const detailModal = $("detail-modal");
+    if (detailModal) new MutationObserver(inspectAutoCheckpoint).observe(detailModal, {attributes:true, attributeFilter:["class"]});
 
     const progress = $("objective-progress");
     if (progress) new MutationObserver(syncProgressLabel).observe(progress, {childList:true, subtree:true, characterData:true});
     const evidence = $("evidence-list");
     if (evidence) new MutationObserver(decorateEvidenceCards).observe(evidence, {childList:true, subtree:true});
 
-    setInterval(resetJudgementsIfNewCase, 600);
-    setInterval(() => {
-      syncProgressLabel();
-      decorateEvidenceCards();
-      const b = $("open-reasoning-board");
-      if (b && b.textContent !== "查看判断记录") b.textContent = "查看判断记录";
-    }, 1200);
+    // 只保留低频主存档复核。旧版每0.6s/1.2s反复扫描DOM，在长时间游玩时会造成额外负担。
+    setInterval(resetJudgementsIfNewCase, 1800);
 
     // 兼容页面恢复时详情弹窗已经处于打开状态；正常游戏流程中的后续详情变化仍由观察器接管。
     replaceLegacyReasonActions();
@@ -586,7 +584,7 @@
     decorateEvidenceCards();
     const errors = validatePatch();
     if (errors.length) console.warn("[letter reasoning upgrade]", errors);
-    window.__LETTER_REASONING_UPGRADE__ = {version:"1.0.0", defs, chapterRequirements, statusFor, validate:validatePatch};
+    window.__LETTER_REASONING_UPGRADE__ = {version:"1.1.0", defs, chapterRequirements, statusFor, validate:validatePatch};
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, {once:true});

@@ -1,135 +1,281 @@
 (() => {
   "use strict";
 
-  const BUILD = "1.0.0";
-  let locked = false;
-
+  const BUILD = "2.0.0";
   const $ = id => document.getElementById(id);
-  const esc = s => String(s ?? "").replace(/[&<>\"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const esc = value => String(value ?? "").replace(/[&<>\"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
 
-  function paperMarkup(type, done) {
-    const commonHead = `<div class="doc-head"><strong>17-B / ORIGINAL</strong><span>STATION ARCHIVE · PAPER EXAM</span></div><div class="doc-lines"><i class="doc-line"></i><i class="doc-line"></i><i class="doc-line"></i><i class="doc-line"></i></div>`;
+  const imageByKind = {
+    office: "assets/images/office.webp",
+    lab: "assets/images/lab.webp",
+    tube: "assets/images/tube.webp",
+    cold: "assets/images/cold-vault.webp",
+    dead: "assets/images/deadroom.webp"
+  };
+
+  function photoPanel({image, kicker, title, status, note, crop = "50% 50%", zoom = 1.55, extra = ""}) {
+    return `<div class="ve-photo-evidence" data-ve-upgraded="1">
+      <figure class="ve-photo-main">
+        <img src="${image}" alt="${esc(title)}所在调查现场">
+        <figcaption><b>${esc(kicker)}</b><span>${esc(status)}</span></figcaption>
+      </figure>
+      <aside class="ve-photo-notes">
+        <p class="ve-photo-kicker">EVIDENCE RECORD / 17-B</p>
+        <h3>${esc(title)}</h3>
+        <figure class="ve-photo-crop">
+          <img src="${image}" alt="${esc(title)}局部复核" style="object-position:${crop};--ve-zoom:${zoom}">
+          <figcaption>局部复核 · 只记录当前已经能够确认的事实</figcaption>
+        </figure>
+        <p>${esc(note)}</p>
+        ${extra}
+      </aside>
+    </div>`;
+  }
+
+  function paperPanel(type, done) {
     if (type === "A") {
-      return `<div class="ve-stage ve-paper-stage"><div class="ve-photo-bed" style="background-image:url('assets/images/office.webp');background-position:44% 63%"></div><span class="ve-evidence-tag">LETTER A · OBLIQUE LIGHT</span><span class="ve-doc-status">${done ? "IMPRESSION RECORDED" : "UNINKED / INDENTED"}</span><article class="ve-paper">${commonHead}<div class="ve-indent-area"><i></i><i></i><i></i><i></i></div>${done ? `<p class="ve-revealed graphite">安娜·韦伯，17—B。前五封已交；第六封未投递。</p>` : `<div class="ve-side-light"></div>`}</article><div class="ve-scale"></div></div>`;
+      return photoPanel({
+        image: imageByKind.office,
+        kicker: "纸张侧光检查",
+        title: done ? "信 A · 压痕已经显出" : "信 A · 空白压痕",
+        status: done ? "压痕文字已登记" : "未显影 · 只确认纸面存在浅沟",
+        note: done ? "侧锋显影已经完成，17—B与“第六封未投递”被作为可复核文字登记。" : "当前只能确认纸面存在浅沟；在没有安全工具之前，不对文字内容作猜测。",
+        crop: "58% 66%",
+        zoom: 1.85
+      });
     }
     if (type === "B") {
-      return `<div class="ve-stage ve-paper-stage"><div class="ve-photo-bed" style="background-image:url('assets/images/office.webp');background-position:53% 59%"></div><span class="ve-evidence-tag">LETTER B · SEALED MEDICAL PAPER</span><span class="ve-doc-status">${done ? "SEAL OPENED / DOCUMENT EXPOSED" : "FRAGILE WAX / DO NOT PRY"}</span><article class="ve-paper">${commonHead}<div class="ve-dose-card"><span>处方记录</span><span>剂量</span><span>日期</span><span>A. Weber</span><span class="obscured">${done ? "0.?" : "—"}</span><span>19—</span></div><i class="watermark-stain"></i>${done ? `<p class="ve-revealed">剂量栏正被旧水渍穿过；缺失处仍不可凭外观补写。</p>` : ``}</article><i class="ve-wax-seal"></i><div class="ve-scale"></div></div>`;
+      return photoPanel({
+        image: imageByKind.office,
+        kicker: "旧医疗纸片 / 封缄复核",
+        title: done ? "信 B · 已安全开启" : "信 B · 火漆封面",
+        status: done ? "封口已开启 · 原纸未被硬撬破坏" : "脆化火漆 · 等待合适热源与处理依据",
+        note: done ? "处方原件已经暴露；水渍正穿过剂量栏，缺失的小数点不能凭外观补写。" : "先确认死信柜中的旧邮件处理守则，再用稳定热源隔距缓慢温热。",
+        crop: "42% 62%",
+        zoom: 1.75
+      });
     }
-    return `<div class="ve-stage ve-paper-stage"><div class="ve-photo-bed" style="background-image:url('assets/images/office.webp');background-position:69% 61%"></div><span class="ve-evidence-tag">LETTER C · BLUE-EDGE STOCK</span><span class="ve-doc-status">${done ? "LOCAL REVEAL RECORDED" : "TRANSLUCENT TRACE / UNCONFIRMED"}</span><article class="ve-paper blue">${commonHead}${done ? `<p class="ve-revealed">剂量是 0.6，不是 6。安娜知道。——H</p>` : `<p class="ve-blue-ghost">一段近乎透明的笔画停在纸纤维之间，肉眼不能确认材料。</p>`}</article><div class="ve-scale"></div></div>`;
-  }
-
-  function ledgerMarkup() {
-    return `<div class="ve-stage ve-ledger-stage"><div class="ve-photo-bed"></div><span class="ve-evidence-tag">DEAD LETTER CABINET · SOURCE MATERIAL</span><div class="ve-ledger-stack"><article class="ve-ledger-sheet"><h4>死信处理守则</h4><p>旧火漆：隔开热源，缓慢温热。</p><p>经验距离：约两指宽。禁止贴火、硬撬。</p><small>旧邮局内部用品手册 / 手写修订仍保留</small><i class="ve-ledger-stamp">ARCHIVE</i></article><article class="ve-ledger-sheet"><h4>用品采购 · 蓝边公文纸</h4><p>纸张：淀粉上浆。</p><p>批次：17-B。用途：站务与内部医疗附页。</p><small>采购登记 / 同批纸张需先做对照后再显色</small><i class="ve-ledger-stamp">17-B</i></article></div></div>`;
-  }
-
-  function waxMarkup() {
-    return `<div class="ve-stage ve-wax-stage"><div class="ve-photo-bed"></div><span class="ve-evidence-tag">LETTER B · WAX EXAMINATION</span><div class="ve-envelope"></div><p class="ve-envelope-address">旧医疗纸片 · 封口未拆</p><i class="ve-wax-seal"></i><span class="ve-doc-status">依据死信柜守则处理</span><div class="ve-scale"></div></div>`;
-  }
-
-  function timingMarkup(done) {
-    return `<div class="ve-stage ve-timing-stage"><div class="ve-photo-bed"></div><span class="ve-evidence-tag">PNEUMATIC TUBE · MAINTENANCE RECONSTRUCTION</span><section class="ve-time-log"><h4>胶囊时刻记录</h4><div class="ve-time-row"><strong>17日 19:20</strong><span>蓝墨残留对应进入管线</span></div><div class="ve-time-row ${done ? "marked" : ""}"><strong>18日 07:32</strong><span>接收槽记录胶囊落下</span></div><div class="ve-time-row"><strong>间隔</strong><span>需与维护铭牌的四个卡槽比对</span></div></section><section class="ve-valve-plate"><div class="ve-dial"><span>0h</span><span>3h</span><span>6h</span><span>≈12h</span></div></section><span class="ve-doc-status">${done ? "PIN: OVERNIGHT SLOT" : "SLOTS: 0 / 3 / 6 / OVERNIGHT"}</span></div>`;
-  }
-
-  function chartMarkup(done) {
-    return `<div class="ve-stage ve-chart-stage"><div class="ve-photo-bed"></div><span class="ve-evidence-tag">COLD ROOM · ORIGINAL TEMPERATURE LOG</span><article class="ve-clipboard"><div class="ve-temp-title"><strong>低温库温度记录</strong><span>11 / 16—17</span></div><div class="ve-temp-grid"><span>日期</span><span>06:00</span><span>12:00</span><span>18:00</span><span>11 / 16</span><span>3°C</span><span>3°C</span><span>2°C</span><span>11 / 17</span><span>2°C</span><span class="handwrite ${done ? "confirmed" : "overwritten"}">2°C</span><span>2°C</span></div><p class="ve-chart-note">${done ? "<b>侧光复核：</b>原始书写为 2°C；后加数字“1”形成 12°C。" : "墨色与压痕层次不一致。必须先用冷库物理痕迹确认这张表值得进一步侧光复核。"}</p></article><div class="ve-scale"></div></div>`;
-  }
-
-  function handMarkup() {
-    return `<div class="ve-stage ve-hand-stage"><div class="ve-photo-bed"></div><span class="ve-evidence-tag">HANDWRITING · STRUCTURAL COMPARISON</span><div class="ve-hand-board"><article class="ve-hand-strip"><b>今晨来信 / 原件</b><div class="ve-hand-line">…nacht… h… weiter…</div><i class="ve-hook-mark"></i><small>末笔回钩角度 / 停笔位置</small></article><article class="ve-hand-strip"><b>温度表覆写 / 原件</b><div class="ve-hand-line">…höhe… h… 12…</div><i class="ve-hook-mark"></i><small>不比较“整体像不像”</small></article><article class="ve-hand-strip"><b>登记簿 / 原件</b><div class="ve-hand-line">…heute… h… 17-B…</div><i class="ve-hook-mark"></i><small>只叠合稳定结构特征</small></article></div><p class="ve-hand-note">三份纸张材质不同；比较对象只有同一字母的稳定收笔结构。</p></div>`;
-  }
-
-  function bookMarkup() {
-    return `<div class="ve-stage ve-book-stage"><div class="ve-photo-bed"></div><span class="ve-evidence-tag">REFERENCE MANUAL · MARGINAL NOTES</span><div class="ve-open-book"><article class="ve-book-page"><h4>死亡时间判断</h4><p>低温会减慢尸体现象的发展速度，因此常温时间表不能直接套用。</p><p>原始伤口形态与已固定尸斑不会因此被“重写”。</p><i class="ve-book-margin"></i><small>214</small></article><article class="ve-book-page"><h4>纸张与笔迹检验</h4><p>原证物处理前，先用牺牲样本建立对照。</p><p>笔迹比对优先看稳定结构，而不是整体外观。</p><i class="ve-book-margin"></i><small>215</small></article></div></div>`;
-  }
-
-  function relationMarkup(question) {
-    return `<div class="ve-stage ve-relation-stage"><div class="ve-photo-bed"></div><span class="ve-evidence-tag">FINAL RECONSTRUCTION · RELATION BOARD</span><div class="ve-caseboard"><article class="ve-case-card one"><i class="ve-case-pin"></i><b>EVIDENCE / 01</b><span>从下方证物池选择第一件能够直接支持当前问题的材料。</span></article><article class="ve-case-card two"><i class="ve-case-pin"></i><b>EVIDENCE / 02</b><span>第二件材料必须与第一件形成独立、可检验的关系。</span></article><i class="ve-thread"></i><p class="ve-question-slip">${esc(question || "当前关系待验证")}</p></div></div>`;
-  }
-
-  function upgradeDetailVisual() {
-    const root = $("detail-visual");
-    if (!root || root.dataset.veBusy === "1") return;
-    const child = root.firstElementChild;
-    if (!child || child.classList.contains("ve-stage")) return;
-
-    root.dataset.veBusy = "1";
-    try {
-      if (child.classList.contains("paper-evidence")) {
-        const sheet = child.querySelector(".paper-sheet");
-        const cls = sheet?.className || "";
-        const type = cls.includes("type-A") ? "A" : cls.includes("type-B") ? "B" : "C";
-        const done = child.classList.contains("done");
-        root.innerHTML = paperMarkup(type, done);
-      } else if (child.classList.contains("ledger-visual")) {
-        root.innerHTML = ledgerMarkup();
-      } else if (child.classList.contains("wax-evidence")) {
-        root.innerHTML = waxMarkup();
-      } else if (child.classList.contains("timing-dossier")) {
-        const done = /释放销|隔夜槽/.test(child.textContent || "");
-        root.innerHTML = timingMarkup(done);
-      } else if (child.classList.contains("chart-visual")) {
-        const done = !!child.querySelector("del") || /底层原记录|侧光确认/.test(child.textContent || "");
-        root.innerHTML = chartMarkup(done);
-      } else if (child.classList.contains("hand-compare")) {
-        root.innerHTML = handMarkup();
-      } else if (child.classList.contains("book-visual")) {
-        root.innerHTML = bookMarkup();
-      } else if (child.classList.contains("relation-board")) {
-        root.innerHTML = relationMarkup($("detail-title")?.textContent || "");
-      }
-    } finally {
-      delete root.dataset.veBusy;
-    }
-  }
-
-  function upgradeInteractive() {
-    const body = document.querySelector("#interactive-overlay .interactive-body");
-    if (!body) return;
-    const heat = body.querySelector("#heat-source");
-    if (heat && heat.dataset.veUpgraded !== "1") {
-      heat.textContent = "";
-      heat.setAttribute("aria-label", "酒精灯热源");
-      heat.dataset.veUpgraded = "1";
-    }
-    const paperWork = body.querySelector(".paper-work");
-    if (paperWork && paperWork.dataset.veUpgraded !== "1") {
-      paperWork.dataset.veUpgraded = "1";
-      paperWork.setAttribute("data-evidence-stage", paperWork.classList.contains("blue") ? "蓝边纸局部显色" : "压痕侧锋显影");
-    }
-    const chartWork = body.querySelector(".chart-work");
-    if (chartWork && chartWork.dataset.veUpgraded !== "1") chartWork.dataset.veUpgraded = "1";
-    const timeline = body.querySelector(".timeline-work");
-    if (timeline && timeline.dataset.veUpgraded !== "1") timeline.dataset.veUpgraded = "1";
-  }
-
-  function run() {
-    if (locked) return;
-    locked = true;
-    queueMicrotask(() => {
-      try {
-        upgradeDetailVisual();
-        upgradeInteractive();
-      } finally { locked = false; }
+    return photoPanel({
+      image: done ? imageByKind.lab : imageByKind.office,
+      kicker: "蓝边纸 / 局部显色",
+      title: done ? "信 C · 补注已经显出" : "信 C · 蓝边纸",
+      status: done ? "局部显色完成" : "透明痕迹尚未确认材料",
+      note: done ? "对照实验、稀释和局部涂抹都完成后，补注才被正式登记。" : "在确认纸张上浆工艺并完成牺牲样本对照前，不把透明痕迹直接解释成某种墨水。",
+      crop: done ? "58% 58%" : "67% 61%",
+      zoom: 1.7
     });
   }
 
-  function validate() {
-    const errors = [];
-    if (!$("detail-visual")) errors.push("detail-visual missing");
-    const refs = ["assets/images/office.webp", "assets/images/lab.webp", "assets/images/tube.webp", "assets/images/cold-vault.webp", "assets/images/deadroom.webp"];
-    if (!refs.length) errors.push("asset reference table empty");
-    return errors;
+  function ledgerPanel() {
+    return photoPanel({
+      image: imageByKind.office,
+      kicker: "死信柜 / 用品来源",
+      title: "旧邮件处理守则与蓝边纸采购登记",
+      status: "来源记录 · 可作为后续操作依据",
+      note: "这里提供的是处理方法和纸张来源，不直接给出案件结论。火漆需隔距慢热；蓝边纸属于淀粉上浆批次17—B。",
+      crop: "35% 62%",
+      zoom: 1.7,
+      extra: `<div class="ve-record-lines"><span><b>守则</b>旧火漆：隔开热源，缓慢温热。</span><span><b>采购</b>蓝边纸：淀粉上浆，批次17—B。</span></div>`
+    });
+  }
+
+  function waxPanel() {
+    return photoPanel({
+      image: imageByKind.office,
+      kicker: "封缄检查",
+      title: "旧火漆封口",
+      status: "等待按守则处理",
+      note: "封口脆化，硬撬会破坏下面的薄纸。操作条件只有在处理守则与稳定热源都齐备后才成立。",
+      crop: "48% 58%",
+      zoom: 1.8
+    });
+  }
+
+  function timingPanel(done) {
+    return photoPanel({
+      image: imageByKind.tube,
+      kicker: "气动管 / 延时机构",
+      title: done ? "延时阀 · 隔夜档已复现" : "延时阀 · 等待时间复现",
+      status: done ? "17日19:20 → 18日07:32 / 机械时间窗成立" : "卡槽：立即 / 3h / 6h / 隔夜",
+      note: done ? "释放销位于隔夜槽，能解释昨夜进入而今晨才落下的胶囊。" : "不要把胶囊出现的时刻直接当作投递时刻；先把昨夜邮戳和今晨落下放到同一时间轴。",
+      crop: "53% 48%",
+      zoom: 1.55,
+      extra: `<div class="ve-record-lines"><span><b>进入</b>17日 19:20</span><span><b>落下</b>18日 07:32</span></div>`
+    });
+  }
+
+  function chartPanel(done) {
+    return photoPanel({
+      image: imageByKind.cold,
+      kicker: "低温库 / 原始温度记录",
+      title: "11月17日温度表",
+      status: done ? "侧光复核完成 · 底层原记录2°C" : "记录存在覆写 · 等待侧光复核",
+      note: done ? "侧光确认“12°C”是在原“2°C”前补写数字1。记录被改动，但改写者身份仍需独立材料支持。" : "先用层板纤维与拖痕确认低温库确实与尸体有关，再对覆写位置做侧光检查。",
+      crop: "48% 57%",
+      zoom: 1.7,
+      extra: `<div class="ve-record-lines"><span><b>11 / 16</b>3°C · 3°C · 2°C</span><span><b>11 / 17</b>2°C · ${done ? "原2°C / 后加1" : "12°C（待复核）"} · 2°C</span></div>`
+    });
+  }
+
+  function handPanel() {
+    return `<div class="ve-photo-compare" data-ve-upgraded="1">
+      <header><p>EVIDENCE RECORD / HANDWRITING</p><h3>三处书写的结构复核</h3><span>只比较稳定收笔结构，不用“整体看着像”代替结论</span></header>
+      <div class="ve-photo-compare-grid">
+        <figure><img src="${imageByKind.office}" alt="今晨来信所在调查场景"><figcaption><b>今晨来信</b><span>来源：办公室与来信原件</span></figcaption></figure>
+        <figure><img src="${imageByKind.cold}" alt="温度表所在低温库"><figcaption><b>温度表覆写</b><span>来源：低温库记录</span></figcaption></figure>
+        <figure><img src="${imageByKind.office}" alt="玛戈登记簿所在档案场景"><figcaption><b>玛戈登记簿</b><span>来源：旧登记材料</span></figcaption></figure>
+      </div>
+      <p class="ve-photo-compare-note">三份材料来自不同纸张与不同位置。当前只把末笔回钩角度和停笔位置作为可复核特征，身份判断仍需与登记簿来源互证。</p>
+    </div>`;
+  }
+
+  function bookPanel() {
+    return photoPanel({
+      image: imageByKind.office,
+      kicker: "参考资料 / 旧法医学与纸张手册",
+      title: "资料页与夹页记录",
+      status: "方法来源 · 非案件证物",
+      note: "低温会改变尸体现象的发展速度，但不会重写原始伤口和已经固定的尸斑；纸张处理前应先做对照实验。",
+      crop: "55% 64%",
+      zoom: 1.7,
+      extra: `<div class="ve-record-lines"><span><b>法医学</b>时间估算必须把环境温度单独纳入。</span><span><b>纸张检验</b>先在牺牲样本上验证方法，再处理原证物。</span></div>`
+    });
+  }
+
+  function relationPanel(question) {
+    return `<div class="ve-relation-photo" data-ve-upgraded="1">
+      <header><p>FINAL RECONSTRUCTION / RELATION</p><h3>${esc(question || "当前关系待复核")}</h3><span>从真实证物来源中选择两件能够彼此独立支持关系的材料</span></header>
+      <div class="ve-relation-scenes">
+        <figure><img src="${imageByKind.dead}" alt="死信室现场"><figcaption>死信室 / 现场事实</figcaption></figure>
+        <figure><img src="${imageByKind.tube}" alt="气动管控制室"><figcaption>气动管 / 机械时间</figcaption></figure>
+        <figure><img src="${imageByKind.cold}" alt="低温库现场"><figcaption>低温库 / 环境与搬运痕迹</figcaption></figure>
+      </div>
+      <p>关系板不再用“证物A—证物B”的示意线替玩家推理；真正的选择仍在下方证物池完成。</p>
+    </div>`;
+  }
+
+
+  function checkpointPanel(text) {
+    const title = $("detail-title")?.textContent || "阶段复核";
+    const kicker = $("detail-kicker")?.textContent || "阶段复核";
+    const chapter = /第3章|第三章|机械|低温|书写/.test(title + kicker + text) ? 3 : /第2章|第二章|方法|三封信/.test(title + kicker + text) ? 2 : 1;
+    const scenes = chapter === 1
+      ? [[imageByKind.dead,"死信室现场"],[imageByKind.office,"办公室记录"],[imageByKind.dead,"门窗与尸体事实"]]
+      : chapter === 2
+        ? [[imageByKind.office,"原件与用品来源"],[imageByKind.lab,"对照实验"],[imageByKind.office,"三封信处理记录"]]
+        : [[imageByKind.tube,"机械延时"],[imageByKind.cold,"低温与搬运痕迹"],[imageByKind.office,"书写来源"]];
+    return `<div class="ve-relation-photo ve-checkpoint-photo" data-ve-upgraded="1">
+      <header><p>CASE REVIEW / CHAPTER ${chapter}</p><h3>${esc(title)}</h3><span>阶段复核只组织已经登记的事实，不用图示替玩家提前画出答案。</span></header>
+      <div class="ve-relation-scenes">${scenes.map(([src,label]) => `<figure><img src="${src}" alt="${esc(label)}"><figcaption>${esc(label)}</figcaption></figure>`).join("")}</div>
+      <p>从下方卡片中选择能够直接支持题目表述的事实。错误组合不会推进章节，正确结果会写入阶段复核。</p>
+    </div>`;
+  }
+
+  function judgementGatePanel(text) {
+    const counts = [...String(text || "").matchAll(/(\d+)/g)].map(m => m[1]);
+    return `<div class="ve-relation-photo ve-gate-photo" data-ve-upgraded="1">
+      <header><p>CASE REVIEW / EVIDENCE JUDGEMENT</p><h3>关键证物判断尚未完成</h3><span>先完成证物四选一判断，再进入本章关系复核。</span></header>
+      <div class="ve-relation-scenes">
+        <figure><img src="${imageByKind.dead}" alt="现场证物来源"><figcaption>现场事实</figcaption></figure>
+        <figure><img src="${imageByKind.office}" alt="文书与信件来源"><figcaption>文书与信件</figcaption></figure>
+        <figure><img src="${imageByKind.cold}" alt="后续环境证物来源"><figcaption>环境与记录</figcaption></figure>
+      </div>
+      <p>${counts.length >= 2 ? `当前记录：${esc(counts[0])} / ${esc(counts[1])}。` : "当前还有关键判断未写入调查簿。"}只有证据能直接支持的选项才会计入章节开放条件。</p>
+    </div>`;
+  }
+
+  function drawerPanel() {
+    return photoPanel({
+      image: imageByKind.office,
+      kicker: "办公室 / 抽屉清点",
+      title: "现场可取用品",
+      status: "只登记实际存在的物品",
+      note: "扁平铅笔、短蜡烛、黑面包和便笺都来自同一办公室场景。需要什么，由当前证物处理方法决定。",
+      crop: "61% 71%",
+      zoom: 1.8,
+      extra: `<div class="ve-record-lines"><span><b>工具</b>扁平铅笔 · 短蜡烛</span><span><b>样本</b>黑面包 · 便笺</span></div>`
+    });
+  }
+
+  function replaceKnownDetail() {
+    const root = $("detail-visual");
+    if (!root) return;
+    const child = root.firstElementChild;
+    if (!child || child.dataset.veUpgraded === "1" || child.matches(".ve-photo-evidence,.ve-photo-compare,.ve-relation-photo")) return;
+
+    let html = "";
+    if (child.classList.contains("paper-evidence")) {
+      const sheet = child.querySelector(".paper-sheet");
+      const cls = sheet?.className || "";
+      const type = cls.includes("type-A") ? "A" : cls.includes("type-B") ? "B" : "C";
+      html = paperPanel(type, child.classList.contains("done"));
+    } else if (child.classList.contains("ledger-visual")) {
+      html = ledgerPanel();
+    } else if (child.classList.contains("wax-evidence")) {
+      html = waxPanel();
+    } else if (child.classList.contains("timing-dossier")) {
+      html = timingPanel(/释放销|隔夜槽/.test(child.textContent || ""));
+    } else if (child.classList.contains("chart-visual")) {
+      html = chartPanel(!!child.querySelector("del") || /底层原记录|侧光确认/.test(child.textContent || ""));
+    } else if (child.classList.contains("hand-compare")) {
+      html = handPanel();
+    } else if (child.classList.contains("book-visual")) {
+      html = bookPanel();
+    } else if (child.classList.contains("relation-board")) {
+      html = relationPanel($("detail-title")?.textContent || "");
+    } else if (child.classList.contains("object-layout")) {
+      html = drawerPanel();
+    } else if (child.classList.contains("checkpoint-visual")) {
+      html = checkpointPanel(child.textContent || "");
+    } else if (child.classList.contains("judgement-gate-sheet")) {
+      html = judgementGatePanel(child.textContent || "");
+    }
+
+    if (html) root.innerHTML = html;
+  }
+
+  function markInteractive() {
+    const body = document.querySelector("#interactive-overlay .interactive-body");
+    if (!body) return;
+    const work = body.querySelector(".paper-work,.wax-work,.timeline-work,.chart-work");
+    if (!work || work.dataset.veInteractive === "1") return;
+    work.dataset.veInteractive = "1";
+    body.classList.add("ve-realistic-interactive");
+    const heat = body.querySelector("#heat-source");
+    if (heat) heat.setAttribute("aria-label", "酒精灯热源");
+  }
+
+  let scheduled = false;
+  function schedule() {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(() => {
+      scheduled = false;
+      replaceKnownDetail();
+      markInteractive();
+    });
   }
 
   function init() {
-    run();
-    const detail = $("detail-modal");
-    if (detail) new MutationObserver(run).observe(detail, {subtree:true, childList:true, characterData:true, attributes:true});
-    const bodyObserver = new MutationObserver(run);
-    bodyObserver.observe(document.body, {subtree:true, childList:true});
-    const errors = validate();
-    if (errors.length) console.warn("[letter visual evidence upgrade]", errors);
-    window.__LETTER_VISUAL_EVIDENCE_UPGRADE__ = {version:BUILD, validate, refresh:run};
+    schedule();
+    const visualRoot = $("detail-visual");
+    if (visualRoot) new MutationObserver(schedule).observe(visualRoot, {childList:true});
+
+    const interactiveRoot = document.querySelector("#interactive-overlay .interactive-body");
+    if (interactiveRoot) new MutationObserver(schedule).observe(interactiveRoot, {childList:true});
+
+    window.__LETTER_VISUAL_EVIDENCE_UPGRADE__ = {
+      version: BUILD,
+      refresh: schedule,
+      health() {
+        return {
+          detailObserverScope: "childList-only",
+          bodyWideObserver: false,
+          attributeObserver: false,
+          images: Object.values(imageByKind)
+        };
+      }
+    };
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, {once:true});
