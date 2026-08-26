@@ -416,5 +416,5 @@
   decorateArchiveTabs();
   enrichArchivePage();
   enrichPeople();
-  document.documentElement.dataset.interfacePolish = "v2";
+  document.documentElement.dataset.interfacePolish = "v3";
 })();
