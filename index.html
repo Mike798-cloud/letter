@@ -32,12 +32,12 @@
         <button id="mobile-locations" class="mobile-sheet-button" aria-label="打开地点目录">地点</button>
         <div class="case-id"><span id="chapter-kicker">第一章</span><strong id="chapter-title">滞留</strong></div>
         <div class="case-tools">
-          <button id="archive-btn" class="tool-button" aria-label="阅读连载小说"><i>文</i><span>连载</span><b id="archive-badge">1</b></button>
-          <button id="notebook-btn" class="tool-button" aria-label="调查笔记"><i>录</i><span>笔记</span></button>
-          <button id="hint-btn" class="tool-button" aria-label="提示"><i>?</i><span>提示</span></button>
-          <button id="support-btn" class="tool-button support-button" aria-label="支持创作"><i>♡</i><span>1元支持</span></button>
-          <button id="sound-btn" class="tool-button" aria-label="声音"><i>声</i><span>声音</span></button>
-          <button id="menu-btn" class="tool-button" aria-label="菜单"><i>≡</i><span>菜单</span></button>
+          <button id="archive-btn" class="tool-button" aria-label="阅读连载小说"><i>A-01</i><span>连载</span><b id="archive-badge">1</b></button>
+          <button id="notebook-btn" class="tool-button" aria-label="调查笔记"><i>A-02</i><span>笔记</span></button>
+          <button id="hint-btn" class="tool-button" aria-label="提示"><i>A-03</i><span>提示</span></button>
+          <button id="support-btn" class="tool-button support-button" aria-label="支持创作"><i>A-04</i><span>支持</span></button>
+          <button id="sound-btn" class="tool-button" aria-label="声音"><i>A-05</i><span>声音</span></button>
+          <button id="menu-btn" class="tool-button" aria-label="菜单"><i>A-06</i><span>菜单</span></button>
         </div>
       </header>
 
@@ -60,9 +60,9 @@
         </section>
 
         <aside id="evidence-panel" class="evidence-panel">
-          <div class="panel-heading"><span>证物登记</span><small id="evidence-count">0 / 16</small></div>
+          <div class="panel-heading"><span>证物登记</span><small id="evidence-count">0 / 15</small></div>
           <div id="evidence-list" class="evidence-list"></div>
-          <div class="knowledge-heading">已经确定的事实</div>
+          <div class="knowledge-heading">已经验证的物理事实</div>
           <div id="knowledge-list" class="knowledge-list"><p>尚无记录</p></div>
         </aside>
       </section>
@@ -90,7 +90,7 @@
     </section>
 
     <section id="notebook-modal" class="notebook-modal hidden" role="dialog" aria-modal="true" aria-label="调查笔记">
-      <button class="modal-close" data-close="notebook-modal" aria-label="关闭">×</button><div class="notebook-spread"><article><p class="modal-kicker">ADA KLEIN · 私人记录</p><h2>调查问题</h2><div id="notebook-objectives"></div></article><article><p class="modal-kicker">口供边注</p><h2>三个没有说完的人</h2><div id="suspect-notes"></div></article></div>
+      <button class="modal-close" data-close="notebook-modal" aria-label="关闭">×</button><div class="notebook-spread"><article><p class="modal-kicker">ADA KLEIN · 私人记录</p><h2>调查问题</h2><div id="notebook-objectives"></div></article><article><p class="modal-kicker">口供边注</p><h2>四个没有说完的名字</h2><div id="suspect-notes"></div></article></div>
     </section>
 
     <section id="hint-modal" class="paper-modal hint-modal hidden" role="dialog" aria-modal="true" aria-labelledby="hint-title">
@@ -111,6 +111,16 @@
     </section>
 
     <div id="toast" class="toast hidden" role="status"></div>
+    <section id="story-interlude" class="story-interlude hidden" aria-modal="true" role="dialog" aria-labelledby="story-heading">
+      <div class="story-grain" aria-hidden="true"></div>
+      <article class="story-sheet">
+        <div class="story-register"><span id="story-register">WEISSBURG · 1927</span><b id="story-folio">INTERLUDE 01</b></div>
+        <p id="story-kicker" class="story-kicker">案卷间页</p>
+        <h2 id="story-heading">雾停在门外</h2>
+        <div id="story-lines" class="story-lines" aria-live="polite"></div>
+        <button id="story-continue" class="story-continue hidden">进入死信室</button>
+      </article>
+    </section>
   </div>
   <script src="assets/game.js"></script>
 </body>

@@ -65,3 +65,81 @@ body:before{content:"";position:fixed;inset:0;z-index:99;pointer-events:none;opa
 }
 
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* v3 · 叙事与档案视觉统一：去除符号化简图，改用卷宗编号、实物标签与证物关系。 */
+.tool-button{grid-template-rows:18px 16px;min-width:69px;padding:7px 10px 5px}
+.tool-button i{font:700 7px/1 Arial,sans-serif;letter-spacing:.16em;color:#756c5b;border-bottom:1px solid #8e846f;padding-bottom:4px;width:100%;text-align:center}
+.tool-button:hover i,.tool-button:focus-visible i{color:inherit}
+.support-button{background:#c9bba1;color:#6a372f}
+.ink-button:disabled{opacity:.42;cursor:not-allowed;transform:none!important;box-shadow:none}
+
+.evidence-card span small{display:block;margin-top:3px;font:700 8px/1.2 Arial,sans-serif;letter-spacing:.08em;color:#756d5d;text-transform:uppercase}
+.evidence-card:hover span small{color:#655e50}
+.panel-empty{font-size:10px;line-height:1.6;padding:8px;margin:0;color:#665f51}
+
+.inventory-list{gap:7px}
+.inventory-item{flex:0 0 106px;height:61px;padding:7px 8px;display:grid;grid-template-rows:11px 1fr 12px;place-items:start stretch;text-align:left;background:#d5cbb5;border-color:#8c7d63;font-family:inherit}
+.inventory-item:before{display:none}
+.inventory-item small{font:700 7px/1 Arial,sans-serif;letter-spacing:.14em;color:#7a3d34;border-bottom:1px solid #a39882;padding-bottom:3px}
+.inventory-item b{align-self:center;font-size:11px;font-weight:600;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inventory-item span{font:700 7px/1 Arial,sans-serif;letter-spacing:.08em;color:#6b6455;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inventory-item:hover{background:#e4dbc8;transform:translateY(-1px)}
+
+#detail-modal{width:min(650px,94vw)}
+.detail-visual{min-height:128px;padding:16px;background:linear-gradient(0deg,#c7bca4,#d8cfbb);position:relative;overflow:hidden}
+.detail-visual:before{content:"";position:absolute;inset:0;opacity:.2;background:repeating-linear-gradient(0deg,transparent 0 8px,#6b625011 8px 9px),repeating-linear-gradient(90deg,transparent 0 17px,#fff4 17px 18px)}
+.object-glyph{display:none}
+.specimen-card{position:relative;z-index:1;width:min(390px,90%);min-height:86px;padding:12px 84px 10px 14px;background:#e8dfcc;border:1px solid #766d5b;box-shadow:4px 4px 0 #766c5852;transform:rotate(-.25deg);display:grid;align-content:center}
+.specimen-card span,.specimen-card small{font:700 8px/1.3 Arial,sans-serif;letter-spacing:.13em;color:#716958;text-transform:uppercase}
+.specimen-card b{font-size:17px;font-weight:600;line-height:1.25;margin:7px 0}
+.specimen-card i{position:absolute;right:12px;top:13px;width:58px;height:58px;border:2px double #8b4b40;border-radius:50%;display:grid;place-items:center;color:#8b4b40;font:700 7px/1 Arial,sans-serif;letter-spacing:.05em;transform:rotate(9deg);opacity:.72}
+.detail-note{display:block;margin-top:8px;color:#6e6657;font-size:10px;line-height:1.6}
+
+.relation-plate{position:relative;z-index:1;width:min(440px,94%);min-height:88px;border-top:3px double #706755;border-bottom:1px solid #706755;display:grid;grid-template-columns:1fr auto;gap:4px 18px;align-content:center;padding:12px 8px;text-align:left}
+.relation-plate span{font:700 8px/1 Arial,sans-serif;letter-spacing:.18em;color:#756c59}
+.relation-plate b{font:500 28px/1 Georgia,serif;color:#733a32;grid-row:1/3;grid-column:2;align-self:center}
+.relation-plate small{font-size:11px;color:#5e584b}
+.deduction-prompt{display:block;margin-bottom:12px;font-size:13px;line-height:1.7}
+.deduction-evidence{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 12px}
+.evidence-choice{min-height:66px;border:1px solid #867b67;background:#d5cbb6;text-align:left;padding:9px 11px;cursor:pointer;box-shadow:2px 2px 0 #84796342}
+.evidence-choice small{display:block;font:700 8px/1 Arial,sans-serif;letter-spacing:.1em;color:#756b59;margin-bottom:7px}
+.evidence-choice b{font-size:12px;font-weight:600;line-height:1.35}
+.evidence-choice:hover{background:#e2d9c6}
+.evidence-choice.selected{background:#33484b;color:#eee7d7;border-color:#1e2d2f;box-shadow:inset 0 0 0 2px #c8bda555}
+.evidence-choice.selected small{color:#c9c2b2}
+.deduction-feedback{min-height:42px;margin:7px 0 0;padding:9px 11px;border-left:3px solid #8b806b;background:#c8bda766;font-size:11px;line-height:1.55;color:#625b4e}
+.deduction-feedback.success{border-left-color:#486151;color:#3f5146}
+.deduction-feedback.warning{border-left-color:#7b3b33;color:#6c352f}
+.conclusion-label{flex:1 0 100%;margin:8px 0 0;padding-top:10px;border-top:1px solid #8a806c;font-size:11px;font-weight:700;letter-spacing:.04em}
+.conclusion-choice{flex:1 0 100%;text-align:left;box-shadow:2px 2px 0 #706752}
+
+.story-interlude{position:fixed;z-index:80;inset:0;display:grid;place-items:center;padding:clamp(22px,5vw,72px);background:#141511;overflow:auto;color:#e7deca}
+.story-interlude:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,#53504722 0 18%,transparent 58%),linear-gradient(90deg,#0d0e0bcc,#1b1c17ed 35% 65%,#0d0e0bcc);pointer-events:none}
+.story-grain{position:absolute;inset:0;pointer-events:none;opacity:.17;background:repeating-linear-gradient(0deg,transparent 0 3px,#f4ead20d 3px 4px),radial-gradient(#d6cbb411 0 1px,transparent 1px);background-size:auto,5px 5px}
+.story-sheet{position:relative;width:min(820px,100%);min-height:min(590px,82dvh);padding:32px clamp(24px,6vw,68px) 38px;border-top:1px solid #8d8067;border-bottom:1px solid #625947;display:flex;flex-direction:column;justify-content:center}
+.story-register{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;gap:20px;padding:10px 0;border-bottom:1px solid #514b40;font:700 8px/1 Arial,sans-serif;letter-spacing:.18em;color:#978b72}
+.story-register b{font-weight:700;color:#a75d50}
+.story-kicker{margin:24px 0 10px;font:700 9px/1.3 Arial,sans-serif;letter-spacing:.25em;color:#9d9076;text-transform:uppercase}
+.story-sheet h2{margin:0 0 28px;font-size:clamp(29px,4vw,47px);font-weight:400;letter-spacing:.08em;color:#efe5d1}
+.story-lines{display:grid;gap:14px;max-width:720px}
+.story-line{margin:0;padding-left:18px;border-left:1px solid #6d6452;font-size:clamp(15px,1.5vw,19px);line-height:1.95;letter-spacing:.02em;color:#d8cfbc;opacity:0;transform:translateY(7px);transition:opacity .6s ease,transform .6s ease}
+.story-line.visible{opacity:1;transform:none}
+.story-continue{align-self:flex-end;margin-top:30px;min-height:45px;border:0;border-bottom:1px solid #a59679;background:transparent;color:#e9dfca;padding:8px 4px 7px 24px;cursor:pointer;font:700 11px/1 Arial,sans-serif;letter-spacing:.16em;position:relative}
+.story-continue:before{content:"";position:absolute;left:0;top:50%;width:12px;border-top:1px solid #a75d50}
+.story-continue:hover{color:#fff3da;border-bottom-color:#d0c1a3}
+
+@media (max-width:767px){
+  .tool-button{min-width:40px;width:40px;padding:5px 2px;grid-template-rows:16px 14px}.tool-button i{font-size:6px;padding-bottom:3px}.tool-button span{font-size:8px}
+  .inventory-item{flex-basis:91px;height:56px;padding:6px 7px}.inventory-item b{font-size:10px}.inventory-item small,.inventory-item span{font-size:6px}
+  #detail-modal{width:100%}.deduction-evidence{grid-template-columns:1fr}.evidence-choice{min-height:58px}.specimen-card{padding-right:67px}.specimen-card i{width:48px;height:48px;font-size:6px}
+  .story-interlude{padding:0 20px}.story-sheet{min-height:100dvh;padding:calc(54px + env(safe-area-inset-top,0px)) 3px calc(28px + env(safe-area-inset-bottom,0px));border:0}.story-register{top:calc(12px + env(safe-area-inset-top,0px));padding-bottom:10px}.story-sheet h2{font-size:30px;margin-bottom:24px}.story-lines{gap:12px}.story-line{font-size:14px;line-height:1.85;padding-left:13px}.story-continue{margin-top:24px}
+}
+
+@media (max-height:610px) and (orientation:landscape){
+  .story-interlude{display:block;padding:16px 6vw}.story-sheet{min-height:0;margin:auto;padding:34px 2px 22px}.story-sheet h2{font-size:27px;margin:10px 0 16px}.story-kicker{margin-top:16px}.story-lines{gap:7px}.story-line{font-size:12px;line-height:1.6}.story-continue{margin-top:14px}
+}
+@media (max-width:430px){
+  .tool-button{width:34px;min-width:34px;padding-left:1px;padding-right:1px}
+  .tool-button i{font-size:5.5px;letter-spacing:.08em}
+  .tool-button span{font-size:7px}
+}
