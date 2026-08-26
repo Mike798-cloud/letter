@@ -1,0 +1,111 @@
+/*
+ * 雾中证人 · 长文本/档案页滚动修复
+ * 仅负责可滚动区域与竖向滚动条，不改动剧情、推理、存档或原有配色结构。
+ */
+
+/* 原有调查弹窗：标题保持在上方，正文独立滚动，避免长内容被视口裁掉。 */
+.modal-layer {
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  max-height: min(94vh, calc(100dvh - 24px));
+  overflow: hidden;
+}
+
+.modal-head {
+  flex: 0 0 auto;
+}
+
+.modal-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* JS 会把下列类加到文库、人物记录等超出视口的自定义全屏页。 */
+.wj-scroll-overlay,
+.wj-scroll-viewport {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: stable;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
+.wj-scroll-overlay {
+  max-height: 100dvh !important;
+}
+
+/* 让“竖状条”在桌面端更清楚，同时保持旧档案的纸张质感。 */
+.modal-body,
+.wj-scroll-overlay,
+.wj-scroll-viewport {
+  scrollbar-width: auto;
+  scrollbar-color: #807766 #d8d0bf;
+}
+
+.modal-body::-webkit-scrollbar,
+.wj-scroll-overlay::-webkit-scrollbar,
+.wj-scroll-viewport::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.modal-body::-webkit-scrollbar-track,
+.wj-scroll-overlay::-webkit-scrollbar-track,
+.wj-scroll-viewport::-webkit-scrollbar-track {
+  background: #d8d0bf;
+  border-left: 1px solid rgba(86, 80, 68, .22);
+}
+
+.modal-body::-webkit-scrollbar-thumb,
+.wj-scroll-overlay::-webkit-scrollbar-thumb,
+.wj-scroll-viewport::-webkit-scrollbar-thumb {
+  min-height: 44px;
+  background: #807766;
+  border: 3px solid #d8d0bf;
+  border-radius: 8px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover,
+.wj-scroll-overlay::-webkit-scrollbar-thumb:hover,
+.wj-scroll-viewport::-webkit-scrollbar-thumb:hover {
+  background: #625b4e;
+}
+
+/* 浏览器支持 :has() 时，优先给常见的“带关闭按钮的全屏档案页”直接开放竖向滚动。
+   这是纯 CSS 兜底；真正的尺寸判断由 scroll-fix.js 完成。 */
+@supports selector(body:has(*)) {
+  body > [role="dialog"],
+  body > [class*="overlay"]:has(button),
+  body > [class*="reader"]:has(button),
+  body > [class*="archive"]:has(button),
+  body > [class*="record"]:has(button),
+  body > [class*="dossier"]:has(button),
+  body > [class*="literature"]:has(button),
+  body > [class*="book"]:has(button) {
+    overscroll-behavior: contain;
+  }
+}
+
+@media (max-width: 650px) {
+  .modal {
+    max-height: calc(100dvh - 10px);
+  }
+
+  .modal-body::-webkit-scrollbar,
+  .wj-scroll-overlay::-webkit-scrollbar,
+  .wj-scroll-viewport::-webkit-scrollbar {
+    width: 9px;
+  }
+}
