@@ -256,21 +256,55 @@
     });
   }
 
+  let interactiveObserver = null;
+  let overlayCreationObserver = null;
+
+  function attachInteractiveObserver() {
+    const interactiveRoot = document.querySelector("#interactive-overlay .interactive-body");
+    if (!interactiveRoot || interactiveRoot.dataset.veObserved === "1") return false;
+    interactiveRoot.dataset.veObserved = "1";
+    interactiveObserver = new MutationObserver(schedule);
+    interactiveObserver.observe(interactiveRoot, {childList:true});
+    schedule();
+    return true;
+  }
+
+  function watchForInteractiveOverlay() {
+    if (attachInteractiveObserver() || !document.body) return;
+
+    // interactiveShell() appends #interactive-overlay directly to <body>.  Watch
+    // body children only until that one node appears, then disconnect immediately.
+    // This fixes late-created puzzle visuals without bringing back the old
+    // body-wide/subtree observer that could make long sessions unresponsive.
+    overlayCreationObserver = new MutationObserver(mutations => {
+      const addedOverlay = mutations.some(m => [...m.addedNodes].some(node =>
+        node?.nodeType === 1 && (node.id === "interactive-overlay" || node.querySelector?.("#interactive-overlay"))
+      ));
+      if (!addedOverlay) return;
+      if (attachInteractiveObserver()) {
+        overlayCreationObserver.disconnect();
+        overlayCreationObserver = null;
+      }
+    });
+    overlayCreationObserver.observe(document.body, {childList:true});
+  }
+
   function init() {
     schedule();
     const visualRoot = $("detail-visual");
     if (visualRoot) new MutationObserver(schedule).observe(visualRoot, {childList:true});
 
-    const interactiveRoot = document.querySelector("#interactive-overlay .interactive-body");
-    if (interactiveRoot) new MutationObserver(schedule).observe(interactiveRoot, {childList:true});
+    watchForInteractiveOverlay();
 
     window.__LETTER_VISUAL_EVIDENCE_UPGRADE__ = {
-      version: BUILD,
+      version: BUILD + "+dynamic-overlay-fix",
       refresh: schedule,
       health() {
         return {
           detailObserverScope: "childList-only",
           bodyWideObserver: false,
+          overlayCreationObserver: overlayCreationObserver ? "body-childList-once" : "not-needed",
+          interactiveObserverAttached: Boolean(interactiveObserver),
           attributeObserver: false,
           images: Object.values(imageByKind)
         };
