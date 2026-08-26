@@ -1,0 +1,209 @@
+/* 《寄不到的明天》界面统一精修：恢复私印本/人物档案的纸本阅读感，同时保留 v9 的推理功能。 */
+
+:root{
+  --folio-paper:#e8dfcc;
+  --folio-paper-deep:#d8cdb6;
+  --folio-ink:#27251f;
+  --folio-muted:#756c5d;
+  --folio-rule:#9d927c;
+  --folio-accent:#3f5659;
+}
+
+/* ---------- 私印本：《雪落以前》 ---------- */
+.archive-modal{
+  width:min(1180px,calc(100vw - 34px));
+  grid-template-columns:320px minmax(0,1fr);
+  background:var(--folio-paper);
+  overflow:hidden;
+}
+.archive-modal::after{
+  content:"";
+  position:absolute;
+  top:0;bottom:0;left:320px;
+  width:1px;
+  background:#a99d86;
+  box-shadow:8px 0 18px rgba(63,49,31,.08);
+  pointer-events:none;
+}
+.archive-index{
+  position:relative;
+  padding:30px 28px 24px;
+  border-right:0;
+  background:linear-gradient(90deg,#ddd3be 0,#e2d8c4 82%,#d7ccb6 100%);
+  overflow:auto;
+}
+.archive-index .modal-kicker{max-width:240px;line-height:1.55}
+.archive-index h2{font-size:34px;line-height:1.2;margin:12px 0 10px;font-weight:500;letter-spacing:.04em}
+.archive-author{margin:0 0 18px;padding-bottom:16px;border-bottom:3px double #807764;font-size:12px;letter-spacing:.06em;color:#675f52}
+.archive-tabs{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  margin:0 0 28px;
+  border-top:1px solid #b6aa94;
+}
+.archive-tabs button{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+  min-height:44px;
+  border:0;
+  border-bottom:1px solid #b6aa94;
+  background:transparent;
+  padding:9px 10px;
+  text-align:left;
+  box-shadow:none;
+  cursor:pointer;
+  color:#5a5448;
+}
+.archive-tabs button:hover:not(:disabled){background:#ece3d2}
+.archive-tabs button.active{background:var(--folio-accent);color:#f2ecdf}
+.archive-tabs button:disabled{opacity:.38;cursor:default;background:transparent}
+.archive-tab-title{font-size:14px;letter-spacing:.03em}
+.archive-tab-state{font:9px/1.2 Arial,sans-serif;letter-spacing:.08em;color:#8d8372}
+.archive-tabs button.active .archive-tab-state{color:#d8d7ca}
+.archive-search{margin-top:auto}
+.archive-search label{display:block;margin-bottom:7px;font-size:10px;letter-spacing:.06em;color:#665e50}
+.archive-search div{display:flex}
+.archive-search input{height:38px;padding:8px 9px;background:#f4eee2;border:1px solid #948873;font-size:12px}
+.archive-search button{min-width:56px;border:1px solid #948873;border-left:0;background:#cfc3ad;padding:7px 10px;cursor:pointer}
+.archive-search p{margin-top:8px;font-size:9px;line-height:1.55;color:#817665}
+.archive-page{
+  position:relative;
+  min-height:600px;
+  padding:48px 58px 42px;
+  background:linear-gradient(90deg,#eee7d8 0,#f0e8d8 50%,#ebe2d1 100%);
+  overflow:auto;
+}
+.archive-page::before{
+  content:"";
+  position:absolute;
+  left:34px;top:0;bottom:0;
+  width:1px;
+  background:#cdbfa6;
+}
+.archive-page-no{margin:0 0 26px;font:10px/1.4 Arial,sans-serif;letter-spacing:.16em;color:#6f6658}
+.archive-page h3{margin:0 0 24px;font-size:30px;line-height:1.25;font-weight:500;letter-spacing:.025em}
+.archive-page-copy{max-width:760px}
+.archive-page-copy p{margin:0 0 1.45em;font-size:15px;line-height:2.08;text-align:justify;text-justify:inter-ideograph;color:#34312a}
+.archive-running{max-width:760px;margin-top:38px;border-top:1px solid #a99d86;padding-top:13px;font-size:11px;line-height:1.7;color:#766d5e}
+
+/* ---------- 人物记录：恢复双页档案阅读，推论板独立到案卷管理 ---------- */
+.notebook-modal{
+  width:min(1160px,calc(100vw - 34px));
+  padding:0;
+  overflow:hidden;
+  background:var(--folio-paper);
+}
+.notebook-spread{
+  display:grid;
+  grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
+  gap:0;
+  min-height:610px;
+}
+.notebook-spread>article{
+  min-width:0;
+  padding:42px 38px 36px;
+  overflow:auto;
+}
+.notebook-spread>article+article{
+  border-left:1px solid #a99d86;
+  box-shadow:-8px 0 18px rgba(63,49,31,.055);
+}
+.notebook-spread h2{margin:7px 0 20px;font-size:30px;line-height:1.25;font-weight:500;letter-spacing:.02em}
+.notebook-page-note{margin:-8px 0 20px;padding-bottom:14px;border-bottom:1px solid #a99d86;font-size:11px;line-height:1.75;color:#776d5d}
+.notebook-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px 14px;
+  align-items:center;
+  padding:11px 4px;
+  border-bottom:1px dotted #b0a48d;
+  background:transparent;
+  font-size:11px;
+}
+.notebook-row.current{background:#d5d4bd;padding-left:10px;padding-right:10px}
+.notebook-row.done{opacity:.72}
+.notebook-row b{font-size:12px;font-weight:600}
+.notebook-row span{color:#746b5d}
+.notebook-row .checkpoint-open{grid-column:1/-1;justify-self:start;margin-top:2px;border:0;border-bottom:1px solid #765742;background:transparent;padding:4px 0;color:#654431;cursor:pointer}
+.review-note{margin-top:18px;padding:12px 13px;background:#d4dccf;border-left:3px solid #4d6654;line-height:1.6}
+
+#suspect-notes{padding-top:2px}
+#suspect-notes details{
+  display:block;
+  padding:0 0 16px;
+  margin:0 0 18px;
+  border:0;
+  border-bottom:1px dotted #b4a992;
+}
+#suspect-notes details:last-child{border-bottom:0}
+#suspect-notes summary{
+  display:block;
+  list-style:none;
+  pointer-events:none;
+  margin:0 0 7px;
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:.025em;
+  color:#343029;
+}
+#suspect-notes summary::-webkit-details-marker{display:none}
+#suspect-notes p{margin:0;font-size:12px;line-height:1.9;color:#4a453b}
+#suspect-notes .profile-supplement{margin-top:8px;color:#655d50}
+
+/* ---------- 独立临时推论板 ---------- */
+.reasoning-modal{width:min(960px,calc(100vw - 34px));padding:30px 34px 32px;background:var(--folio-paper)}
+.reasoning-modal>h2{font-size:30px;font-weight:500;margin:4px 45px 10px 0}
+.reasoning-intro{max-width:740px;margin:0 0 18px;font-size:12px;line-height:1.8;color:#645c4f}
+.standalone-reason-board{margin:0;padding:16px 0 0;border-top:3px double #817662}
+.standalone-reason-board>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.standalone-reason-board .reason-column{min-height:180px;padding:12px;background:#d0c4ad;border:1px solid #988b75}
+.standalone-reason-board .reason-column h4{margin:0 0 10px;padding-bottom:7px;border-bottom:1px solid #aa9c84;font-size:12px;letter-spacing:.04em}
+.standalone-reason-board .reason-column button{font-size:11px;line-height:1.5;padding:8px 9px;background:#eee5d4}
+.standalone-reason-board .reason-column p{font-size:10px;line-height:1.65}
+.reasoning-footnote{margin:18px 0 0;padding-top:12px;border-top:1px solid #a99d86;font-size:10px;line-height:1.7;color:#776d5d}
+#open-reasoning-board{border-style:double}
+
+/* ---------- 细节统一 ---------- */
+.archive-modal,.notebook-modal,.reasoning-modal{box-shadow:12px 14px 0 rgba(9,10,8,.56)}
+.archive-modal .modal-close,.notebook-modal .modal-close,.reasoning-modal .modal-close{z-index:3}
+
+@media(max-width:900px){
+  .archive-modal{grid-template-columns:270px minmax(0,1fr)}
+  .archive-modal::after{left:270px}
+  .archive-page{padding:40px 38px 34px}.archive-page::before{left:24px}
+  .notebook-spread>article{padding:34px 28px 30px}
+}
+
+@media(max-width:760px){
+  .archive-modal,.notebook-modal,.reasoning-modal{left:8px;right:8px;top:8px;bottom:8px;width:auto;max-height:none;transform:none;overflow:auto}
+  .archive-modal{display:block;padding:0}
+  .archive-modal::after{display:none}
+  .archive-index{padding:20px 18px;border-bottom:3px double #8f846f}
+  .archive-index h2{font-size:28px}
+  .archive-tabs{display:grid;grid-template-columns:1fr 1fr;margin-bottom:18px;border-top:0}
+  .archive-tabs button{min-height:42px;border:1px solid #b6aa94;margin:-1px 0 0 -1px}
+  .archive-page{min-height:0;padding:28px 22px 34px}.archive-page::before{display:none}
+  .archive-page h3{font-size:25px}.archive-page-copy p{font-size:14px;line-height:1.95;text-align:left}
+  .notebook-spread{grid-template-columns:1fr;min-height:0}
+  .notebook-spread>article{padding:28px 22px}
+  .notebook-spread>article+article{border-left:0;border-top:3px double #918570;box-shadow:none}
+  .notebook-spread h2{font-size:25px}
+  .reasoning-modal{padding:24px 20px}
+  .standalone-reason-board>div{grid-template-columns:1fr}
+  .standalone-reason-board .reason-column{min-height:0}
+}
+
+@media(max-width:480px){
+  .archive-tabs{grid-template-columns:1fr}
+  .archive-page{padding:25px 17px 30px}
+  .archive-page-copy p{font-size:13px}
+  .notebook-spread>article{padding:24px 17px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .archive-tabs button,.reasoning-modal button{transition:none!important}
+}
