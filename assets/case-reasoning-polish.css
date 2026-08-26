@@ -37,3 +37,11 @@
 @media(max-width:480px){
   .reasoning-head b{font-size:14px}.reasoning-option>p{font-size:11px;padding:10px}.evidence-photo-review{min-height:210px}.evidence-photo-focus{left:9px;right:9px;bottom:9px;padding:9px 10px}.evidence-photo-focus small{font-size:9px}
 }
+
+/* Persisted judgement display: reopening a registered clue never asks the same question again. */
+.reasoning-resolved{padding-bottom:2px}
+.reasoning-resolution{display:grid;grid-template-columns:42px 1fr;align-items:stretch;border:1px solid #65775e;background:#dde6d8;box-shadow:2px 2px 0 #b7aa91}
+.reasoning-resolution>span{display:grid;place-items:center;border-right:1px solid #84927d;background:#c5d4bf;font:700 17px/1 Arial,sans-serif;color:#334a31}
+.reasoning-resolution>p{margin:0;padding:12px 14px;font-size:12px;line-height:1.65;color:#2f3f2d}
+/* Remove developer-facing explanatory captions. The dossier keeps only in-world facts and measurements. */
+.fx-note-box,.evidence-photo-focus small{display:none!important}
