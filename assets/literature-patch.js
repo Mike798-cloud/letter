@@ -1,7 +1,10 @@
 (() => {
   "use strict";
 
-  const PATCH_VERSION = "2026-08-26-archive-notes-title-4";
+  if (window.__CANDLELIT_LITERATURE_PATCH__) return;
+  window.__CANDLELIT_LITERATURE_PATCH__ = true;
+
+  const PATCH_VERSION = "2026-08-26-stability-archive-5";
   const $ = (id) => document.getElementById(id);
 
   const stories = {
@@ -323,26 +326,44 @@
 
   let currentStory = null;
   let currentPage = 0;
+  let pageTransitionLocked = false;
 
   function renderPatchedStory(key, page = 0) {
     const story = stories[key];
     if (!story) return false;
     const home = $("portal-home-view");
     const reading = $("portal-reading");
-    if (!home || !reading) return false;
+    const copy = $("portal-reading-copy");
+    if (!home || !reading || !copy) return false;
+    const previousStory = currentStory;
+    const nextPage = Math.max(0, Math.min(page, story.pages.length - 1));
+    const renderKey = `${key}:${nextPage}`;
     currentStory = key;
-    currentPage = Math.max(0, Math.min(page, story.pages.length - 1));
+    currentPage = nextPage;
     home.classList.add("hidden");
     reading.classList.add("open");
+    reading.setAttribute("aria-busy", "true");
     $("portal-reading-kicker").textContent = story.kicker;
     $("portal-reading-title").textContent = story.title;
     $("portal-reading-meta").textContent = story.meta;
-    $("portal-reading-copy").innerHTML = pageMarkup(story, currentPage);
+    if (copy.dataset.renderKey !== renderKey) {
+      copy.innerHTML = pageMarkup(story, currentPage);
+      copy.dataset.renderKey = renderKey;
+    }
     const tabNames = { cases: "旧案陈列", notes: "前辈手记", rules: "调查守则", hall: "值班室" };
     const tabName = tabNames[story.tab] || "夜读文库";
     $("portal-breadcrumb").textContent = `当前位置：烛影侦探社 › ${tabName} › ${story.title}`;
     document.querySelectorAll(".portal-nav").forEach(btn => btn.classList.toggle("active", btn.dataset.portalTab === (story.tab || "hall")));
-    reading.scrollIntoView({ block: "start" });
+    requestAnimationFrame(() => {
+      reading.removeAttribute("aria-busy");
+      if (previousStory !== key) {
+        const top = reading.getBoundingClientRect().top + window.scrollY - 8;
+        window.scrollTo(0, Math.max(0, top));
+      } else {
+        const header = reading.querySelector(".portal-article-head");
+        header?.scrollIntoView({ block: "start", behavior: "auto" });
+      }
+    });
     return true;
   }
 
@@ -355,7 +376,7 @@
       .literary-pagination{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem .2rem .2rem;color:#756a5c;font-size:.86rem}.literary-page-btn{border:1px solid #9b8c77;background:#eee6d7;color:#332b24;padding:.55rem .9rem;cursor:pointer}.literary-page-btn:hover:not(:disabled){background:#e2d5c0}.literary-page-btn:disabled{opacity:.35;cursor:default}
       .portal-thread.patch-thread{border-left:2px solid rgba(126,83,50,.45)}.portal-thread.patch-thread .thread-tag{background:#ddd0ba}.portal-library .patch-library-link{display:block;margin:.42rem 0}
       .note-entry.person p{line-height:1.8}.note-entry.person b{letter-spacing:.03em}.note-entry.person.minor{opacity:.92}
-      .case-dossier h3,.mentor-index h3{margin:1.65rem 0 .65rem;padding-bottom:.38rem;border-bottom:1px solid rgba(90,66,42,.22);font-size:1.05rem;letter-spacing:.03em}.case-dossier em,.mentor-note em{color:#5c4635}.case-card,.mentor-card{position:relative;margin:1rem 0;padding:1rem 1.05rem;border:1px solid rgba(91,70,48,.22);background:rgba(255,252,245,.46);box-shadow:0 1px 0 rgba(255,255,255,.55) inset}.case-card h3{padding-right:6.2rem;margin:.15rem 0 .55rem;border:0}.case-card button,.mentor-card button{margin-top:.65rem;border:0;border-bottom:1px solid #8b6848;background:transparent;color:#5a3f2c;padding:.35rem 0;cursor:pointer;font:inherit}.case-card button:hover,.mentor-card button:hover{color:#241a13}.case-status{position:absolute;right:.85rem;top:.85rem;padding:.18rem .45rem;border:1px solid currentColor;font-size:.69rem;letter-spacing:.08em}.case-status.closed{color:#52634b}.case-status.open{color:#80603c}.case-status.review{color:#7a4a3d}.mentor-card b{display:block;font-size:1.12rem}.mentor-card>span{display:block;margin:.2rem 0 .6rem;color:#756858;font-size:.78rem}.mentor-note{font-family:inherit}.mentor-note p{position:relative}.mentor-note p+ p{margin-top:1.1rem}.patch-search-label{font-size:.78rem;color:#7b6c5a;letter-spacing:.08em}.portal-right .patch-case-link{display:block;margin:.45rem 0}
+      .case-dossier h3,.mentor-index h3{margin:1.65rem 0 .65rem;padding-bottom:.38rem;border-bottom:1px solid rgba(90,66,42,.22);font-size:1.05rem;letter-spacing:.03em}.case-dossier em,.mentor-note em{color:#5c4635}.case-card,.mentor-card{position:relative;margin:1rem 0;padding:1rem 1.05rem;border:1px solid rgba(91,70,48,.22);background:rgba(255,252,245,.46);box-shadow:0 1px 0 rgba(255,255,255,.55) inset}.case-card h3{padding-right:6.2rem;margin:.15rem 0 .55rem;border:0}.case-card button,.mentor-card button{margin-top:.65rem;border:0;border-bottom:1px solid #8b6848;background:transparent;color:#5a3f2c;padding:.35rem 0;cursor:pointer;font:inherit}.case-card button:hover,.mentor-card button:hover{color:#241a13}.case-status{position:absolute;right:.85rem;top:.85rem;padding:.18rem .45rem;border:1px solid currentColor;font-size:.69rem;letter-spacing:.08em}.case-status.closed{color:#52634b}.case-status.open{color:#80603c}.case-status.review{color:#7a4a3d}.mentor-card b{display:block;font-size:1.12rem}.mentor-card>span{display:block;margin:.2rem 0 .6rem;color:#756858;font-size:.78rem}.mentor-note{font-family:inherit}.mentor-note p{position:relative}.mentor-note p+ p{margin-top:1.1rem}.patch-search-label{font-size:.78rem;color:#7b6c5a;letter-spacing:.08em}.portal-right .patch-case-link{display:block;margin:.45rem 0}.case-card,.mentor-card,.portal-thread.patch-thread{content-visibility:auto;contain-intrinsic-size:1px 180px}.literary-page{contain:layout style paint}.literary-page,.case-dossier,.mentor-note{overflow-wrap:anywhere}.literary-page-btn,.case-card button,.mentor-card button{touch-action:manipulation}.performance-lite .literary-page{box-shadow:none;background:#f5efe3}.performance-lite .case-card,.performance-lite .mentor-card{box-shadow:none}
       @media(max-width:760px){.literary-page{min-height:0;padding:1rem .2rem 1.2rem}.literary-page p{line-height:1.9;text-align:left}.literary-pagination{position:sticky;bottom:0;background:rgba(238,230,215,.96);padding:.75rem .3rem;z-index:3}.literary-page-btn{min-height:42px}.case-card h3{padding-right:0;padding-top:1.7rem}.case-status{left:1rem;right:auto}.case-card,.mentor-card{padding:.9rem}}
     `;
     document.head.appendChild(style);
@@ -429,28 +450,37 @@
     if (!box.querySelector(".patch-profile")) box.insertAdjacentHTML("afterbegin", adaProfile);
   }
 
-  function plainText(html) {
-    const div = document.createElement("div");
-    div.innerHTML = html;
-    return (div.textContent || "").replace(/\s+/g, " ").trim();
+  function plainTextFast(html) {
+    return String(html)
+      .replace(/<script[\s\S]*?<\/script>/gi, " ")
+      .replace(/<style[\s\S]*?<\/style>/gi, " ")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/&nbsp;|&#160;/gi, " ")
+      .replace(/&lt;/gi, "<")
+      .replace(/&gt;/gi, ">")
+      .replace(/&amp;/gi, "&")
+      .replace(/&quot;/gi, '"')
+      .replace(/&#39;|&apos;/gi, "'")
+      .replace(/\s+/g, " ")
+      .trim();
   }
 
-  function storySearchBlob(story) {
-    return [story.title, story.kicker, story.meta]
-      .concat(story.pages.map(page => plainText(page)))
-      .join(" ")
-      .toLowerCase();
-  }
+  const storySearchIndex = new Map(
+    Object.entries(stories).map(([key, story]) => [
+      key,
+      [story.title, story.kicker, story.meta, ...story.pages.map(plainTextFast)].join(" ").toLowerCase()
+    ])
+  );
 
   document.addEventListener("submit", (e) => {
     if (e.target?.id !== "portal-search") return;
     const input = $("portal-search-input") || e.target.querySelector("input");
     const query = (input?.value || "").trim().toLowerCase();
     if (!query) return;
-    const matches = Object.entries(stories).filter(([, story]) => storySearchBlob(story).includes(query));
+    const matches = Object.entries(stories).filter(([key]) => storySearchIndex.get(key)?.includes(query));
     if (!matches.length) return;
     // 不替换原站检索结果；等原游戏完成搜索后，把新增/扩写文库的命中补到结果末尾。
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       const copy = $("portal-reading-copy");
       const meta = $("portal-reading-meta");
       if (!copy || !$("portal-reading")?.classList.contains("open")) return;
@@ -492,8 +522,12 @@
     const pageBtn = e.target.closest("[data-lit-dir]");
     if (pageBtn && currentStory) {
       e.preventDefault();
+      e.stopImmediatePropagation();
+      if (pageTransitionLocked || pageBtn.disabled) return;
+      pageTransitionLocked = true;
       const next = currentPage + Number(pageBtn.dataset.litDir || 0);
       renderPatchedStory(currentStory, next);
+      setTimeout(() => { pageTransitionLocked = false; }, 120);
       return;
     }
     if (e.target.closest("#notebook-btn")) {
@@ -503,8 +537,24 @@
 
   window.addEventListener("pageshow", guaranteeAgencyLanding);
 
+  document.addEventListener("keydown", (e) => {
+    if (!currentStory || !$("portal-reading")?.classList.contains("open")) return;
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    const tag = document.activeElement?.tagName;
+    if (tag === "INPUT" || tag === "TEXTAREA") return;
+    const dir = e.key === "ArrowRight" ? 1 : -1;
+    const story = stories[currentStory];
+    const next = Math.max(0, Math.min(currentPage + dir, story.pages.length - 1));
+    if (next === currentPage) return;
+    e.preventDefault();
+    renderPatchedStory(currentStory, next);
+  }, true);
+
   function init() {
     if ($("literature-patch-style")) return;
+    const lowMemory = typeof navigator.deviceMemory === "number" && navigator.deviceMemory <= 4;
+    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    if (lowMemory || reducedMotion) document.documentElement.classList.add("performance-lite");
     injectStyles();
     addThreads();
     guaranteeAgencyLanding();

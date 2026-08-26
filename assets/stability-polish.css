@@ -1,0 +1,55 @@
+/* 2026-08-26 性能与交互稳定性补丁：不改变案情逻辑，仅降低重绘成本和移动端卡顿。 */
+html,body,#app{max-width:100%;min-width:0}
+button,a,[role="button"]{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.portal-main,.portal-reading,.portal-reading-copy,.stage-wrap,.case-page,.evidence-panel,.location-rail{min-width:0}
+.portal-reading-copy,.detail-copy,.case-fragment-copy,.archive-page-copy{overflow-wrap:anywhere;word-break:break-word}
+.portal-thread,.case-card,.mentor-card,.note-entry.person{content-visibility:auto;contain-intrinsic-size:1px 150px}
+.stage{contain:layout paint style}
+.scene-image{will-change:auto}
+.location-rail,.evidence-panel,.archive-modal,.notebook-modal,.paper-modal,.portal-reading{overscroll-behavior:contain}
+.dispatch-modal{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+
+/* 旧案陈列坚持“档案/复盘”语言，不使用线稿或简笔画式伪现场图。 */
+.case-dossier{position:relative}
+.case-dossier:before{content:"ARCHIVE TRANSCRIPT · 原始记录文字复原";display:block;margin:0 0 1rem;padding:.42rem .62rem;border-top:3px double rgba(93,73,52,.45);border-bottom:1px solid rgba(93,73,52,.25);color:#756552;font:700 .68rem/1.35 Arial,sans-serif;letter-spacing:.1em}
+.case-dossier .case-card{background:linear-gradient(180deg,rgba(255,253,247,.72),rgba(240,233,218,.58))}
+
+/* 低配与移动设备：优先保证点击、翻页、滚动与场景切换流畅。 */
+.performance-lite .press-dots,
+.performance-lite .story-grain{display:none!important}
+.performance-lite .scene-image{filter:none!important}
+.performance-lite .stage:after{box-shadow:inset 0 0 0 2px rgba(222,212,188,.12)!important}
+.performance-lite .portal-thread,
+.performance-lite .case-card,
+.performance-lite .mentor-card,
+.performance-lite .paper-modal,
+.performance-lite .archive-modal,
+.performance-lite .notebook-modal,
+.performance-lite .support-modal,
+.performance-lite .ending-modal,
+.performance-lite .dialogue,
+.performance-lite .scene-caption{box-shadow:none!important}
+
+@media (max-width:900px){
+  .press-dots{display:none!important}
+  .scene-image{filter:none!important}
+  .portal-thread,.case-card,.mentor-card{box-shadow:none!important}
+  .portal-reading-copy{contain:style}
+  .literary-page{box-shadow:none!important}
+  .dispatch-window{box-shadow:4px 5px 0 rgba(17,18,15,.45)!important}
+}
+
+@media (max-width:560px){
+  .portal-reading-copy{font-size:1rem}
+  .case-dossier:before{font-size:.62rem;letter-spacing:.06em}
+  .portal-reading.open{scroll-margin-top:0}
+  .paper-modal,.archive-modal,.notebook-modal,.support-modal,.ending-modal{max-height:calc(100dvh - 12px);overscroll-behavior:contain}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
+
+#deferred-dispatch-chip{margin-left:auto;border:1px solid #8a4136;background:#efe6d7;color:#7a3d34;padding:.28rem .52rem;cursor:pointer;font:700 .66rem/1.2 Arial,sans-serif;letter-spacing:.06em;white-space:nowrap}
+#deferred-dispatch-chip:hover{background:#e2d5c2}
+@media(max-width:560px){#deferred-dispatch-chip{display:block;margin:.35rem 0 0 auto}}
